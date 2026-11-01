@@ -63,40 +63,40 @@
         <span id="toastMessage" class="font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
 
-    <!-- Header Navigation: ปลดล็อก sticky ในโหมดแนวนอน (static landscape:static) เพื่อให้เลื่อนหน้าจอได้อิสระ -->
+    <!-- Header Navigation: ขยายเต็มจอและลดความสูงส่วนเกิน -->
     <header class="bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 text-white shadow-md relative md:sticky md:top-0 z-40 no-print">
-        <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1.5 py-1.5 sm:py-3">
+        <div class="w-full px-3 sm:px-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1.5 py-2 sm:py-2.5">
                 
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 sm:w-11 sm:h-11 bg-white/20 backdrop-blur-md rounded-lg sm:rounded-xl flex items-center justify-center p-0.5 border border-white/30 shadow-inner flex-shrink-0 overflow-hidden">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center p-0.5 border border-white/30 shadow-inner flex-shrink-0 overflow-hidden">
                         <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=SP&background=db2777&color=fff&rounded=true';">
                     </div>
                     <div class="min-w-0">
                         <div class="flex items-center gap-1.5 leading-none">
-                            <span class="bg-white/20 text-[9px] sm:text-xs px-1.5 py-0.5 rounded-full font-medium">ม.4/2 ปีการศึกษา 2569</span>
-                            <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-1.5 py-0.5 rounded-full">
+                            <span class="bg-white/20 text-[9px] sm:text-xs px-2 py-0.5 rounded-full font-medium">ม.4/2 ปีการศึกษา 2569</span>
+                            <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full">
                                 <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมฯ
                             </span>
                         </div>
-                        <h1 class="text-xs sm:text-lg lg:text-xl font-bold tracking-tight text-white leading-tight mt-0.5 truncate">
+                        <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-0.5 truncate">
                             ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด
                         </h1>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="grid grid-cols-4 md:flex items-center gap-1 w-full md:w-auto">
-                    <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1 px-2 rounded-lg text-[11px] sm:text-xs font-medium transition active:scale-95 cursor-pointer">
+                <div class="grid grid-cols-4 md:flex items-center gap-1.5 w-full md:w-auto">
+                    <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i id="refreshIcon" class="fa-solid fa-rotate text-xs"></i> <span>ดึงข้อมูล</span>
                     </button>
-                    <button type="button" onclick="shareDirectLine()" class="flex items-center justify-center gap-1 bg-[#06C755] hover:bg-[#05b34c] text-white py-1 px-2 rounded-lg text-[11px] sm:text-xs font-semibold shadow transition transform active:scale-95 cursor-pointer">
-                        <i class="fa-brands fa-line text-xs sm:text-sm"></i> <span>ส่ง LINE</span>
+                    <button type="button" onclick="shareDirectLine()" class="flex items-center justify-center gap-1 bg-[#06C755] hover:bg-[#05b34c] text-white py-1.5 px-3 rounded-lg text-xs font-semibold shadow transition transform active:scale-95 cursor-pointer">
+                        <i class="fa-brands fa-line text-sm"></i> <span>ส่ง LINE</span>
                     </button>
-                    <button type="button" onclick="copyLineSummary()" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1 px-2 rounded-lg text-[11px] sm:text-xs font-medium transition active:scale-95 cursor-pointer">
+                    <button type="button" onclick="copyLineSummary()" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i class="fa-regular fa-copy text-xs"></i> <span>คัดลอก</span>
                     </button>
-                    <button type="button" id="btnSyncCloud" onclick="syncToCloud()" class="flex items-center justify-center gap-1 bg-white text-pink-600 hover:bg-pink-50 active:scale-95 py-1 px-2.5 rounded-lg text-[11px] sm:text-xs font-bold shadow border border-pink-200 transition select-none cursor-pointer">
+                    <button type="button" id="btnSyncCloud" onclick="syncToCloud()" class="flex items-center justify-center gap-1.5 bg-white text-pink-600 hover:bg-pink-50 active:scale-95 py-1.5 px-3.5 rounded-lg text-xs font-bold shadow border border-pink-200 transition select-none cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up text-pink-600 text-xs"></i> 
                         <span>บันทึกชีต</span>
                     </button>
@@ -104,86 +104,86 @@
             </div>
 
             <!-- Tab Menu Bar -->
-            <div class="flex space-x-1 border-t border-white/20 pt-1 pb-1 overflow-x-auto text-[11px] sm:text-xs no-scrollbar">
-                <button type="button" onclick="switchTab('daily')" id="tab-daily" class="tab-btn whitespace-nowrap px-2.5 py-0.5 font-medium rounded-md transition flex items-center gap-1 bg-white text-pink-600 shadow-sm">
+            <div class="flex space-x-1 border-t border-white/20 pt-1.5 pb-1 overflow-x-auto text-xs no-scrollbar">
+                <button type="button" onclick="switchTab('daily')" id="tab-daily" class="tab-btn whitespace-nowrap px-3 py-1 font-medium rounded-lg transition flex items-center gap-1.5 bg-white text-pink-600 shadow-sm">
                     <i class="fa-solid fa-clipboard-check"></i> เช็คชื่อประจำวัน
                 </button>
-                <button type="button" onclick="switchTab('weekly')" id="tab-weekly" class="tab-btn whitespace-nowrap px-2.5 py-0.5 font-medium rounded-md transition flex items-center gap-1 text-white hover:bg-white/10">
+                <button type="button" onclick="switchTab('weekly')" id="tab-weekly" class="tab-btn whitespace-nowrap px-3 py-1 font-medium rounded-lg transition flex items-center gap-1.5 text-white hover:bg-white/10">
                     <i class="fa-solid fa-calendar-week"></i> รายงานสัปดาห์
                 </button>
-                <button type="button" onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn whitespace-nowrap px-2.5 py-0.5 font-medium rounded-md transition flex items-center gap-1 text-white hover:bg-white/10">
+                <button type="button" onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn whitespace-nowrap px-3 py-1 font-medium rounded-lg transition flex items-center gap-1.5 text-white hover:bg-white/10">
                     <i class="fa-solid fa-chart-pie"></i> สรุปรายเดือน
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-5 lg:p-8 space-y-2.5 sm:space-y-5">
+    <!-- Main Container: ปรับเป็น w-full ขยายเต็มจอ ไม่เหลือช่องว่างสีขาวด้านข้าง -->
+    <main class="flex-1 w-full mx-auto p-2.5 sm:p-4 space-y-2.5">
 
         <!-- ======================= TAB 1: DAILY ======================= -->
-        <div id="content-daily" class="space-y-2.5 sm:space-y-5">
+        <div id="content-daily" class="space-y-2.5">
 
-            <!-- Control Bar & Filters -->
-            <div class="bg-white p-2 sm:p-4 rounded-xl shadow-sm border border-pink-100 flex flex-col md:flex-row md:items-center justify-between gap-2 no-print">
-                <div class="flex items-center justify-between sm:justify-start gap-1.5">
-                    <div class="flex items-center gap-1 bg-pink-50/70 border border-pink-200 px-2 py-1 rounded-lg flex-1 sm:flex-initial">
+            <!-- Control Bar & Filters: จัดวางเป็นแถวเดียวกระชับ ไม่เว้นช่องว่างเกินจำเป็น -->
+            <div class="bg-white p-2.5 sm:p-3 rounded-xl shadow-sm border border-pink-100 flex flex-col md:flex-row md:items-center justify-between gap-2 no-print">
+                <div class="flex items-center justify-between sm:justify-start gap-2">
+                    <div class="flex items-center gap-1.5 bg-pink-50/70 border border-pink-200 px-2.5 py-1.5 rounded-lg flex-1 sm:flex-initial">
                         <i class="fa-regular fa-calendar-days text-pink-600 text-xs"></i>
                         <input type="date" id="selectedDate" onchange="changeDate()" class="bg-transparent text-xs font-semibold text-slate-700 outline-none cursor-pointer w-full">
                     </div>
-                    <div class="flex items-center gap-1">
-                        <button type="button" onclick="markAllStatus('มา')" class="text-[10px] sm:text-xs bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-300 font-semibold px-2 py-1 rounded-lg transition flex items-center gap-1 shadow-sm active:scale-95">
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="markAllStatus('มา')" class="text-xs bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-300 font-semibold px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-sm active:scale-95">
                             <i class="fa-solid fa-check-double text-emerald-500"></i> มาทั้งหมด
                         </button>
-                        <button type="button" onclick="resetTodayStatus()" class="text-[10px] sm:text-xs bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 font-medium px-2 py-1 rounded-lg transition active:scale-95">
+                        <button type="button" onclick="resetTodayStatus()" class="text-xs bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 font-medium px-2.5 py-1.5 rounded-lg transition active:scale-95">
                             <i class="fa-solid fa-arrow-rotate-left"></i> รีเซ็ต
                         </button>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-1.5">
-                    <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto">
+                <div class="flex items-center gap-2">
+                    <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto font-medium">
                         <option value="all">ทุกแผน (40 คน)</option>
                         <option value="02">02 วิศวะ (8 คน)</option>
                         <option value="11">11 วิทย์ (32 คน)</option>
                     </select>
 
-                    <div class="relative flex-1 sm:w-52">
-                        <i class="fa-solid fa-magnifying-glass absolute left-2 top-1/2 -translate-y-1/2 text-pink-400 text-xs"></i>
-                        <input type="text" id="searchInput" onkeyup="filterStudents()" placeholder="ค้นชื่อ..." class="w-full pl-6 pr-2 py-1 text-xs bg-pink-50/40 border border-pink-200 rounded-lg outline-none focus:border-pink-400">
+                    <div class="relative flex-1 sm:w-60">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-pink-400 text-xs"></i>
+                        <input type="text" id="searchInput" onkeyup="filterStudents()" placeholder="ค้นชื่อ, รหัส..." class="w-full pl-7 pr-2.5 py-1.5 text-xs bg-pink-50/40 border border-pink-200 rounded-lg outline-none focus:border-pink-400">
                     </div>
 
-                    <button type="button" onclick="window.print()" class="hidden md:flex items-center justify-center gap-1 bg-pink-600 hover:bg-pink-700 text-white px-2.5 py-1 rounded-lg text-xs font-medium transition shadow-sm active:scale-95">
+                    <button type="button" onclick="window.print()" class="hidden md:flex items-center justify-center gap-1 bg-pink-600 hover:bg-pink-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition shadow-sm active:scale-95">
                         <i class="fa-solid fa-print"></i> พิมพ์
                     </button>
                 </div>
             </div>
 
-            <!-- Stats Bar: ซ่อนบนมือถือแนวตั้ง (hidden) แต่แสดงบนจอแท็บเล็ตและแนวนอน (sm:grid) -->
-            <div class="hidden sm:grid sm:grid-cols-6 gap-2 sm:gap-3 no-print">
-                <div class="bg-white p-2 rounded-xl border border-pink-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-users"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-slate-500 truncate">ทั้งหมด</div><div class="text-sm font-bold text-slate-800" id="stat-total">40</div></div>
+            <!-- Stats Bar: ขยายเต็มจอ สวยงามพอดีกับทุกองค์ประกอบ -->
+            <div class="hidden sm:grid sm:grid-cols-6 gap-2 no-print">
+                <div class="bg-white p-2 rounded-xl border border-pink-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-users"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-slate-500 truncate">ทั้งหมด</div><div class="text-base font-bold text-slate-800" id="stat-total">40</div></div>
                 </div>
-                <div class="bg-white p-2 rounded-xl border border-emerald-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-emerald-600 truncate">มา</div><div class="text-sm font-bold text-emerald-700" id="stat-present">0</div></div>
+                <div class="bg-white p-2 rounded-xl border border-emerald-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-emerald-600 truncate">มา</div><div class="text-base font-bold text-emerald-700" id="stat-present">0</div></div>
                 </div>
-                <div class="bg-white p-2 rounded-xl border border-amber-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-clock"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-amber-600 truncate">สาย</div><div class="text-sm font-bold text-amber-700" id="stat-late">0</div></div>
+                <div class="bg-white p-2 rounded-xl border border-amber-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-clock"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-amber-600 truncate">สาย</div><div class="text-base font-bold text-amber-700" id="stat-late">0</div></div>
                 </div>
-                <div class="bg-white p-2 rounded-xl border border-sky-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-envelope-open-text"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-sky-600 truncate">ลา</div><div class="text-sm font-bold text-sky-700" id="stat-leave">0</div></div>
+                <div class="bg-white p-2 rounded-xl border border-sky-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-sky-600 truncate">ลา</div><div class="text-base font-bold text-sky-700" id="stat-leave">0</div></div>
                 </div>
-                <div class="bg-white p-2 rounded-xl border border-rose-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-circle-xmark"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-rose-600 truncate">ขาด</div><div class="text-sm font-bold text-rose-700" id="stat-absent">0</div></div>
+                <div class="bg-white p-2 rounded-xl border border-rose-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-rose-600 truncate">ขาด</div><div class="text-base font-bold text-rose-700" id="stat-absent">0</div></div>
                 </div>
-                <div class="bg-white p-2 rounded-xl border border-purple-100 shadow-sm flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xs flex-shrink-0"><i class="fa-solid fa-award"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-purple-600 truncate">กิจกรรม</div><div class="text-sm font-bold text-purple-700" id="stat-activity">0</div></div>
+                <div class="bg-white p-2 rounded-xl border border-purple-100 shadow-sm flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-award"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-purple-600 truncate">กิจกรรม</div><div class="text-base font-bold text-purple-700" id="stat-activity">0</div></div>
                 </div>
             </div>
 
@@ -198,21 +198,21 @@
                 </div>
             </div>
 
-            <!-- 1. Mobile Card View: เฉพาะแนวตั้งหน้าจอแคบ -->
+            <!-- 1. Mobile Card View: สำหรับมือถือแนวตั้ง -->
             <div id="mobileCardContainer" class="portrait:block landscape:hidden md:hidden space-y-2 no-print"></div>
 
-            <!-- 2. Table View: แสดงในโหมดแนวนอน (landscape) และจอแท็บเล็ต/เดสก์ท็อป -->
+            <!-- 2. Table View: สำหรับแนวนอนและจอใหญ่ (กระจายเต็มความกว้างหน้าจออย่างสมส่วน) -->
             <div class="portrait:hidden landscape:block md:block bg-white rounded-xl shadow-sm border border-pink-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs sm:text-sm text-slate-700">
-                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-[11px] sm:text-xs uppercase border-b border-pink-100">
+                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-xs uppercase border-b border-pink-100">
                             <tr>
-                                <th class="py-2 px-2 text-center w-8">ที่</th>
-                                <th class="py-2 px-2 text-center w-16">รหัส</th>
-                                <th class="py-2 px-3">ชื่อ - นามสกุล</th>
-                                <th class="py-2 px-2 text-center w-24">แผน</th>
-                                <th class="py-2 px-3 text-center">สถานะ</th>
-                                <th class="py-2 px-2 text-center w-28 no-print">หมายเหตุ</th>
+                                <th class="py-2.5 px-3 text-center w-12">ที่</th>
+                                <th class="py-2.5 px-3 text-center w-24">รหัส</th>
+                                <th class="py-2.5 px-4 font-semibold">ชื่อ - นามสกุล</th>
+                                <th class="py-2.5 px-3 text-center w-36">แผนการเรียน</th>
+                                <th class="py-2.5 px-4 text-center">สถานะการปฏิบัติหน้าที่</th>
+                                <th class="py-2.5 px-4 text-center w-48 no-print">หมายเหตุ</th>
                             </tr>
                         </thead>
                         <tbody id="studentTableBody" class="divide-y divide-pink-50"></tbody>
@@ -243,23 +243,23 @@
         </div>
 
         <!-- ======================= TAB 2: WEEKLY ======================= -->
-        <div id="content-weekly" class="hidden space-y-3 sm:space-y-5">
-            <div class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
+        <div id="content-weekly" class="hidden space-y-2.5">
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700">รายงานประจำสัปดาห์</h3>
                     <p class="text-[11px] text-slate-500">ผลการปฏิบัติหน้าที่ 5 วันทำการ (จันทร์ - ศุกร์)</p>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button type="button" onclick="navigateWeek(-7)" class="p-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-600 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                    <span id="currentWeekRangeLabel" class="text-xs font-semibold text-slate-700 px-2 py-0.5 bg-pink-50/60 rounded-lg border border-pink-200"></span>
+                    <span id="currentWeekRangeLabel" class="text-xs font-semibold text-slate-700 px-2.5 py-0.5 bg-pink-50/60 rounded-lg border border-pink-200"></span>
                     <button type="button" onclick="navigateWeek(7)" class="p-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-600 transition"><i class="fa-solid fa-chevron-right text-xs"></i></button>
                 </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-pink-100 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 min-w-[460px]">
-                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-[11px] sm:text-xs uppercase border-b border-pink-100" id="weeklyHead"></thead>
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 min-w-[550px]">
+                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-xs uppercase border-b border-pink-100" id="weeklyHead"></thead>
                         <tbody id="weeklyTableBody" class="divide-y divide-pink-50"></tbody>
                     </table>
                 </div>
@@ -267,44 +267,44 @@
         </div>
 
         <!-- ======================= TAB 3: MONTHLY ======================= -->
-        <div id="content-monthly" class="hidden space-y-3 sm:space-y-5">
-            <div class="bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
+        <div id="content-monthly" class="hidden space-y-2.5">
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700">สรุปภาพรวมรายเดือน</h3>
                     <p class="text-[11px] text-slate-500">สถิติสะสมการทำความสะอาดเขตพื้นที่พัฒนา</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="month" id="monthlyInput" onchange="renderMonthly()" class="text-xs bg-pink-50 border border-pink-200 text-slate-700 rounded-lg px-2 py-1 outline-none font-semibold cursor-pointer">
+                    <input type="month" id="monthlyInput" onchange="renderMonthly()" class="text-xs bg-pink-50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1 outline-none font-semibold cursor-pointer">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3 text-white shadow">
+                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
                     <div class="flex items-center justify-between">
                         <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย</span>
-                        <i class="fa-solid fa-trophy text-amber-300 text-sm"></i>
+                        <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
                     </div>
-                    <div class="text-xl font-extrabold mt-1" id="m-stat-overall">0%</div>
+                    <div class="text-xl sm:text-2xl font-extrabold mt-1" id="m-stat-overall">0%</div>
                     <p class="text-[10px] text-pink-100" id="m-stat-dayscount">บันทึกแล้ว 0 วัน</p>
-                    <div class="w-full bg-white/20 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
                         <div id="m-bar-overall" class="bg-white h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-3 border border-pink-100 shadow-sm">
+                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
                     <span class="text-xs text-slate-500 font-medium">แผนกเตรียมวิศวะ (02)</span>
-                    <div class="text-lg font-bold text-slate-800 mt-0.5" id="m-stat-p02">0%</div>
+                    <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5" id="m-stat-p02">0%</div>
                     <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-user-gear"></i> จำนวน 8 คน</p>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
                         <div id="m-bar-p02" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-3 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
                     <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
-                    <div class="text-lg font-bold text-slate-800 mt-0.5" id="m-stat-p11">0%</div>
+                    <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5" id="m-stat-p11">0%</div>
                     <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 32 คน</p>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
                         <div id="m-bar-p11" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
@@ -321,13 +321,13 @@
 
     </main>
 
-    <!-- Footer: บรรทัดเดียวบนทุกหน้าจอ -->
-    <footer class="bg-white border-t border-pink-100 py-2 px-2 text-center no-print overflow-hidden">
+    <!-- Footer: กระชับ จบในบรรทัดเดียว -->
+    <footer class="bg-white border-t border-pink-100 py-2.5 px-3 text-center no-print overflow-hidden">
         <p class="text-xs text-slate-500 font-medium leading-none">
             ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ชั้นมัธยมศึกษาปีที่ 4/2
         </p>
         <p class="font-medium text-pink-600 whitespace-nowrap overflow-hidden text-ellipsis mt-1 tracking-tight" 
-           style="font-size: clamp(8px, 2.2vw, 12px); line-height: 1.3;">
+           style="font-size: clamp(8.5px, 2.2vw, 12px); line-height: 1.3;">
             พัฒนาโดย นายนพคุณ สืบเลย โรงเรียนสีชมพูศึกษา องค์การบริหารส่วนจังหวัดขอนแก่น
         </p>
     </footer>
@@ -379,11 +379,11 @@
         ];
 
         const STATUS_CONFIG = {
-            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
-            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
-            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
-            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
-            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
+            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300 hover:bg-emerald-100', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
+            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300 hover:bg-amber-100', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
+            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300 hover:bg-sky-100', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
+            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300 hover:bg-rose-100', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
+            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300 hover:bg-purple-100', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
         };
 
         const STORAGE_KEY = 'sichompu_m42_duty_records';
@@ -477,10 +477,10 @@
         function switchTab(tab) {
             ['daily', 'weekly', 'monthly'].forEach(t => {
                 document.getElementById(`content-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).className = 'tab-btn whitespace-nowrap px-2.5 py-0.5 font-medium rounded-md transition flex items-center gap-1 text-white hover:bg-white/10';
+                document.getElementById(`tab-${t}`).className = 'tab-btn whitespace-nowrap px-3 py-1 font-medium rounded-lg transition flex items-center gap-1.5 text-white hover:bg-white/10';
             });
             document.getElementById(`content-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).className = 'tab-btn whitespace-nowrap px-2.5 py-0.5 font-medium rounded-md transition flex items-center gap-1 bg-white text-pink-600 shadow-sm';
+            document.getElementById(`tab-${tab}`).className = 'tab-btn whitespace-nowrap px-3 py-1 font-medium rounded-lg transition flex items-center gap-1.5 bg-white text-pink-600 shadow-sm';
 
             if (tab === 'weekly') renderWeekly();
             if (tab === 'monthly') renderMonthly();
@@ -504,8 +504,8 @@
                 const currentStatus = studentData.status;
 
                 const programBadge = s.program === '02' 
-                    ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-semibold px-1.5 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`
-                    : `<span class="bg-indigo-100 text-indigo-800 text-[10px] font-semibold px-1.5 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
+                    ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`
+                    : `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
 
                 let tableButtonsHTML = `<div class="flex items-center justify-center gap-1 p-0.5 bg-slate-50 rounded-lg border border-pink-100">`;
                 let cardButtonsHTML = `<div class="grid grid-cols-5 gap-1 pt-1.5 border-t border-pink-50">`;
@@ -514,7 +514,7 @@
                     const isSelected = (currentStatus === stName);
                     tableButtonsHTML += `
                         <button type="button" onclick="setStatus('${s.id}', '${stName}')" 
-                                class="px-2 py-0.5 text-xs rounded-md transition-all duration-150 flex items-center gap-1 cursor-pointer ${isSelected ? cfg.activeClass : cfg.normalClass}">
+                                class="px-2.5 py-1 text-xs rounded-md transition-all duration-150 flex items-center gap-1 cursor-pointer ${isSelected ? cfg.activeClass : cfg.normalClass}">
                             <i class="fa-solid ${cfg.icon}"></i>
                             <span>${stName}</span>
                         </button>
@@ -530,21 +530,21 @@
                 tableButtonsHTML += `</div>`;
                 cardButtonsHTML += `</div>`;
 
-                // Table View
+                // Table View: ขยายตารางให้กว้างเต็มตา ไม่อึดอัด
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-pink-50/40 transition duration-150";
                 tr.innerHTML = `
-                    <td class="py-1.5 px-2 text-center font-bold text-slate-500">${s.no}</td>
-                    <td class="py-1.5 px-2 text-center text-xs font-mono text-slate-600">${s.id}</td>
-                    <td class="py-1.5 px-3 font-medium text-slate-800">${s.name}</td>
-                    <td class="py-1.5 px-2 text-center">${programBadge}</td>
-                    <td class="py-1 px-3 text-center">
+                    <td class="py-2.5 px-3 text-center font-bold text-slate-500">${s.no}</td>
+                    <td class="py-2.5 px-3 text-center text-xs font-mono text-slate-600">${s.id}</td>
+                    <td class="py-2.5 px-4 font-medium text-slate-800">${s.name}</td>
+                    <td class="py-2.5 px-3 text-center">${programBadge}</td>
+                    <td class="py-1.5 px-4 text-center">
                         <div class="no-print">${tableButtonsHTML}</div>
                         <div class="hidden print-only font-bold text-xs">${currentStatus}</div>
                     </td>
-                    <td class="py-1.5 px-2 text-center no-print">
+                    <td class="py-2 px-4 text-center no-print">
                         <input type="text" value="${studentData.note || ''}" onchange="setNote('${s.id}', this.value)" 
-                               placeholder="บันทึก..." class="w-full text-xs px-1.5 py-0.5 bg-transparent border-b border-pink-200 focus:border-pink-500 outline-none text-slate-600">
+                               placeholder="บันทึก..." class="w-full text-xs px-2 py-1 bg-transparent border-b border-pink-200 focus:border-pink-500 outline-none text-slate-600">
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -764,14 +764,14 @@
             const thead = document.getElementById('weeklyHead');
             let headHTML = `
                 <tr>
-                    <th class="py-2 px-1 text-center w-8">ที่</th>
-                    <th class="py-2 px-2">ชื่อ - นามสกุล</th>
+                    <th class="py-2.5 px-3 text-center w-12">ที่</th>
+                    <th class="py-2.5 px-4">ชื่อ - นามสกุล</th>
             `;
             weekDates.forEach((d, idx) => {
                 const isToday = (d === new Date().toISOString().split('T')[0]);
-                headHTML += `<th class="py-2 px-1 text-center ${isToday ? 'bg-pink-100/80 font-bold text-pink-700' : ''}">${dayNames[idx]}<br><span class="text-[9px] text-slate-400 font-normal">${d.slice(8)}</span></th>`;
+                headHTML += `<th class="py-2.5 px-2 text-center ${isToday ? 'bg-pink-100/80 font-bold text-pink-700' : ''}">${dayNames[idx]}<br><span class="text-[10px] text-slate-400 font-normal">${d.slice(8)}</span></th>`;
             });
-            headHTML += `<th class="py-2 px-1 text-center">มา</th></tr>`;
+            headHTML += `<th class="py-2.5 px-3 text-center">มา</th></tr>`;
             thead.innerHTML = headHTML;
 
             const tbody = document.getElementById('weeklyTableBody');
@@ -791,27 +791,27 @@
                         const st = (dayData[s.id] && dayData[s.id].status) ? dayData[s.id].status : '-';
                         if (st === 'มา' || st === 'กิจกรรม') {
                             presentCount++;
-                            daysHTML += `<td class="py-1.5 px-1 text-center text-xs"><span class="text-emerald-600 font-bold">✓</span></td>`;
+                            daysHTML += `<td class="py-2 px-2 text-center text-xs"><span class="text-emerald-600 font-bold">✓</span></td>`;
                         } else if (st === 'สาย') {
                             presentCount += 0.5;
-                            daysHTML += `<td class="py-1.5 px-1 text-center text-[10px]"><span class="text-amber-500 font-bold">สาย</span></td>`;
+                            daysHTML += `<td class="py-2 px-2 text-center text-[11px]"><span class="text-amber-500 font-bold">สาย</span></td>`;
                         } else if (st === 'ลา') {
-                            daysHTML += `<td class="py-1.5 px-1 text-center text-[10px]"><span class="text-sky-500 font-bold">ลา</span></td>`;
+                            daysHTML += `<td class="py-2 px-2 text-center text-[11px]"><span class="text-sky-500 font-bold">ลา</span></td>`;
                         } else {
-                            daysHTML += `<td class="py-1.5 px-1 text-center text-[10px]"><span class="text-rose-500 font-bold">ขาด</span></td>`;
+                            daysHTML += `<td class="py-2 px-2 text-center text-[11px]"><span class="text-rose-500 font-bold">ขาด</span></td>`;
                         }
                     } else {
-                        daysHTML += `<td class="py-1.5 px-1 text-center text-xs text-slate-300">-</td>`;
+                        daysHTML += `<td class="py-2 px-2 text-center text-xs text-slate-300">-</td>`;
                     }
                 });
 
                 const rate = activeDaysCount > 0 ? Math.round((presentCount / activeDaysCount) * 100) : 0;
                 tr.innerHTML = `
-                    <td class="py-1.5 px-1 text-center font-medium text-slate-400 text-xs">${s.no}</td>
-                    <td class="py-1.5 px-2 font-medium text-slate-800 text-xs truncate max-w-[120px]">${s.name}</td>
+                    <td class="py-2 px-3 text-center font-medium text-slate-400 text-xs">${s.no}</td>
+                    <td class="py-2 px-4 font-medium text-slate-800 text-xs sm:text-sm">${s.name}</td>
                     ${daysHTML}
-                    <td class="py-1.5 px-1 text-center">
-                        <span class="font-bold text-xs ${rate >= 80 ? 'text-emerald-600' : (activeDaysCount === 0 ? 'text-slate-400' : 'text-rose-500')}">${activeDaysCount > 0 ? rate + '%' : '-'}</span>
+                    <td class="py-2 px-3 text-center">
+                        <span class="font-bold text-xs sm:text-sm ${rate >= 80 ? 'text-emerald-600' : (activeDaysCount === 0 ? 'text-slate-400' : 'text-rose-500')}">${activeDaysCount > 0 ? rate + '%' : '-'}</span>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -869,7 +869,7 @@
             top4.forEach((st, idx) => {
                 const percentage = matchingDates.length > 0 ? Math.round((st.dutyCount / matchingDates.length) * 100) : 0;
                 const card = document.createElement('div');
-                card.className = 'bg-pink-50/60 p-2 rounded-lg border border-pink-200 flex items-center gap-2';
+                card.className = 'bg-pink-50/60 p-2.5 rounded-lg border border-pink-200 flex items-center gap-2';
                 card.innerHTML = `
                     <span class="w-6 h-6 rounded-full ${medalColors[idx]} font-bold flex items-center justify-center text-[10px] flex-shrink-0">${idx + 1}</span>
                     <div class="min-w-0">
