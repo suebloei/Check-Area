@@ -74,14 +74,16 @@
                     </div>
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-1.5 leading-none">
-                            <!-- ตัวสลับห้องเรียน ม.4/2 และ ม.6/8 -->
+                            <!-- ตัวสลับห้องเรียน ม.4/2, ม.5/5 และ ม.6/8 -->
                             <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
                                 <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
+                                <button type="button" onclick="selectClassRoom('m55')" id="btnClassM55" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/5</button>
                                 <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.6/8</button>
                             </div>
                             <span class="bg-white/20 text-[9px] sm:text-xs px-2 py-0.5 rounded-full font-medium">ปีการศึกษา 2569</span>
+                            <!-- ปรับเป็น หน้าห้องคอมพิวเตอร์ -->
                             <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full" id="headerAreaBadge">
-                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมฯ
+                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมพิวเตอร์
                             </span>
                         </div>
                         <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-0.5 truncate" id="headerTitle">
@@ -191,11 +193,11 @@
             <!-- Print Header -->
             <div class="hidden print-only text-center mb-6">
                 <h2 class="text-xl font-bold font-heading text-slate-900">แบบบันทึกการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด (5 ส.)</h2>
-                <p class="text-sm text-slate-700 mt-1" id="printSchoolSubtitle">ชั้นมัธยมศึกษาปีที่ 4/2 โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
+                <p class="text-sm text-slate-700 mt-1" id="printSchoolSubtitle">โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
                 <div class="flex justify-between items-center text-xs mt-3 border-b pb-2">
                     <span><strong>เขตพื้นที่รับผิดชอบ:</strong> <span id="printAreaLabel">หน้าห้องคอมพิวเตอร์</span></span>
                     <span><strong>ประจำวันที่:</strong> <span id="printDateLabel"></span></span>
-                    <span><strong>จำนวนนักเรียน:</strong> <span id="printStudentCountLabel">ชาย 15 คน หญิง 25 คน รวม 40 คน</span></span>
+                    <span><strong>จำนวนนักเรียน:</strong> <span id="printStudentCountLabel"></span></span>
                 </div>
             </div>
 
@@ -278,7 +280,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-pink-100 py-2.5 px-3 text-center no-print overflow-hidden">
         <p class="text-xs text-slate-500 font-medium leading-none" id="footerClassLabel">
-            ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ชั้นมัธยมศึกษาปีที่ 4/2
+            ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา
         </p>
         <p class="font-medium text-pink-600 whitespace-nowrap overflow-hidden text-ellipsis mt-1 tracking-tight" 
            style="font-size: clamp(8.5px, 2.2vw, 12px); line-height: 1.3;">
@@ -289,13 +291,13 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียน ม.4/2 และ ม.6/8
+        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/5 และ ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
                 fullName: "ชั้นมัธยมศึกษาปีที่ 4/2",
                 area: "หน้าห้องคอมพิวเตอร์",
-                areaBadge: "หน้าห้องคอมฯ",
+                areaBadge: "หน้าห้องคอมพิวเตอร์", // ปรับเป็นชื่อเต็ม
                 advisors: ["นายนพคุณ สืบเลย", "นายคมเพชร โพธิปัสสา"],
                 headLevel: "นางวาสนา เหลาธรรม (หัวหน้าระดับ ม.4)",
                 students: [
@@ -344,6 +346,54 @@
                     'all': 'ทุกแผนการเรียน (40 คน)',
                     '02': '02 เตรียมวิศวะ (8 คน)',
                     '11': '11 วิทย์-คณิต (32 คน)'
+                }
+            },
+            m55: {
+                name: "ม.5/5",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/5",
+                area: "หน้าห้องฟิตเนส",
+                areaBadge: "หน้าห้องฟิตเนส",
+                advisors: ["นายปัญญา คำสะไมล์", "นางสาวศรัญญา ศรีชมพร"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18285", name: "นายชินวัฒน์ สีลำดวน", program: "11", gender: "ชาย" },
+                    { no: 2, id: "20068", name: "นายณพงศธร ฐิติศรัณย์", program: "11", gender: "ชาย" },
+                    { no: 3, id: "18432", name: "นายทรงวุฒิ รัตนทิพย์", program: "11", gender: "ชาย" },
+                    { no: 4, id: "18435", name: "นายปริยวิศว์ สวัสดิ์วอ", program: "11", gender: "ชาย" },
+                    { no: 5, id: "18330", name: "นายวรเศรษฐ์ สานก้อย", program: "11", gender: "ชาย" },
+                    { no: 6, id: "18406", name: "นายสาระวิน วรชินา", program: "11", gender: "ชาย" },
+                    { no: 7, id: "18488", name: "นายอัคเดช ดอนแก่น", program: "11", gender: "ชาย" },
+                    { no: 8, id: "18378", name: "นางสาวกฤษติยา พรมนิล", program: "11", gender: "หญิง" },
+                    { no: 9, id: "18379", name: "นางสาวกันยากร หลำพงษ์", program: "11", gender: "หญิง" },
+                    { no: 10, id: "20070", name: "นางสาวกาญจนา จ่าสาลี", program: "11", gender: "หญิง" },
+                    { no: 11, id: "18578", name: "นางสาวเกศรินทร์ หมื่นภูเขียว", program: "11", gender: "หญิง" },
+                    { no: 12, id: "20071", name: "นางสาวฉัตรวิจิตร ก่อศิลป์", program: "11", gender: "หญิง" },
+                    { no: 13, id: "18687", name: "นางสาวณัฏฐธิดา พลธา", program: "11", gender: "หญิง" },
+                    { no: 14, id: "18381", name: "นางสาวณัฐพร วระนาม", program: "11", gender: "หญิง" },
+                    { no: 15, id: "18446", name: "นางสาวณัฐวิภา กลิ่นกาหลง", program: "11", gender: "หญิง" },
+                    { no: 16, id: "18346", name: "นางสาวทิพย์รัตน์ ร่องบุตรศรี", program: "11", gender: "หญิง" },
+                    { no: 17, id: "18307", name: "นางสาวนภาภรณ์ วันทอง", program: "11", gender: "หญิง" },
+                    { no: 18, id: "18415", name: "นางสาวบุษราคัม คำประทุม", program: "11", gender: "หญิง" },
+                    { no: 19, id: "18310", name: "นางสาวพรชิตา โสกเชือก", program: "11", gender: "หญิง" },
+                    { no: 20, id: "18589", name: "นางสาวพัชราภา เปรมปรี", program: "11", gender: "หญิง" },
+                    { no: 21, id: "20073", name: "นางสาวพิชญาพร มาตรสมบัติ", program: "11", gender: "หญิง" },
+                    { no: 22, id: "20074", name: "นางสาวพิมพ์รภัทร บุญชำนาญ", program: "11", gender: "หญิง" },
+                    { no: 23, id: "18553", name: "นางสาวเพชรอุมา เสนาชัยน้อย", program: "11", gender: "หญิง" },
+                    { no: 24, id: "18388", name: "นางสาวมณีนุช บุญกว้าง", program: "11", gender: "หญิง" },
+                    { no: 25, id: "20077", name: "นางสาวรินรดา ตอพล", program: "11", gender: "หญิง" },
+                    { no: 26, id: "18389", name: "นางสาววรรณชนก สวัสดี", program: "11", gender: "หญิง" },
+                    { no: 27, id: "18390", name: "นางสาววรัญญา บรรจงเก็บ", program: "11", gender: "หญิง" },
+                    { no: 28, id: "18423", name: "นางสาววันวิพา ภูมิภูเขียว", program: "11", gender: "หญิง" },
+                    { no: 29, id: "18391", name: "นางสาวศรัญญา ดำหนา", program: "11", gender: "หญิง" },
+                    { no: 30, id: "18464", name: "นางสาวสุดารัตน์ ไพบูลย์", program: "11", gender: "หญิง" },
+                    { no: 31, id: "18527", name: "นางสาวสุวิณชา ชันธุระ", program: "11", gender: "หญิง" },
+                    { no: 32, id: "18429", name: "นางสาวเสาวนิตย์ ดิษฐเจริญ", program: "11", gender: "หญิง" },
+                    { no: 33, id: "18564", name: "นางสาวอาทิตย์กรรญา คำยัง", program: "11", gender: "หญิง" },
+                    { no: 34, id: "20498", name: "นายธนกร พรมมาปี", program: "11", gender: "ชาย" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (34 คน)',
+                    '11': '11 วิทย์-คณิต (34 คน)'
                 }
             },
             m68: {
@@ -427,7 +477,6 @@
             window.addEventListener('orientationchange', () => setTimeout(renderTable, 200));
         });
 
-        // สลับห้องเรียน ม.4/2 หรือ ม.6/8
         function selectClassRoom(cls) {
             if (currentClass === cls) return;
             currentClass = cls;
@@ -441,23 +490,21 @@
             const cfg = CLASS_CONFIG[currentClass];
             records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
 
-            // อัปเดตปุ่มสลับห้อง
-            const btn42 = document.getElementById('btnClassM42');
-            const btn68 = document.getElementById('btnClassM68');
-            if (currentClass === 'm42') {
-                btn42.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
-                btn68.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
-            } else {
-                btn68.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
-                btn42.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
-            }
+            ['m42', 'm55', 'm68'].forEach(cId => {
+                const btn = document.getElementById(`btnClass${cId.toUpperCase()}`);
+                if (btn) {
+                    if (currentClass === cId) {
+                        btn.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
+                    } else {
+                        btn.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
+                    }
+                }
+            });
 
-            // อัปเดตข้อความหัวเรื่อง & Badge
             document.getElementById('headerAreaBadge').innerHTML = `<i class="fa-solid fa-location-dot text-pink-200"></i> ${cfg.areaBadge}`;
             document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
             document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
 
-            // อัปเดตตัวกรองแผนการเรียน
             const pFilter = document.getElementById('programFilter');
             pFilter.innerHTML = '';
             for (const [key, label] of Object.entries(cfg.programs)) {
@@ -467,15 +514,14 @@
                 pFilter.appendChild(opt);
             }
 
-            // อัปเดตหน้าพิมพ์
             document.getElementById('printSchoolSubtitle').textContent = `${cfg.fullName} โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น`;
             document.getElementById('printAreaLabel').textContent = cfg.area;
             const boys = cfg.students.filter(s => s.gender === 'ชาย').length;
             const girls = cfg.students.filter(s => s.gender === 'หญิง').length;
             document.getElementById('printStudentCountLabel').textContent = `ชาย ${boys} คน หญิง ${girls} คน รวม ${cfg.students.length} คน`;
 
-            // ลายเซ็นครูที่ปรึกษาในหน้าพิมพ์
             const sigContainer = document.getElementById('printSignatureContainer');
+            const headTitleName = cfg.headLevel.includes('ม.4') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4' : (cfg.headLevel.includes('ม.5') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 5' : 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 6');
             sigContainer.innerHTML = `
                 <div class="grid grid-cols-3 gap-6 text-center text-xs">
                     <div>
@@ -491,7 +537,7 @@
                     <div>
                         <p class="mb-14">ลงชื่อ........................................................</p>
                         <p class="font-bold">(${cfg.headLevel.split(' ')[0]})</p>
-                        <p class="text-slate-600">${cfg.headLevel.includes('ม.4') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4' : 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 6'}</p>
+                        <p class="text-slate-600">${headTitleName}</p>
                     </div>
                 </div>
             `;
@@ -987,6 +1033,33 @@
                         <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
                             <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${p11Rate}%"></div>
                         </div>
+                    </div>
+                `;
+            } else if (currentClass === 'm55') {
+                overviewGrid.innerHTML = `
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.5/5)</span>
+                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
+                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
+                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
+                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${overallRate}%</div>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 34 คน</p>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                        <span class="text-xs text-slate-500 font-medium">เขตพื้นที่รับผิดชอบ</span>
+                        <div class="text-lg sm:text-xl font-bold text-pink-600 mt-0.5">หน้าห้องฟิตเนส</div>
+                        <p class="text-[10px] text-slate-500">นักเรียนชาย 8 คน / หญิง 26 คน</p>
                     </div>
                 `;
             } else {
