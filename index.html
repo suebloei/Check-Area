@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
-    <title>ระบบเช็คชื่อเขตพื้นที่พัฒนา ม.4/2 - โรงเรียนสีชมพูศึกษา</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด - โรงเรียนสีชมพูศึกษา</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
@@ -34,12 +34,12 @@
     </script>
     <style>
         html, body {
-            height: 100%;
+            min-height: 100%;
             overflow-x: hidden;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
-        body { font-family: 'Sarabun', sans-serif; background-color: #fdf2f8; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Sarabun', sans-serif; background-color: #fdf2f8; }
         h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Kanit', sans-serif; }
         
         ::-webkit-scrollbar { height: 4px; width: 4px; }
@@ -51,7 +51,7 @@
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             body { background: white !important; font-size: 11pt; }
-            @page { size: A4 portrait; margin: 12mm; }
+            @page { size: A4 portrait; margin: 10mm; }
         }
     </style>
 </head>
@@ -63,7 +63,7 @@
         <span id="toastMessage" class="font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
 
-    <!-- Header Navigation: ขยายเต็มจอและลดความสูงส่วนเกิน -->
+    <!-- Header Navigation -->
     <header class="bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 text-white shadow-md relative md:sticky md:top-0 z-40 no-print">
         <div class="w-full px-3 sm:px-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-1.5 py-2 sm:py-2.5">
@@ -73,14 +73,19 @@
                         <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=SP&background=db2777&color=fff&rounded=true';">
                     </div>
                     <div class="min-w-0">
-                        <div class="flex items-center gap-1.5 leading-none">
-                            <span class="bg-white/20 text-[9px] sm:text-xs px-2 py-0.5 rounded-full font-medium">ม.4/2 ปีการศึกษา 2569</span>
-                            <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full">
-                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมพิวเตอร์
+                        <div class="flex flex-wrap items-center gap-1.5 leading-none">
+                            <!-- ตัวสลับห้องเรียน ม.4/2 และ ม.6/8 -->
+                            <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
+                                <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
+                                <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.6/8</button>
+                            </div>
+                            <span class="bg-white/20 text-[9px] sm:text-xs px-2 py-0.5 rounded-full font-medium">ปีการศึกษา 2569</span>
+                            <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full" id="headerAreaBadge">
+                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมฯ
                             </span>
                         </div>
-                        <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-0.5 truncate">
-                            ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด
+                        <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-0.5 truncate" id="headerTitle">
+                            ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (ม.4/2)
                         </h1>
                     </div>
                 </div>
@@ -118,13 +123,13 @@
         </div>
     </header>
 
-    <!-- Main Container: ปรับเป็น w-full ขยายเต็มจอ ไม่เหลือช่องว่างสีขาวด้านข้าง -->
+    <!-- Main Container -->
     <main class="flex-1 w-full mx-auto p-2.5 sm:p-4 space-y-2.5">
 
         <!-- ======================= TAB 1: DAILY ======================= -->
         <div id="content-daily" class="space-y-2.5">
 
-            <!-- Control Bar & Filters: จัดวางเป็นแถวเดียวกระชับ ไม่เว้นช่องว่างเกินจำเป็น -->
+            <!-- Control Bar & Filters -->
             <div class="bg-white p-2.5 sm:p-3 rounded-xl shadow-sm border border-pink-100 flex flex-col md:flex-row md:items-center justify-between gap-2 no-print">
                 <div class="flex items-center justify-between sm:justify-start gap-2">
                     <div class="flex items-center gap-1.5 bg-pink-50/70 border border-pink-200 px-2.5 py-1.5 rounded-lg flex-1 sm:flex-initial">
@@ -142,11 +147,7 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto font-medium">
-                        <option value="all">ทุกแผน (40 คน)</option>
-                        <option value="02">02 วิศวะ (8 คน)</option>
-                        <option value="11">11 วิทย์ (32 คน)</option>
-                    </select>
+                    <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto font-medium"></select>
 
                     <div class="relative flex-1 sm:w-60">
                         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-pink-400 text-xs"></i>
@@ -159,11 +160,11 @@
                 </div>
             </div>
 
-            <!-- Stats Bar: ขยายเต็มจอ สวยงามพอดีกับทุกองค์ประกอบ -->
+            <!-- Stats Bar -->
             <div class="hidden sm:grid sm:grid-cols-6 gap-2 no-print">
                 <div class="bg-white p-2 rounded-xl border border-pink-100 shadow-sm flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-users"></i></div>
-                    <div class="min-w-0"><div class="text-[10px] font-medium text-slate-500 truncate">ทั้งหมด</div><div class="text-base font-bold text-slate-800" id="stat-total">40</div></div>
+                    <div class="min-w-0"><div class="text-[10px] font-medium text-slate-500 truncate">ทั้งหมด</div><div class="text-base font-bold text-slate-800" id="stat-total">0</div></div>
                 </div>
                 <div class="bg-white p-2 rounded-xl border border-emerald-100 shadow-sm flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
@@ -190,18 +191,18 @@
             <!-- Print Header -->
             <div class="hidden print-only text-center mb-6">
                 <h2 class="text-xl font-bold font-heading text-slate-900">แบบบันทึกการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด (5 ส.)</h2>
-                <p class="text-sm text-slate-700 mt-1">ชั้นมัธยมศึกษาปีที่ 4/2 โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
+                <p class="text-sm text-slate-700 mt-1" id="printSchoolSubtitle">ชั้นมัธยมศึกษาปีที่ 4/2 โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
                 <div class="flex justify-between items-center text-xs mt-3 border-b pb-2">
-                    <span><strong>เขตพื้นที่รับผิดชอบ:</strong> หน้าห้องคอมพิวเตอร์</span>
+                    <span><strong>เขตพื้นที่รับผิดชอบ:</strong> <span id="printAreaLabel">หน้าห้องคอมพิวเตอร์</span></span>
                     <span><strong>ประจำวันที่:</strong> <span id="printDateLabel"></span></span>
-                    <span><strong>จำนวนนักเรียน:</strong> ชาย 15 คน หญิง 25 คน รวม 40 คน</span>
+                    <span><strong>จำนวนนักเรียน:</strong> <span id="printStudentCountLabel">ชาย 15 คน หญิง 25 คน รวม 40 คน</span></span>
                 </div>
             </div>
 
             <!-- 1. Mobile Card View: สำหรับมือถือแนวตั้ง -->
             <div id="mobileCardContainer" class="portrait:block landscape:hidden md:hidden space-y-2 no-print"></div>
 
-            <!-- 2. Table View: สำหรับแนวนอนและจอใหญ่ (กระจายเต็มความกว้างหน้าจออย่างสมส่วน) -->
+            <!-- 2. Table View: สำหรับแนวนอนและจอใหญ่ -->
             <div class="portrait:hidden landscape:block md:block bg-white rounded-xl shadow-sm border border-pink-100 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs sm:text-sm text-slate-700">
@@ -220,33 +221,15 @@
                 </div>
             </div>
 
-            <!-- Signatures Footer -->
-            <div class="hidden print-only mt-10 pt-4">
-                <div class="grid grid-cols-3 gap-6 text-center text-xs">
-                    <div>
-                        <p class="mb-14">ลงชื่อ........................................................</p>
-                        <p class="font-bold">(นายนพคุณ สืบเลย)</p>
-                        <p class="text-slate-600">ครูที่ปรึกษา ชั้น ม.4/2</p>
-                    </div>
-                    <div>
-                        <p class="mb-14">ลงชื่อ........................................................</p>
-                        <p class="font-bold">(นายคมเพชร โพธิปัสสา)</p>
-                        <p class="text-slate-600">ครูที่ปรึกษา ชั้น ม.4/2</p>
-                    </div>
-                    <div>
-                        <p class="mb-14">ลงชื่อ........................................................</p>
-                        <p class="font-bold">(นางวาสนา เหลาธรรม)</p>
-                        <p class="text-slate-600">หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Signatures Footer สำหรับพิมพ์ -->
+            <div class="hidden print-only mt-10 pt-4" id="printSignatureContainer"></div>
         </div>
 
         <!-- ======================= TAB 2: WEEKLY ======================= -->
         <div id="content-weekly" class="hidden space-y-2.5">
             <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
                 <div>
-                    <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700">รายงานประจำสัปดาห์</h3>
+                    <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700" id="weeklyReportTitle">รายงานประจำสัปดาห์</h3>
                     <p class="text-[11px] text-slate-500">ผลการปฏิบัติหน้าที่ 5 วันทำการ (จันทร์ - ศุกร์)</p>
                 </div>
                 <div class="flex items-center gap-1.5">
@@ -270,7 +253,7 @@
         <div id="content-monthly" class="hidden space-y-2.5">
             <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-2">
                 <div>
-                    <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700">สรุปภาพรวมรายเดือน</h3>
+                    <h3 class="text-sm sm:text-base font-bold font-heading text-pink-700" id="monthlyReportTitle">สรุปภาพรวมรายเดือน</h3>
                     <p class="text-[11px] text-slate-500">สถิติสะสมการทำความสะอาดเขตพื้นที่พัฒนา</p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -278,37 +261,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย</span>
-                        <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
-                    </div>
-                    <div class="text-xl sm:text-2xl font-extrabold mt-1" id="m-stat-overall">0%</div>
-                    <p class="text-[10px] text-pink-100" id="m-stat-dayscount">บันทึกแล้ว 0 วัน</p>
-                    <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                        <div id="m-bar-overall" class="bg-white h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
-                    <span class="text-xs text-slate-500 font-medium">แผนกเตรียมวิศวะ (02)</span>
-                    <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5" id="m-stat-p02">0%</div>
-                    <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-user-gear"></i> จำนวน 8 คน</p>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                        <div id="m-bar-p02" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
-                    <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
-                    <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5" id="m-stat-p11">0%</div>
-                    <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 32 คน</p>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                        <div id="m-bar-p11" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5" id="monthlyOverviewGrid"></div>
 
             <!-- Hall of Fame -->
             <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100">
@@ -321,9 +275,9 @@
 
     </main>
 
-    <!-- Footer: กระชับ จบในบรรทัดเดียว -->
+    <!-- Footer -->
     <footer class="bg-white border-t border-pink-100 py-2.5 px-3 text-center no-print overflow-hidden">
-        <p class="text-xs text-slate-500 font-medium leading-none">
+        <p class="text-xs text-slate-500 font-medium leading-none" id="footerClassLabel">
             ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ชั้นมัธยมศึกษาปีที่ 4/2
         </p>
         <p class="font-medium text-pink-600 whitespace-nowrap overflow-hidden text-ellipsis mt-1 tracking-tight" 
@@ -335,104 +289,239 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        const students = [
-            { no: 1, id: "18894", name: "นายณัฐสิทธิ์ มาตสีมา", program: "02", gender: "ชาย" },
-            { no: 2, id: "19046", name: "นายธนพัฒน์ วรรณใส", program: "02", gender: "ชาย" },
-            { no: 3, id: "19007", name: "นายธนาเดช สังฆะธาตุ", program: "02", gender: "ชาย" },
-            { no: 4, id: "19055", name: "นายวิชวุธ กางขุนทด", program: "02", gender: "ชาย" },
-            { no: 5, id: "19056", name: "นายเสริมชัย บุญคง", program: "02", gender: "ชาย" },
-            { no: 6, id: "19063", name: "นางสาวณัฐณิชา บุตรแสน", program: "02", gender: "หญิง" },
-            { no: 7, id: "19076", name: "นางสาววรรณเพ็ญ ผุยคำพิ", program: "02", gender: "หญิง" },
-            { no: 8, id: "19080", name: "นางสาวหทัยชนก โสดาจันทร์", program: "02", gender: "หญิง" },
-            { no: 9, id: "19004", name: "นายญาณภัทร สีทน", program: "11", gender: "ชาย" },
-            { no: 10, id: "18855", name: "นายฐิติรัตน์ น้ำใจดี", program: "11", gender: "ชาย" },
-            { no: 11, id: "20487", name: "นายณัฐพัฒน์ รัตนวรรณ", program: "11", gender: "ชาย" },
-            { no: 12, id: "18971", name: "นายพงษ์ศักดิ์ แสนราช", program: "11", gender: "ชาย" },
-            { no: 13, id: "18972", name: "นายพิสิษธ์ ปัญทา", program: "11", gender: "ชาย" },
-            { no: 14, id: "19009", name: "นายเฟรด บราวน์", program: "11", gender: "ชาย" },
-            { no: 15, id: "20488", name: "นายภูวณัฎฐ์ ยาคำ", program: "11", gender: "ชาย" },
-            { no: 16, id: "19051", name: "นายเมธาสิทธิ์ สานี", program: "11", gender: "ชาย" },
-            { no: 17, id: "20489", name: "นายยุทธนา นาหัวนิล", program: "11", gender: "ชาย" },
-            { no: 18, id: "19627", name: "นายอานันท์ อะปะหัง", program: "11", gender: "ชาย" },
-            { no: 19, id: "18976", name: "นางสาวกชพร วงษาศิลชัย", program: "11", gender: "หญิง" },
-            { no: 20, id: "19013", name: "นางสาวกมลรัตน์ เถื่อนที่", program: "11", gender: "หญิง" },
-            { no: 21, id: "19014", name: "นางสาวกัญญาภัค จันทร์ดี", program: "11", gender: "หญิง" },
-            { no: 22, id: "18869", name: "นางสาวจิตติประภา พรมเวียง", program: "11", gender: "หญิง" },
-            { no: 23, id: "20490", name: "นางสาวจุฑาทิพย์ รักธงชัย", program: "11", gender: "หญิง" },
-            { no: 24, id: "19020", name: "นางสาวณรินทร์ทิพย์ สีหามาตย์", program: "11", gender: "หญิง" },
-            { no: 25, id: "18984", name: "นางสาวณัฎฐพร บุญเหลือ", program: "11", gender: "หญิง" },
-            { no: 26, id: "19623", name: "นางสาวณัฐชา พานนนท์", program: "11", gender: "หญิง" },
-            { no: 27, id: "18986", name: "นางสาวณัฐธิดา แสนเหวิม", program: "11", gender: "หญิง" },
-            { no: 28, id: "19024", name: "นางสาวนพรัตน์ สิงห์คาน", program: "11", gender: "หญิง" },
-            { no: 29, id: "19066", name: "นางสาวนิชาดา ดวงมา", program: "11", gender: "หญิง" },
-            { no: 30, id: "18759", name: "นางสาวเนตรชนก พรมแพน", program: "11", gender: "หญิง" },
-            { no: 31, id: "18947", name: "นางสาวปรียาภัทร คุณชม", program: "11", gender: "หญิง" },
-            { no: 32, id: "19028", name: "นางสาวพัชรินทร์ จวบสุข", program: "11", gender: "หญิง" },
-            { no: 33, id: "20504", name: "นางสาวพิชญานันท์ ขวัญผิว", program: "11", gender: "หญิง" },
-            { no: 34, id: "18880", name: "นางสาวพิมผกา เพิดภูเขียว", program: "11", gender: "หญิง" },
-            { no: 35, id: "19034", name: "นางสาววนิดา ฉลอมไทยสงค์", program: "11", gender: "หญิง" },
-            { no: 36, id: "18727", name: "นางสาวเวธณี ด้วงอ้อย", program: "11", gender: "หญิง" },
-            { no: 37, id: "19003", name: "นางสาวอลิชา แข็งขัน", program: "11", gender: "หญิง" },
-            { no: 38, id: "19041", name: "นางสาวอัญชิศา ไชยมาตร", program: "11", gender: "หญิง" },
-            { no: 39, id: "20491", name: "นางสาวอัญญาณี เสโส", program: "11", gender: "หญิง" },
-            { no: 40, id: "19082", name: "นางสาวอาจารีญา รัตนวงศ์", program: "11", gender: "หญิง" }
-        ];
-
-        const STATUS_CONFIG = {
-            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300 hover:bg-emerald-100', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
-            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300 hover:bg-amber-100', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
-            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300 hover:bg-sky-100', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
-            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300 hover:bg-rose-100', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
-            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300 hover:bg-purple-100', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
+        // ฐานข้อมูลห้องเรียน ม.4/2 และ ม.6/8
+        const CLASS_CONFIG = {
+            m42: {
+                name: "ม.4/2",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 4/2",
+                area: "หน้าห้องคอมพิวเตอร์",
+                areaBadge: "หน้าห้องคอมฯ",
+                advisors: ["นายนพคุณ สืบเลย", "นายคมเพชร โพธิปัสสา"],
+                headLevel: "นางวาสนา เหลาธรรม (หัวหน้าระดับ ม.4)",
+                students: [
+                    { no: 1, id: "18894", name: "นายณัฐสิทธิ์ มาตสีมา", program: "02", gender: "ชาย" },
+                    { no: 2, id: "19046", name: "นายธนพัฒน์ วรรณใส", program: "02", gender: "ชาย" },
+                    { no: 3, id: "19007", name: "นายธนาเดช สังฆะธาตุ", program: "02", gender: "ชาย" },
+                    { no: 4, id: "19055", name: "นายวิชวุธ กางขุนทด", program: "02", gender: "ชาย" },
+                    { no: 5, id: "19056", name: "นายเสริมชัย บุญคง", program: "02", gender: "ชาย" },
+                    { no: 6, id: "19063", name: "นางสาวณัฐณิชา บุตรแสน", program: "02", gender: "หญิง" },
+                    { no: 7, id: "19076", name: "นางสาววรรณเพ็ญ ผุยคำพิ", program: "02", gender: "หญิง" },
+                    { no: 8, id: "19080", name: "นางสาวหทัยชนก โสดาจันทร์", program: "02", gender: "หญิง" },
+                    { no: 9, id: "19004", name: "นายญาณภัทร สีทน", program: "11", gender: "ชาย" },
+                    { no: 10, id: "18855", name: "นายฐิติรัตน์ น้ำใจดี", program: "11", gender: "ชาย" },
+                    { no: 11, id: "20487", name: "นายณัฐพัฒน์ รัตนวรรณ", program: "11", gender: "ชาย" },
+                    { no: 12, id: "18971", name: "นายพงษ์ศักดิ์ แสนราช", program: "11", gender: "ชาย" },
+                    { no: 13, id: "18972", name: "นายพิสิษธ์ ปัญทา", program: "11", gender: "ชาย" },
+                    { no: 14, id: "19009", name: "นายเฟรด บราวน์", program: "11", gender: "ชาย" },
+                    { no: 15, id: "20488", name: "นายภูวณัฎฐ์ ยาคำ", program: "11", gender: "ชาย" },
+                    { no: 16, id: "19051", name: "นายเมธาสิทธิ์ สานี", program: "11", gender: "ชาย" },
+                    { no: 17, id: "20489", name: "นายยุทธนา นาหัวนิล", program: "11", gender: "ชาย" },
+                    { no: 18, id: "19627", name: "นายอานันท์ อะปะหัง", program: "11", gender: "ชาย" },
+                    { no: 19, id: "18976", name: "นางสาวกชพร วงษาศิลชัย", program: "11", gender: "หญิง" },
+                    { no: 20, id: "19013", name: "นางสาวกมลรัตน์ เถื่อนที่", program: "11", gender: "หญิง" },
+                    { no: 21, id: "19014", name: "นางสาวกัญญาภัค จันทร์ดี", program: "11", gender: "หญิง" },
+                    { no: 22, id: "18869", name: "นางสาวจิตติประภา พรมเวียง", program: "11", gender: "หญิง" },
+                    { no: 23, id: "20490", name: "นางสาวจุฑาทิพย์ รักธงชัย", program: "11", gender: "หญิง" },
+                    { no: 24, id: "19020", name: "นางสาวณรินทร์ทิพย์ สีหามาตย์", program: "11", gender: "หญิง" },
+                    { no: 25, id: "18984", name: "นางสาวณัฎฐพร บุญเหลือ", program: "11", gender: "หญิง" },
+                    { no: 26, id: "19623", name: "นางสาวณัฐชา พานนนท์", program: "11", gender: "หญิง" },
+                    { no: 27, id: "18986", name: "นางสาวณัฐธิดา แสนเหวิม", program: "11", gender: "หญิง" },
+                    { no: 28, id: "19024", name: "นางสาวนพรัตน์ สิงห์คาน", program: "11", gender: "หญิง" },
+                    { no: 29, id: "19066", name: "นางสาวนิชาดา ดวงมา", program: "11", gender: "หญิง" },
+                    { no: 30, id: "18759", name: "นางสาวเนตรชนก พรมแพน", program: "11", gender: "หญิง" },
+                    { no: 31, id: "18947", name: "นางสาวปรียาภัทร คุณชม", program: "11", gender: "หญิง" },
+                    { no: 32, id: "19028", name: "นางสาวพัชรินทร์ จวบสุข", program: "11", gender: "หญิง" },
+                    { no: 33, id: "20504", name: "นางสาวพิชญานันท์ ขวัญผิว", program: "11", gender: "หญิง" },
+                    { no: 34, id: "18880", name: "นางสาวพิมผกา เพิดภูเขียว", program: "11", gender: "หญิง" },
+                    { no: 35, id: "19034", name: "นางสาววนิดา ฉลอมไทยสงค์", program: "11", gender: "หญิง" },
+                    { no: 36, id: "18727", name: "นางสาวเวธณี ด้วงอ้อย", program: "11", gender: "หญิง" },
+                    { no: 37, id: "19003", name: "นางสาวอลิชา แข็งขัน", program: "11", gender: "หญิง" },
+                    { no: 38, id: "19041", name: "นางสาวอัญชิศา ไชยมาตร", program: "11", gender: "หญิง" },
+                    { no: 39, id: "20491", name: "นางสาวอัญญาณี เสโส", program: "11", gender: "หญิง" },
+                    { no: 40, id: "19082", name: "นางสาวอาจารีญา รัตนวงศ์", program: "11", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (40 คน)',
+                    '02': '02 เตรียมวิศวะ (8 คน)',
+                    '11': '11 วิทย์-คณิต (32 คน)'
+                }
+            },
+            m68: {
+                name: "ม.6/8",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 6/8",
+                area: "หลังอาคาร 3",
+                areaBadge: "หลังอาคาร 3",
+                advisors: ["นางพิสมัย สืบเลย", "นายวีระยุทธ์ ปู่เพ็ง"],
+                headLevel: "นายสุภีรชัย ภิญโญดม (หัวหน้าระดับ ม.6)",
+                students: [
+                    { no: 1, id: "18165", name: "นายประภาวิน บัวคำ", program: "04", gender: "ชาย" },
+                    { no: 2, id: "18166", name: "นายปิยวัฒน์ วันสิม", program: "04", gender: "ชาย" },
+                    { no: 3, id: "18168", name: "นายภูพงศ์พิช ศรีสวัสดิ์", program: "04", gender: "ชาย" },
+                    { no: 4, id: "17995", name: "นายวรชิต พรมมา", program: "04", gender: "ชาย" },
+                    { no: 5, id: "18104", name: "นางสาวกนกนภา ศรีชาดา", program: "04", gender: "หญิง" },
+                    { no: 6, id: "18105", name: "นางสาวกัญญารัตน์ นาสมใจ", program: "04", gender: "หญิง" },
+                    { no: 7, id: "18107", name: "นางสาวเกวลีน พูนประพันธ์", program: "04", gender: "หญิง" },
+                    { no: 8, id: "17905", name: "นางสาวขวัญฤดี สีสม", program: "04", gender: "หญิง" },
+                    { no: 9, id: "18171", name: "นางสาวจารุวรรณ ศรีจันทร์พาน", program: "04", gender: "หญิง" },
+                    { no: 10, id: "18108", name: "นางสาวจิตรลดา ประทุมชมภู", program: "04", gender: "หญิง" },
+                    { no: 11, id: "18172", name: "นางสาวจิรัชยา สิมมา", program: "04", gender: "หญิง" },
+                    { no: 12, id: "18175", name: "นางสาวชุติกาญจน์ สองศรี", program: "04", gender: "หญิง" },
+                    { no: 13, id: "19154", name: "นางสาวณัฐรุจา คอนสิม", program: "04", gender: "หญิง" },
+                    { no: 14, id: "18110", name: "นางสาวดวงฤทัย พรมชนะ", program: "04", gender: "หญิง" },
+                    { no: 15, id: "18682", name: "นางสาวทิฆัมพร มีชัย", program: "04", gender: "หญิง" },
+                    { no: 16, id: "18068", name: "นางสาวทิวาพร สีขอ", program: "04", gender: "หญิง" },
+                    { no: 17, id: "17910", name: "นางสาวเบญจวรรณ สีชัยลา", program: "04", gender: "หญิง" },
+                    { no: 18, id: "17878", name: "นางสาวปนัดดา แก้วศรีฟอง", program: "04", gender: "หญิง" },
+                    { no: 19, id: "18143", name: "นางสาวประภัสรา นามตะ", program: "04", gender: "หญิง" },
+                    { no: 20, id: "18074", name: "นางสาวพรสวรรค์ บุดดาดวง", program: "04", gender: "หญิง" },
+                    { no: 21, id: "17911", name: "นางสาวรัชดา ภาษีภักดี", program: "04", gender: "หญิง" },
+                    { no: 22, id: "19615", name: "นางสาวลดาวัลย์ ไพบูลย์", program: "04", gender: "หญิง" },
+                    { no: 23, id: "17879", name: "นางสาววชิราภรณ์ กุลด้วง", program: "04", gender: "หญิง" },
+                    { no: 24, id: "18077", name: "นางสาววรีรัตน์ นิติจรัสพงศ์", program: "04", gender: "หญิง" },
+                    { no: 25, id: "17985", name: "นางสาวศิรภัสสร ศรีเชียงสา", program: "04", gender: "หญิง" },
+                    { no: 26, id: "17912", name: "นางสาวสมฤดี ชำนาญ", program: "04", gender: "หญิง" },
+                    { no: 27, id: "17883", name: "นางสาวสิริกร นาคสุวรรณ", program: "04", gender: "หญิง" },
+                    { no: 28, id: "18082", name: "นางสาวสิริรัตน์ ภูหลวง", program: "04", gender: "หญิง" },
+                    { no: 29, id: "18083", name: "นางสาวสุดารัตน์ กิ่งคำ", program: "04", gender: "หญิง" },
+                    { no: 30, id: "18155", name: "นางสาวสุภาวดี ศรีสมครุฑ", program: "04", gender: "หญิง" },
+                    { no: 31, id: "17949", name: "นางสาวอนุชษรา หล้ามะโรง", program: "04", gender: "หญิง" },
+                    { no: 32, id: "17916", name: "นางสาวอรอุมา เพ็งภา", program: "04", gender: "หญิง" },
+                    { no: 33, id: "18194", name: "นางสาวอริสรา ปุราชะโต", program: "04", gender: "หญิง" },
+                    { no: 34, id: "17958", name: "นายฐิติวัฒน์ บัวผาย", program: "04", gender: "ชาย" },
+                    { no: 35, id: "17987", name: "นางสาวอภิญญาณี แคน้ำ", program: "04", gender: "หญิง" },
+                    { no: 36, id: "20499", name: "นางสาวณัฐวดี สารมะโน", program: "04", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (36 คน)',
+                    '04': '04 เตรียมครูและวิชาการศึกษา (36 คน)'
+                }
+            }
         };
 
-        const STORAGE_KEY = 'sichompu_m42_duty_records';
-        let records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        const STATUS_CONFIG = {
+            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
+            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
+            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
+            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
+            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
+        };
+
+        let currentClass = localStorage.getItem('sichompu_active_class') || 'm42';
+        let records = {};
         let currentDate = new Date().toISOString().split('T')[0];
         let currentWeekOffset = 0;
+
+        function getStorageKey() {
+            return `sichompu_duty_records_${currentClass}`;
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('selectedDate').value = currentDate;
             document.getElementById('monthlyInput').value = currentDate.substring(0, 7);
             
             initSmartWeekOffset();
+            loadClassData();
+            loadDataFromCloud();
+
+            window.addEventListener('resize', renderTable);
+            window.addEventListener('orientationchange', () => setTimeout(renderTable, 200));
+        });
+
+        // สลับห้องเรียน ม.4/2 หรือ ม.6/8
+        function selectClassRoom(cls) {
+            if (currentClass === cls) return;
+            currentClass = cls;
+            localStorage.setItem('sichompu_active_class', cls);
+            loadClassData();
+            loadDataFromCloud();
+            showToast(`สลับไปยังห้อง ${CLASS_CONFIG[cls].name} เรียบร้อยแล้ว`, "fa-users text-pink-400");
+        }
+
+        function loadClassData() {
+            const cfg = CLASS_CONFIG[currentClass];
+            records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
+
+            // อัปเดตปุ่มสลับห้อง
+            const btn42 = document.getElementById('btnClassM42');
+            const btn68 = document.getElementById('btnClassM68');
+            if (currentClass === 'm42') {
+                btn42.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
+                btn68.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
+            } else {
+                btn68.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
+                btn42.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
+            }
+
+            // อัปเดตข้อความหัวเรื่อง & Badge
+            document.getElementById('headerAreaBadge').innerHTML = `<i class="fa-solid fa-location-dot text-pink-200"></i> ${cfg.areaBadge}`;
+            document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
+            document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
+
+            // อัปเดตตัวกรองแผนการเรียน
+            const pFilter = document.getElementById('programFilter');
+            pFilter.innerHTML = '';
+            for (const [key, label] of Object.entries(cfg.programs)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = label;
+                pFilter.appendChild(opt);
+            }
+
+            // อัปเดตหน้าพิมพ์
+            document.getElementById('printSchoolSubtitle').textContent = `${cfg.fullName} โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น`;
+            document.getElementById('printAreaLabel').textContent = cfg.area;
+            const boys = cfg.students.filter(s => s.gender === 'ชาย').length;
+            const girls = cfg.students.filter(s => s.gender === 'หญิง').length;
+            document.getElementById('printStudentCountLabel').textContent = `ชาย ${boys} คน หญิง ${girls} คน รวม ${cfg.students.length} คน`;
+
+            // ลายเซ็นครูที่ปรึกษาในหน้าพิมพ์
+            const sigContainer = document.getElementById('printSignatureContainer');
+            sigContainer.innerHTML = `
+                <div class="grid grid-cols-3 gap-6 text-center text-xs">
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(${cfg.advisors[0]})</p>
+                        <p class="text-slate-600">ครูที่ปรึกษา ${cfg.name}</p>
+                    </div>
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(${cfg.advisors[1]})</p>
+                        <p class="text-slate-600">ครูที่ปรึกษา ${cfg.name}</p>
+                    </div>
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(${cfg.headLevel.split(' ')[0]})</p>
+                        <p class="text-slate-600">${cfg.headLevel.includes('ม.4') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4' : 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 6'}</p>
+                    </div>
+                </div>
+            `;
+
             initTodayRecord();
             renderTable();
             updateStatistics();
-
-            loadDataFromCloud();
-
-            window.addEventListener('resize', () => {
-                renderTable();
-            });
-            window.addEventListener('orientationchange', () => {
-                setTimeout(renderTable, 200);
-            });
-        });
+            renderWeekly();
+            renderMonthly();
+        }
 
         function initSmartWeekOffset() {
             const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 = อาทิตย์, 6 = เสาร์
-
-            if (dayOfWeek === 6) {
-                currentWeekOffset = -1; // เสาร์ แสดงสัปดาห์ก่อนหน้า
-            } else if (dayOfWeek === 0) {
-                currentWeekOffset = 1;  // อาทิตย์ แสดงสัปดาห์ถัดไป
-            } else {
-                currentWeekOffset = 0;  // จันทร์ - ศุกร์ แสดงสัปดาห์ปัจจุบัน
-            }
+            const dayOfWeek = today.getDay();
+            if (dayOfWeek === 6) currentWeekOffset = -1;
+            else if (dayOfWeek === 0) currentWeekOffset = 1;
+            else currentWeekOffset = 0;
         }
 
         function initTodayRecord() {
+            const cfg = CLASS_CONFIG[currentClass];
             if (!records[currentDate]) {
                 records[currentDate] = {};
-                students.forEach(s => { records[currentDate][s.id] = { status: 'มา', note: '' }; });
+                cfg.students.forEach(s => { records[currentDate][s.id] = { status: 'มา', note: '' }; });
                 saveToStorage();
             }
         }
 
         function saveToStorage() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+            localStorage.setItem(getStorageKey(), JSON.stringify(records));
         }
 
         function changeDate() {
@@ -447,7 +536,7 @@
             if (refreshIcon) refreshIcon.classList.add('fa-spin');
 
             try {
-                const response = await fetch(GAS_ENDPOINT_URL);
+                const response = await fetch(`${GAS_ENDPOINT_URL}?classRoom=${currentClass}`);
                 const result = await response.json();
 
                 if (result.status === "success" && result.data) {
@@ -461,7 +550,7 @@
                     renderMonthly();
 
                     if (manualTrigger) {
-                        showToast("อัปเดตข้อมูลจากชีตแล้ว!", "fa-cloud-arrow-down text-emerald-400");
+                        showToast(`อัปเดตข้อมูล ${CLASS_CONFIG[currentClass].name} จากชีตแล้ว!`, "fa-cloud-arrow-down text-emerald-400");
                     }
                 }
             } catch (err) {
@@ -492,37 +581,39 @@
             tbody.innerHTML = '';
             cardContainer.innerHTML = '';
 
+            const cfg = CLASS_CONFIG[currentClass];
             const pFilter = document.getElementById('programFilter').value;
             const search = document.getElementById('searchInput').value.trim().toLowerCase();
             const dayRecord = records[currentDate] || {};
 
-            students.forEach(s => {
+            cfg.students.forEach(s => {
                 if (pFilter !== 'all' && s.program !== pFilter) return;
                 if (search && !s.name.toLowerCase().includes(search) && !s.id.includes(search) && s.no.toString() !== search) return;
 
                 const studentData = dayRecord[s.id] || { status: 'มา', note: '' };
                 const currentStatus = studentData.status;
 
-                const programBadge = s.program === '02' 
-                    ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`
-                    : `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
+                let programBadge = '';
+                if (s.program === '02') programBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`;
+                else if (s.program === '11') programBadge = `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
+                else programBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200">04 เตรียมครู</span>`;
 
                 let tableButtonsHTML = `<div class="flex items-center justify-center gap-1 p-0.5 bg-slate-50 rounded-lg border border-pink-100">`;
                 let cardButtonsHTML = `<div class="grid grid-cols-5 gap-1 pt-1.5 border-t border-pink-50">`;
 
-                for (const [stName, cfg] of Object.entries(STATUS_CONFIG)) {
+                for (const [stName, statusCfg] of Object.entries(STATUS_CONFIG)) {
                     const isSelected = (currentStatus === stName);
                     tableButtonsHTML += `
                         <button type="button" onclick="setStatus('${s.id}', '${stName}')" 
-                                class="px-2.5 py-1 text-xs rounded-md transition-all duration-150 flex items-center gap-1 cursor-pointer ${isSelected ? cfg.activeClass : cfg.normalClass}">
-                            <i class="fa-solid ${cfg.icon}"></i>
+                                class="px-2.5 py-1 text-xs rounded-md transition-all duration-150 flex items-center gap-1 cursor-pointer ${isSelected ? statusCfg.activeClass : statusCfg.normalClass}">
+                            <i class="fa-solid ${statusCfg.icon}"></i>
                             <span>${stName}</span>
                         </button>
                     `;
                     cardButtonsHTML += `
                         <button type="button" onclick="setStatus('${s.id}', '${stName}')" 
-                                class="py-1 px-0.5 text-xs rounded-lg flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-all ${isSelected ? cfg.activeClass : cfg.normalClass}">
-                            <i class="fa-solid ${cfg.icon} text-xs"></i>
+                                class="py-1 px-0.5 text-xs rounded-lg flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-all ${isSelected ? statusCfg.activeClass : statusCfg.normalClass}">
+                            <i class="fa-solid ${statusCfg.icon} text-xs"></i>
                             <span class="text-[10px] leading-tight">${stName}</span>
                         </button>
                     `;
@@ -530,7 +621,7 @@
                 tableButtonsHTML += `</div>`;
                 cardButtonsHTML += `</div>`;
 
-                // Table View: ขยายตารางให้กว้างเต็มตา ไม่อึดอัด
+                // Table View
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-pink-50/40 transition duration-150";
                 tr.innerHTML = `
@@ -592,15 +683,16 @@
         }
 
         function markAllStatus(status) {
+            const cfg = CLASS_CONFIG[currentClass];
             if (!records[currentDate]) initTodayRecord();
-            students.forEach(s => { records[currentDate][s.id].status = status; });
+            cfg.students.forEach(s => { records[currentDate][s.id].status = status; });
             saveToStorage();
             renderTable();
             updateStatistics();
         }
 
         function resetTodayStatus() {
-            if (confirm('ต้องการรีเซ็ตการเช็คชื่อของวันนี้ใช่หรือไม่?')) {
+            if (confirm(`ต้องการรีเซ็ตการเช็คชื่อของห้อง ${CLASS_CONFIG[currentClass].name} ในวันนี้ใช่หรือไม่?`)) {
                 delete records[currentDate];
                 initTodayRecord();
                 renderTable();
@@ -611,14 +703,15 @@
         function filterStudents() { renderTable(); }
 
         function updateStatistics() {
+            const cfg = CLASS_CONFIG[currentClass];
             const dayRecord = records[currentDate] || {};
             let counts = { 'มา': 0, 'สาย': 0, 'ลา': 0, 'ขาด': 0, 'กิจกรรม': 0 };
-            students.forEach(s => {
+            cfg.students.forEach(s => {
                 const st = (dayRecord[s.id] && dayRecord[s.id].status) ? dayRecord[s.id].status : 'มา';
                 if (counts[st] !== undefined) counts[st]++;
             });
 
-            document.getElementById('stat-total').innerText = students.length;
+            document.getElementById('stat-total').innerText = cfg.students.length;
             document.getElementById('stat-present').innerText = counts['มา'];
             document.getElementById('stat-late').innerText = counts['สาย'];
             document.getElementById('stat-leave').innerText = counts['ลา'];
@@ -635,15 +728,19 @@
             btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-pink-600 text-xs"></i> <span>กำลังส่ง...</span>`;
             btn.classList.add('opacity-75');
 
+            const cfg = CLASS_CONFIG[currentClass];
             const dayRecord = records[currentDate] || {};
             const payload = {
                 date: currentDate,
-                records: students.map(s => ({
+                classRoom: currentClass,
+                areaName: cfg.area,
+                records: cfg.students.map(s => ({
                     no: s.no,
                     id: s.id,
                     name: s.name,
                     gender: s.gender,
                     program: s.program,
+                    programDisplay: s.program === '02' ? '02 เตรียมวิศวกรรมศาสตร์' : (s.program === '11' ? '11 วิทย์-คณิต' : '04 เตรียมครูและวิชาการศึกษา'),
                     status: (dayRecord[s.id] && dayRecord[s.id].status) ? dayRecord[s.id].status : 'มา',
                     note: (dayRecord[s.id] && dayRecord[s.id].note) ? dayRecord[s.id].note : ''
                 }))
@@ -657,7 +754,7 @@
                     body: JSON.stringify(payload)
                 });
 
-                showToast("บันทึกข้อมูลเข้า Google Sheets เรียบร้อยแล้ว!", "fa-cloud-check text-emerald-400");
+                showToast(`บันทึกข้อมูลห้อง ${cfg.name} เข้า Google Sheets แล้ว!`, "fa-cloud-check text-emerald-400");
                 triggerConfetti();
             } catch (err) {
                 console.error("Sync Error:", err);
@@ -672,6 +769,7 @@
         }
 
         function generateLineText() {
+            const cfg = CLASS_CONFIG[currentClass];
             const dayRecord = records[currentDate] || {};
             const dateObj = new Date(currentDate);
             const thaiDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -679,7 +777,7 @@
             let counts = { 'มา': 0, 'สาย': 0, 'ลา': 0, 'ขาด': 0, 'กิจกรรม': 0 };
             let lateList = [], leaveList = [], absentList = [], activityList = [];
 
-            students.forEach(s => {
+            cfg.students.forEach(s => {
                 const item = dayRecord[s.id] || { status: 'มา', note: '' };
                 const st = item.status;
                 if (counts[st] !== undefined) counts[st]++;
@@ -692,11 +790,11 @@
             });
 
             let text = `📢 สรุปการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด\n`;
-            text += `📍 เขตพื้นที่: หน้าห้องคอมพิวเตอร์\n`;
-            text += `🏫 ชั้น ม.4/2 โรงเรียนสีชมพูศึกษา\n`;
+            text += `📍 เขตพื้นที่: ${cfg.area}\n`;
+            text += `🏫 ชั้น ${cfg.name} โรงเรียนสีชมพูศึกษา\n`;
             text += `📅 ประจำวัน${thaiDate}\n`;
             text += `──────────────────────\n`;
-            text += `👥 นักเรียนทั้งหมด: 40 คน\n`;
+            text += `👥 นักเรียนทั้งหมด: ${cfg.students.length} คน\n`;
             text += `✅ มาปฏิบัติหน้าที่: ${counts['มา']} คน\n`;
             text += `⏰ มาสาย: ${counts['สาย']} คน\n`;
             text += `📩 ลา: ${counts['ลา']} คน\n`;
@@ -712,8 +810,8 @@
                 text += `✨ นักเรียนทุกคนมาปฏิบัติหน้าที่ครบถ้วน 100%\n\n`;
             }
 
-            text += `👨‍🏫 ครูที่ปรึกษา: นายนพคุณ สืบเลย, นายคมเพชร โพธิปัสสา\n`;
-            text += `👩‍🏫 หัวหน้าระดับ ม.4: นางวาสนา เหลาธรรม`;
+            text += `👨‍🏫 ครูที่ปรึกษา: ${cfg.advisors.join(', ')}\n`;
+            text += `👩‍🏫 ${cfg.headLevel}`;
             return text;
         }
 
@@ -754,12 +852,14 @@
         }
 
         function renderWeekly() {
+            const cfg = CLASS_CONFIG[currentClass];
             const weekDates = getWeekDates(currentWeekOffset);
             const dayNames = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์'];
 
             const startLabel = new Date(weekDates[0]).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
             const endLabel = new Date(weekDates[4]).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
             document.getElementById('currentWeekRangeLabel').textContent = `${startLabel} - ${endLabel}`;
+            document.getElementById('weeklyReportTitle').textContent = `รายงานประจำสัปดาห์ (${cfg.name})`;
 
             const thead = document.getElementById('weeklyHead');
             let headHTML = `
@@ -777,7 +877,7 @@
             const tbody = document.getElementById('weeklyTableBody');
             tbody.innerHTML = '';
 
-            students.forEach(s => {
+            cfg.students.forEach(s => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-pink-50/30";
                 let daysHTML = '';
@@ -819,15 +919,14 @@
         }
 
         function renderMonthly() {
+            const cfg = CLASS_CONFIG[currentClass];
             const selectedMonth = document.getElementById('monthlyInput').value;
             const matchingDates = Object.keys(records).filter(date => date.startsWith(selectedMonth));
+            document.getElementById('monthlyReportTitle').textContent = `สรุปภาพรวมรายเดือน (${cfg.name})`;
 
             let totalCheckIns = 0;
-            let totalPossible = matchingDates.length * students.length;
-            let p02CheckIns = 0, p02Possible = matchingDates.length * 8;
-            let p11CheckIns = 0, p11Possible = matchingDates.length * 32;
-
-            const studentScores = students.map(s => ({ ...s, dutyCount: 0 }));
+            let totalPossible = matchingDates.length * cfg.students.length;
+            const studentScores = cfg.students.map(s => ({ ...s, dutyCount: 0 }));
 
             matchingDates.forEach(dateStr => {
                 const dayData = records[dateStr];
@@ -836,29 +935,90 @@
                     if (st === 'มา' || st === 'กิจกรรม') {
                         s.dutyCount += 1;
                         totalCheckIns += 1;
-                        if (s.program === '02') p02CheckIns += 1; else p11CheckIns += 1;
                     } else if (st === 'สาย') {
                         s.dutyCount += 0.5;
                         totalCheckIns += 0.5;
-                        if (s.program === '02') p02CheckIns += 0.5; else p11CheckIns += 0.5;
                     }
                 });
             });
 
             const overallRate = totalPossible > 0 ? ((totalCheckIns / totalPossible) * 100).toFixed(1) : 0;
-            const p02Rate = p02Possible > 0 ? ((p02CheckIns / p02Possible) * 100).toFixed(1) : 0;
-            const p11Rate = p11Possible > 0 ? ((p11CheckIns / p11Possible) * 100).toFixed(1) : 0;
 
-            document.getElementById('m-stat-overall').textContent = `${overallRate}%`;
-            document.getElementById('m-bar-overall').style.width = `${overallRate}%`;
-            document.getElementById('m-stat-dayscount').textContent = `บันทึกแล้ว ${matchingDates.length} วัน`;
+            // Overview Cards
+            const overviewGrid = document.getElementById('monthlyOverviewGrid');
+            if (currentClass === 'm42') {
+                let p02CheckIns = 0, p02Possible = matchingDates.length * 8;
+                let p11CheckIns = 0, p11Possible = matchingDates.length * 32;
+                matchingDates.forEach(d => {
+                    const data = records[d];
+                    cfg.students.forEach(s => {
+                        const st = (data[s.id] && data[s.id].status) ? data[s.id].status : 'มา';
+                        const val = (st === 'มา' || st === 'กิจกรรม') ? 1 : (st === 'สาย' ? 0.5 : 0);
+                        if (s.program === '02') p02CheckIns += val; else p11CheckIns += val;
+                    });
+                });
+                const p02Rate = p02Possible > 0 ? ((p02CheckIns / p02Possible) * 100).toFixed(1) : 0;
+                const p11Rate = p11Possible > 0 ? ((p11CheckIns / p11Possible) * 100).toFixed(1) : 0;
 
-            document.getElementById('m-stat-p02').textContent = `${p02Rate}%`;
-            document.getElementById('m-bar-p02').style.width = `${p02Rate}%`;
+                overviewGrid.innerHTML = `
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.4/2)</span>
+                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
+                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
+                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">แผนกเตรียมวิศวะ (02)</span>
+                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${p02Rate}%</div>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-user-gear"></i> จำนวน 8 คน</p>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${p02Rate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                        <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
+                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${p11Rate}%</div>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 32 คน</p>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${p11Rate}%"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                overviewGrid.innerHTML = `
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.6/8)</span>
+                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
+                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
+                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
+                        <span class="text-xs text-slate-500 font-medium">แผนกเตรียมครูฯ (04)</span>
+                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${overallRate}%</div>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-graduation-cap"></i> จำนวน 36 คน</p>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                        <span class="text-xs text-slate-500 font-medium">เขตพื้นที่รับผิดชอบ</span>
+                        <div class="text-lg sm:text-xl font-bold text-pink-600 mt-0.5">หลังอาคาร 3</div>
+                        <p class="text-[10px] text-slate-500">นักเรียนชาย 5 คน / หญิง 31 คน</p>
+                    </div>
+                `;
+            }
 
-            document.getElementById('m-stat-p11').textContent = `${p11Rate}%`;
-            document.getElementById('m-bar-p11').style.width = `${p11Rate}%`;
-
+            // Hall of Fame
             studentScores.sort((a, b) => b.dutyCount - a.dutyCount);
             const topListContainer = document.getElementById('monthlyTopList');
             topListContainer.innerHTML = '';
