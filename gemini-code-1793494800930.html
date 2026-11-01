@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ระบบเช็คชื่อเขตพื้นที่พัฒนา ม.4/2 - โรงเรียนสีชมพูศึกษา</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Sarabun & Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8', 100: '#fce7f3', 200: '#fbcfe8', 300: '#f9a8d4',
+                            400: '#f472b6', 500: '#ec4899', 600: '#db2777', 700: '#be185d',
+                            800: '#9d174d', 900: '#831843',
+                        }
+                    },
+                    fontFamily: { kanit: ['Kanit', 'sans-serif'], sarabun: ['Sarabun', 'sans-serif'] },
+                    screens: {
+                        'xs': '420px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #fdf2f8; -webkit-tap-highlight-color: transparent; }
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Kanit', sans-serif; }
+        
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: #fdf2f8; }
+        ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #db2777; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; font-size: 11pt; }
+            @page { size: A4 portrait; margin: 12mm; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col antialiased">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10 backdrop-blur-md pointer-events-none text-xs sm:text-sm">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base sm:text-lg"></i>
+        <span id="toastMessage" class="font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 text-white shadow-lg sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 py-2.5 sm:py-3.5">
+                <div class="flex items-center gap-2.5 sm:gap-3">
+                    <!-- แสดง Logo จากไฟล์ logo.png -->
+                    <div class="w-11 h-11 sm:w-13 sm:h-13 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center p-1 border border-white/30 shadow-inner flex-shrink-0 overflow-hidden">
+                        <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=SP&background=db2777&color=fff&rounded=true';">
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <span class="bg-white/20 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-medium tracking-wide">ม.4/2 ปีการศึกษา 2569</span>
+                            <span class="bg-pink-700/60 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมพิวเตอร์
+                            </span>
+                        </div>
+                        <h1 class="text-base sm:text-xl lg:text-2xl font-bold tracking-tight text-white leading-tight mt-0.5">
+                            ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 w-full md:w-auto">
+                    <button type="button" onclick="shareDirectLine()" class="flex items-center justify-center gap-1 sm:gap-1.5 bg-[#06C755] hover:bg-[#05b34c] text-white py-2 px-2 sm:px-3.5 rounded-xl text-xs sm:text-sm font-semibold shadow-md transition transform active:scale-95 cursor-pointer">
+                        <i class="fa-brands fa-line text-sm sm:text-base"></i> <span class="truncate">ส่ง LINE</span>
+                    </button>
+                    <button type="button" onclick="copyLineSummary()" class="flex items-center justify-center gap-1 sm:gap-1.5 bg-white/20 hover:bg-white/30 text-white py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-medium transition active:scale-95 cursor-pointer">
+                        <i class="fa-regular fa-copy text-xs sm:text-sm"></i> <span class="truncate">คัดลอกสรุป</span>
+                    </button>
+                    <button type="button" id="btnSyncCloud" onclick="syncToCloud()" class="flex items-center justify-center gap-1.5 bg-white text-pink-600 hover:bg-pink-50 active:scale-95 py-2 px-2.5 sm:px-4 rounded-xl text-xs sm:text-sm font-bold shadow-md border border-pink-200 transition select-none cursor-pointer">
+                        <i class="fa-solid fa-cloud-arrow-up text-pink-600 text-xs sm:text-sm"></i> 
+                        <span class="truncate">บันทึกชีต</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Menu Bar -->
+            <div class="flex space-x-1 sm:space-x-3 border-t border-white/20 pt-2 pb-1 overflow-x-auto text-xs sm:text-sm no-scrollbar">
+                <button type="button" onclick="switchTab('daily')" id="tab-daily" class="tab-btn whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 font-medium rounded-lg transition flex items-center gap-1.5 sm:gap-2 bg-white text-pink-600 shadow-sm">
+                    <i class="fa-solid fa-clipboard-check"></i> เช็คชื่อประจำวัน
+                </button>
+                <button type="button" onclick="switchTab('weekly')" id="tab-weekly" class="tab-btn whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 font-medium rounded-lg transition flex items-center gap-1.5 sm:gap-2 text-white hover:bg-white/10">
+                    <i class="fa-solid fa-calendar-week"></i> รายงานสัปดาห์ (ข้อมูลจริง)
+                </button>
+                <button type="button" onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 font-medium rounded-lg transition flex items-center gap-1.5 sm:gap-2 text-white hover:bg-white/10">
+                    <i class="fa-solid fa-chart-pie"></i> สรุปรายเดือน & สถิติจริง
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+
+        <!-- ======================= TAB 1: DAILY ======================= -->
+        <div id="content-daily" class="space-y-4 sm:space-y-6">
+
+            <!-- Control Bar & Filters -->
+            <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-pink-100 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 no-print">
+                <div class="flex flex-wrap items-center justify-between sm:justify-start gap-2 sm:gap-3">
+                    <div class="flex items-center gap-2 bg-pink-50/70 border border-pink-200 px-3 py-1.5 sm:py-2 rounded-xl flex-1 sm:flex-initial">
+                        <i class="fa-regular fa-calendar-days text-pink-600 text-xs sm:text-sm"></i>
+                        <input type="date" id="selectedDate" onchange="changeDate()" class="bg-transparent text-xs sm:text-sm font-semibold text-slate-700 outline-none cursor-pointer w-full">
+                    </div>
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <button type="button" onclick="markAllStatus('มา')" class="text-[11px] sm:text-xs bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-300 font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition flex items-center gap-1 shadow-sm active:scale-95">
+                            <i class="fa-solid fa-check-double text-emerald-500"></i> มาทั้งหมด
+                        </button>
+                        <button type="button" onclick="resetTodayStatus()" class="text-[11px] sm:text-xs bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 font-medium px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition active:scale-95">
+                            <i class="fa-solid fa-arrow-rotate-left"></i> รีเซ็ต
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2.5">
+                    <div class="grid grid-cols-1 sm:flex sm:items-center gap-2 flex-1">
+                        <select id="programFilter" onchange="filterStudents()" class="w-full sm:w-auto text-xs sm:text-sm bg-pink-50/50 border border-pink-200 text-slate-700 rounded-xl px-2.5 sm:px-3 py-2 outline-none focus:ring-2 focus:ring-pink-300">
+                            <option value="all">ทุกแผนการเรียน (40 คน)</option>
+                            <option value="02">02 เตรียมวิศวะ (8 คน)</option>
+                            <option value="11">11 วิทย์-คณิต (32 คน)</option>
+                        </select>
+
+                        <div class="relative flex-1 sm:w-56">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-pink-400 text-xs"></i>
+                            <input type="text" id="searchInput" onkeyup="filterStudents()" placeholder="ค้นชื่อ, รหัส, เลขที่..." class="w-full pl-8 pr-3 py-2 text-xs sm:text-sm bg-pink-50/40 border border-pink-200 rounded-xl outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200">
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="window.print()" class="hidden md:flex items-center justify-center gap-1.5 bg-pink-600 hover:bg-pink-700 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition shadow-sm active:scale-95">
+                        <i class="fa-solid fa-print"></i> พิมพ์
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3.5 no-print">
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-pink-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-users"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-slate-500 truncate">นักเรียนทั้งหมด</div><div class="text-base sm:text-xl font-bold text-slate-800" id="stat-total">40 <span class="text-[10px] sm:text-xs font-normal text-slate-400">คน</span></div></div>
+                </div>
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-emerald-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-emerald-600 truncate">มาปฏิบัติหน้าที่</div><div class="text-base sm:text-xl font-bold text-emerald-700" id="stat-present">0 <span class="text-[10px] sm:text-xs font-normal text-emerald-400">คน</span></div></div>
+                </div>
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-amber-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-clock"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-amber-600 truncate">มาสาย</div><div class="text-base sm:text-xl font-bold text-amber-700" id="stat-late">0 <span class="text-[10px] sm:text-xs font-normal text-amber-400">คน</span></div></div>
+                </div>
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-sky-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-sky-600 truncate">มีใบลา</div><div class="text-base sm:text-xl font-bold text-sky-700" id="stat-leave">0 <span class="text-[10px] sm:text-xs font-normal text-sky-400">คน</span></div></div>
+                </div>
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-rose-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-rose-600 truncate">ขาดหน้าที่</div><div class="text-base sm:text-xl font-bold text-rose-700" id="stat-absent">0 <span class="text-[10px] sm:text-xs font-normal text-rose-400">คน</span></div></div>
+                </div>
+                <div class="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-purple-100 shadow-sm flex items-center gap-2.5 sm:gap-3">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm sm:text-lg flex-shrink-0"><i class="fa-solid fa-award"></i></div>
+                    <div class="min-w-0"><div class="text-[10px] sm:text-[11px] font-medium text-purple-600 truncate">กิจกรรม รร.</div><div class="text-base sm:text-xl font-bold text-purple-700" id="stat-activity">0 <span class="text-[10px] sm:text-xs font-normal text-purple-400">คน</span></div></div>
+                </div>
+            </div>
+
+            <!-- Print Header -->
+            <div class="hidden print-only text-center mb-6">
+                <h2 class="text-xl font-bold font-heading text-slate-900">แบบบันทึกการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด (5 ส.)</h2>
+                <p class="text-sm text-slate-700 mt-1">ชั้นมัธยมศึกษาปีที่ 4/2 โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
+                <div class="flex justify-between items-center text-xs mt-3 border-b pb-2">
+                    <span><strong>เขตพื้นที่รับผิดชอบ:</strong> หน้าห้องคอมพิวเตอร์</span>
+                    <span><strong>ประจำวันที่:</strong> <span id="printDateLabel"></span></span>
+                    <span><strong>จำนวนนักเรียน:</strong> ชาย 15 คน หญิง 25 คน รวม 40 คน</span>
+                </div>
+            </div>
+
+            <!-- Mobile Card View (แนวตั้ง) -->
+            <div id="mobileCardContainer" class="block md:hidden space-y-3 no-print"></div>
+
+            <!-- Table View (แนวนอน / จอใหญ่) -->
+            <div class="hidden md:block bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-700">
+                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-xs uppercase border-b border-pink-100 sticky top-0 z-10">
+                            <tr>
+                                <th class="py-3 px-3 text-center w-12">ที่</th>
+                                <th class="py-3 px-3 text-center w-20">รหัส</th>
+                                <th class="py-3 px-4">ชื่อ - นามสกุล</th>
+                                <th class="py-3 px-3 text-center w-32">แผนการเรียน</th>
+                                <th class="py-3 px-4 text-center">สถานะการปฏิบัติหน้าที่</th>
+                                <th class="py-3 px-3 text-center w-32 no-print">หมายเหตุ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody" class="divide-y divide-pink-50"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Signatures Footer -->
+            <div class="hidden print-only mt-10 pt-4">
+                <div class="grid grid-cols-3 gap-6 text-center text-xs">
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(นายนพคุณ สืบเลย)</p>
+                        <p class="text-slate-600">ครูที่ปรึกษา ชั้น ม.4/2</p>
+                    </div>
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(นายคมเพชร โพธิปัสสา)</p>
+                        <p class="text-slate-600">ครูที่ปรึกษา ชั้น ม.4/2</p>
+                    </div>
+                    <div>
+                        <p class="mb-14">ลงชื่อ........................................................</p>
+                        <p class="font-bold">(นางวาสนา เหลาธรรม)</p>
+                        <p class="text-slate-600">หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================= TAB 2: WEEKLY ======================= -->
+        <div id="content-weekly" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold font-heading text-pink-700">รายงานประจำสัปดาห์ (ข้อมูลจริง)</h3>
+                    <p class="text-xs text-slate-500">ผลการปฏิบัติหน้าที่ 5 วันทำการ (จันทร์ - ศุกร์) ประจำสัปดาห์</p>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <button type="button" onclick="navigateWeek(-7)" class="p-1.5 sm:p-2 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-600 transition"><i class="fa-solid fa-chevron-left text-xs sm:text-sm"></i></button>
+                    <span id="currentWeekRangeLabel" class="text-xs sm:text-sm font-semibold text-slate-700 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-pink-50/60 rounded-xl border border-pink-200"></span>
+                    <button type="button" onclick="navigateWeek(7)" class="p-1.5 sm:p-2 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-600 transition"><i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i></button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 min-w-[500px]">
+                        <thead class="bg-pink-50/80 text-pink-900 font-heading text-xs uppercase border-b border-pink-100" id="weeklyHead"></thead>
+                        <tbody id="weeklyTableBody" class="divide-y divide-pink-50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================= TAB 3: MONTHLY ======================= -->
+        <div id="content-monthly" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-pink-100 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold font-heading text-pink-700">สรุปภาพรวมรายเดือน (ข้อมูลจริง)</h3>
+                    <p class="text-xs text-slate-500">สถิติสะสมการทำความสะอาดเขตพื้นที่พัฒนา หน้าห้องคอมพิวเตอร์</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="month" id="monthlyInput" onchange="renderMonthly()" class="text-xs sm:text-sm bg-pink-50 border border-pink-200 text-slate-700 rounded-xl px-3 py-1.5 sm:py-2 outline-none font-semibold cursor-pointer">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
+                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl p-4 sm:p-5 text-white shadow-md">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-pink-100 font-medium">อัตราการมาปฏิบัติหน้าที่เฉลี่ย</span>
+                        <i class="fa-solid fa-trophy text-amber-300 text-lg sm:text-xl"></i>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-2 sm:mt-3" id="m-stat-overall">0%</div>
+                    <p class="text-xs text-pink-100 mt-1" id="m-stat-dayscount">บันทึกแล้ว 0 วันในเดือนนี้</p>
+                    <div class="w-full bg-white/20 h-2 rounded-full mt-3 sm:mt-4 overflow-hidden">
+                        <div id="m-bar-overall" class="bg-white h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-5 border border-pink-100 shadow-sm">
+                    <span class="text-xs text-slate-500 font-medium">แผนกเตรียมวิศวะ (02)</span>
+                    <div class="text-xl sm:text-2xl font-bold text-slate-800 mt-2" id="m-stat-p02">0%</div>
+                    <p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-user-gear"></i> จำนวน 8 คน</p>
+                    <div class="w-full bg-slate-100 h-2 rounded-full mt-3 sm:mt-4 overflow-hidden">
+                        <div id="m-bar-p02" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                    <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
+                    <div class="text-xl sm:text-2xl font-bold text-slate-800 mt-2" id="m-stat-p11">0%</div>
+                    <p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-flask"></i> จำนวน 32 คน</p>
+                    <div class="w-full bg-slate-100 h-2 rounded-full mt-3 sm:mt-4 overflow-hidden">
+                        <div id="m-bar-p11" class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hall of Fame -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-pink-100">
+                <h4 class="font-bold font-heading text-slate-800 text-xs sm:text-sm mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-medal text-amber-500"></i> นักเรียนที่มีความรับผิดชอบสูงสุดประจำเดือน (คำนวณจริง)
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3" id="monthlyTopList"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer: แสดงผู้พัฒนาให้จบภายในบรรทัดเดียว ปรับขนาดยืดหยุ่นตามหน้าจอ -->
+    <footer class="bg-white border-t border-pink-100 py-3 px-2 sm:px-4 text-center no-print overflow-hidden">
+        <p class="text-[10px] xs:text-[11px] sm:text-xs text-slate-500 whitespace-nowrap overflow-x-auto no-scrollbar tracking-tight leading-relaxed">
+            ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ชั้น ม.4/2 | 
+            <span class="font-medium text-pink-600">
+                พัฒนาโดย นายนพคุณ สืบเลย โรงเรียนสีชมพูศึกษา องค์การบริหารส่วนจังหวัดขอนแก่น
+            </span>
+        </p>
+    </footer>
+
+    <script>
+        const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
+
+        const students = [
+            { no: 1, id: "18894", name: "นายณัฐสิทธิ์ มาตสีมา", program: "02", gender: "ชาย" },
+            { no: 2, id: "19046", name: "นายธนพัฒน์ วรรณใส", program: "02", gender: "ชาย" },
+            { no: 3, id: "19007", name: "นายธนาเดช สังฆะธาตุ", program: "02", gender: "ชาย" },
+            { no: 4, id: "19055", name: "นายวิชวุธ กางขุนทด", program: "02", gender: "ชาย" },
+            { no: 5, id: "19056", name: "นายเสริมชัย บุญคง", program: "02", gender: "ชาย" },
+            { no: 6, id: "19063", name: "นางสาวณัฐณิชา บุตรแสน", program: "02", gender: "หญิง" },
+            { no: 7, id: "19076", name: "นางสาววรรณเพ็ญ ผุยคำพิ", program: "02", gender: "หญิง" },
+            { no: 8, id: "19080", name: "นางสาวหทัยชนก โสดาจันทร์", program: "02", gender: "หญิง" },
+            { no: 9, id: "19004", name: "นายญาณภัทร สีทน", program: "11", gender: "ชาย" },
+            { no: 10, id: "18855", name: "นายฐิติรัตน์ น้ำใจดี", program: "11", gender: "ชาย" },
+            { no: 11, id: "20487", name: "นายณัฐพัฒน์ รัตนวรรณ", program: "11", gender: "ชาย" },
+            { no: 12, id: "18971", name: "นายพงษ์ศักดิ์ แสนราช", program: "11", gender: "ชาย" },
+            { no: 13, id: "18972", name: "นายพิสิษธ์ ปัญทา", program: "11", gender: "ชาย" },
+            { no: 14, id: "19009", name: "นายเฟรด บราวน์", program: "11", gender: "ชาย" },
+            { no: 15, id: "20488", name: "นายภูวณัฎฐ์ ยาคำ", program: "11", gender: "ชาย" },
+            { no: 16, id: "19051", name: "นายเมธาสิทธิ์ สานี", program: "11", gender: "ชาย" },
+            { no: 17, id: "20489", name: "นายยุทธนา นาหัวนิล", program: "11", gender: "ชาย" },
+            { no: 18, id: "19627", name: "นายอานันท์ อะปะหัง", program: "11", gender: "ชาย" },
+            { no: 19, id: "18976", name: "นางสาวกชพร วงษาศิลชัย", program: "11", gender: "หญิง" },
+            { no: 20, id: "19013", name: "นางสาวกมลรัตน์ เถื่อนที่", program: "11", gender: "หญิง" },
+            { no: 21, id: "19014", name: "นางสาวกัญญาภัค จันทร์ดี", program: "11", gender: "หญิง" },
+            { no: 22, id: "18869", name: "นางสาวจิตติประภา พรมเวียง", program: "11", gender: "หญิง" },
+            { no: 23, id: "20490", name: "นางสาวจุฑาทิพย์ รักธงชัย", program: "11", gender: "หญิง" },
+            { no: 24, id: "19020", name: "นางสาวณรินทร์ทิพย์ สีหามาตย์", program: "11", gender: "หญิง" },
+            { no: 25, id: "18984", name: "นางสาวณัฎฐพร บุญเหลือ", program: "11", gender: "หญิง" },
+            { no: 26, id: "19623", name: "นางสาวณัฐชา พานนนท์", program: "11", gender: "หญิง" },
+            { no: 27, id: "18986", name: "นางสาวณัฐธิดา แสนเหวิม", program: "11", gender: "หญิง" },
+            { no: 28, id: "19024", name: "นางสาวนพรัตน์ สิงห์คาน", program: "11", gender: "หญิง" },
+            { no: 29, id: "19066", name: "นางสาวนิชาดา ดวงมา", program: "11", gender: "หญิง" },
+            { no: 30, id: "18759", name: "นางสาวเนตรชนก พรมแพน", program: "11", gender: "หญิง" },
+            { no: 31, id: "18947", name: "นางสาวปรียาภัทร คุณชม", program: "11", gender: "หญิง" },
+            { no: 32, id: "19028", name: "นางสาวพัชรินทร์ จวบสุข", program: "11", gender: "หญิง" },
+            { no: 33, id: "20504", name: "นางสาวพิชญานันท์ ขวัญผิว", program: "11", gender: "หญิง" },
+            { no: 34, id: "18880", name: "นางสาวพิมผกา เพิดภูเขียว", program: "11", gender: "หญิง" },
+            { no: 35, id: "19034", name: "นางสาววนิดา ฉลอมไทยสงค์", program: "11", gender: "หญิง" },
+            { no: 36, id: "18727", name: "นางสาวเวธณี ด้วงอ้อย", program: "11", gender: "หญิง" },
+            { no: 37, id: "19003", name: "นางสาวอลิชา แข็งขัน", program: "11", gender: "หญิง" },
+            { no: 38, id: "19041", name: "นางสาวอัญชิศา ไชยมาตร", program: "11", gender: "หญิง" },
+            { no: 39, id: "20491", name: "นางสาวอัญญาณี เสโส", program: "11", gender: "หญิง" },
+            { no: 40, id: "19082", name: "นางสาวอาจารีญา รัตนวงศ์", program: "11", gender: "หญิง" }
+        ];
+
+        const STATUS_CONFIG = {
+            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300 hover:bg-emerald-100', activeClass: 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-200 ring-2 ring-emerald-400 border-transparent scale-105' },
+            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300 hover:bg-amber-100', activeClass: 'bg-amber-500 text-white font-bold shadow-md shadow-amber-200 ring-2 ring-amber-400 border-transparent scale-105' },
+            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300 hover:bg-sky-100', activeClass: 'bg-sky-500 text-white font-bold shadow-md shadow-sky-200 ring-2 ring-sky-400 border-transparent scale-105' },
+            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300 hover:bg-rose-100', activeClass: 'bg-rose-600 text-white font-bold shadow-md shadow-rose-200 ring-2 ring-rose-400 border-transparent scale-105' },
+            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300 hover:bg-purple-100', activeClass: 'bg-purple-600 text-white font-bold shadow-md shadow-purple-200 ring-2 ring-purple-400 border-transparent scale-105' }
+        };
+
+        const STORAGE_KEY = 'sichompu_m42_duty_records';
+        let records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        let currentDate = new Date().toISOString().split('T')[0];
+        let currentWeekOffset = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('selectedDate').value = currentDate;
+            document.getElementById('monthlyInput').value = currentDate.substring(0, 7);
+            initTodayRecord();
+            renderTable();
+            updateStatistics();
+
+            window.addEventListener('resize', () => {
+                renderTable();
+            });
+        });
+
+        function initTodayRecord() {
+            if (!records[currentDate]) {
+                records[currentDate] = {};
+                students.forEach(s => { records[currentDate][s.id] = { status: 'มา', note: '' }; });
+                saveToStorage();
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
+
+        function changeDate() {
+            currentDate = document.getElementById('selectedDate').value;
+            initTodayRecord();
+            renderTable();
+            updateStatistics();
+        }
+
+        function switchTab(tab) {
+            ['daily', 'weekly', 'monthly'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = 'tab-btn whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 font-medium rounded-lg transition flex items-center gap-1.5 sm:gap-2 text-white hover:bg-white/10';
+            });
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = 'tab-btn whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 font-medium rounded-lg transition flex items-center gap-1.5 sm:gap-2 bg-white text-pink-600 shadow-sm';
+
+            if (tab === 'weekly') renderWeekly();
+            if (tab === 'monthly') renderMonthly();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('studentTableBody');
+            const cardContainer = document.getElementById('mobileCardContainer');
+            tbody.innerHTML = '';
+            cardContainer.innerHTML = '';
+
+            const pFilter = document.getElementById('programFilter').value;
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            const dayRecord = records[currentDate] || {};
+
+            students.forEach(s => {
+                if (pFilter !== 'all' && s.program !== pFilter) return;
+                if (search && !s.name.toLowerCase().includes(search) && !s.id.includes(search) && s.no.toString() !== search) return;
+
+                const studentData = dayRecord[s.id] || { status: 'มา', note: '' };
+                const currentStatus = studentData.status;
+
+                const programBadge = s.program === '02' 
+                    ? `<span class="bg-amber-100 text-amber-800 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`
+                    : `<span class="bg-indigo-100 text-indigo-800 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
+
+                let tableButtonsHTML = `<div class="flex items-center justify-center gap-1 p-1 bg-slate-50 rounded-xl border border-pink-100">`;
+                let cardButtonsHTML = `<div class="grid grid-cols-5 gap-1 pt-2 border-t border-pink-50">`;
+
+                for (const [stName, cfg] of Object.entries(STATUS_CONFIG)) {
+                    const isSelected = (currentStatus === stName);
+                    tableButtonsHTML += `
+                        <button type="button" onclick="setStatus('${s.id}', '${stName}')" 
+                                class="px-2 py-1.5 text-xs rounded-lg transition-all duration-150 flex items-center gap-1 cursor-pointer ${isSelected ? cfg.activeClass : cfg.normalClass}">
+                            <i class="fa-solid ${cfg.icon}"></i>
+                            <span>${stName}</span>
+                        </button>
+                    `;
+                    cardButtonsHTML += `
+                        <button type="button" onclick="setStatus('${s.id}', '${stName}')" 
+                                class="py-2 px-1 text-xs rounded-xl flex flex-col items-center justify-center gap-1 cursor-pointer transition-all ${isSelected ? cfg.activeClass : cfg.normalClass}">
+                            <i class="fa-solid ${cfg.icon} text-sm"></i>
+                            <span class="text-[11px] leading-none">${stName}</span>
+                        </button>
+                    `;
+                }
+                tableButtonsHTML += `</div>`;
+                cardButtonsHTML += `</div>`;
+
+                // 1. แถวตาราง (Tablet / Desktop / Landscape)
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-pink-50/40 transition duration-150";
+                tr.innerHTML = `
+                    <td class="py-3 px-3 text-center font-bold text-slate-500">${s.no}</td>
+                    <td class="py-3 px-3 text-center text-xs font-mono text-slate-600">${s.id}</td>
+                    <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
+                    <td class="py-3 px-3 text-center">${programBadge}</td>
+                    <td class="py-2 px-4 text-center">
+                        <div class="no-print">${tableButtonsHTML}</div>
+                        <div class="hidden print-only font-bold text-xs">${currentStatus}</div>
+                    </td>
+                    <td class="py-3 px-3 text-center no-print">
+                        <input type="text" value="${studentData.note || ''}" onchange="setNote('${s.id}', this.value)" 
+                               placeholder="บันทึก..." class="w-full text-xs px-2 py-1 bg-transparent border-b border-pink-200 focus:border-pink-500 outline-none text-slate-600">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                // 2. การ์ด (Mobile Portrait)
+                const card = document.createElement('div');
+                card.className = "bg-white p-3.5 rounded-2xl border border-pink-100 shadow-sm space-y-2.5 transition active:border-pink-300";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-pink-100 text-pink-700 font-bold text-xs flex items-center justify-center">${s.no}</span>
+                            <div>
+                                <div class="font-bold text-sm text-slate-800 leading-tight">${s.name}</div>
+                                <div class="text-[10px] text-slate-400 font-mono">รหัสประจำตัว: ${s.id}</div>
+                            </div>
+                        </div>
+                        <div>${programBadge}</div>
+                    </div>
+                    ${cardButtonsHTML}
+                    <div class="pt-1">
+                        <input type="text" value="${studentData.note || ''}" onchange="setNote('${s.id}', this.value)" 
+                               placeholder="พิมพ์หมายเหตุเพิ่มเติม..." class="w-full text-xs px-2.5 py-1.5 bg-pink-50/40 rounded-lg border border-pink-100 focus:border-pink-400 outline-none text-slate-600">
+                    </div>
+                `;
+                cardContainer.appendChild(card);
+            });
+
+            document.getElementById('printDateLabel').textContent = new Date(currentDate).toLocaleDateString('th-TH', { 
+                year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' 
+            });
+        }
+
+        function setStatus(studentId, status) {
+            if (!records[currentDate]) initTodayRecord();
+            records[currentDate][studentId].status = status;
+            saveToStorage();
+            renderTable();
+            updateStatistics();
+        }
+
+        function setNote(studentId, note) {
+            if (!records[currentDate]) initTodayRecord();
+            records[currentDate][studentId].note = note;
+            saveToStorage();
+        }
+
+        function markAllStatus(status) {
+            if (!records[currentDate]) initTodayRecord();
+            students.forEach(s => { records[currentDate][s.id].status = status; });
+            saveToStorage();
+            renderTable();
+            updateStatistics();
+        }
+
+        function resetTodayStatus() {
+            if (confirm('ต้องการรีเซ็ตการเช็คชื่อของวันนี้ใช่หรือไม่?')) {
+                delete records[currentDate];
+                initTodayRecord();
+                renderTable();
+                updateStatistics();
+            }
+        }
+
+        function filterStudents() { renderTable(); }
+
+        function updateStatistics() {
+            const dayRecord = records[currentDate] || {};
+            let counts = { 'มา': 0, 'สาย': 0, 'ลา': 0, 'ขาด': 0, 'กิจกรรม': 0 };
+            students.forEach(s => {
+                const st = (dayRecord[s.id] && dayRecord[s.id].status) ? dayRecord[s.id].status : 'มา';
+                if (counts[st] !== undefined) counts[st]++;
+            });
+
+            document.getElementById('stat-total').innerHTML = `${students.length} <span class="text-[10px] sm:text-xs font-normal text-slate-400">คน</span>`;
+            document.getElementById('stat-present').innerHTML = `${counts['มา']} <span class="text-[10px] sm:text-xs font-normal text-emerald-400">คน</span>`;
+            document.getElementById('stat-late').innerHTML = `${counts['สาย']} <span class="text-[10px] sm:text-xs font-normal text-amber-400">คน</span>`;
+            document.getElementById('stat-leave').innerHTML = `${counts['ลา']} <span class="text-[10px] sm:text-xs font-normal text-sky-400">คน</span>`;
+            document.getElementById('stat-absent').innerHTML = `${counts['ขาด']} <span class="text-[10px] sm:text-xs font-normal text-rose-400">คน</span>`;
+            document.getElementById('stat-activity').innerHTML = `${counts['กิจกรรม']} <span class="text-[10px] sm:text-xs font-normal text-purple-400">คน</span>`;
+        }
+
+        async function syncToCloud() {
+            const btn = document.getElementById('btnSyncCloud');
+            if (btn.disabled) return;
+
+            btn.disabled = true;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-pink-600 text-xs sm:text-sm"></i> <span class="truncate">กำลังบันทึก...</span>`;
+            btn.classList.add('opacity-75');
+
+            const dayRecord = records[currentDate] || {};
+            const payload = {
+                date: currentDate,
+                records: students.map(s => ({
+                    no: s.no,
+                    id: s.id,
+                    name: s.name,
+                    gender: s.gender,
+                    program: s.program,
+                    status: (dayRecord[s.id] && dayRecord[s.id].status) ? dayRecord[s.id].status : 'มา',
+                    note: (dayRecord[s.id] && dayRecord[s.id].note) ? dayRecord[s.id].note : ''
+                }))
+            };
+
+            try {
+                await fetch(GAS_ENDPOINT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                showToast("บันทึกข้อมูลและอัปเดตชีตเรียบร้อยแล้ว!", "fa-cloud-check text-emerald-400");
+                triggerConfetti();
+            } catch (err) {
+                console.error("Sync Error:", err);
+                showToast("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง", "fa-triangle-exclamation text-amber-400");
+            } finally {
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75');
+                }, 1000);
+            }
+        }
+
+        function generateLineText() {
+            const dayRecord = records[currentDate] || {};
+            const dateObj = new Date(currentDate);
+            const thaiDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            let counts = { 'มา': 0, 'สาย': 0, 'ลา': 0, 'ขาด': 0, 'กิจกรรม': 0 };
+            let lateList = [], leaveList = [], absentList = [], activityList = [];
+
+            students.forEach(s => {
+                const item = dayRecord[s.id] || { status: 'มา', note: '' };
+                const st = item.status;
+                if (counts[st] !== undefined) counts[st]++;
+                const noteText = item.note ? ` (${item.note})` : '';
+
+                if (st === 'สาย') lateList.push(`${s.no}. ${s.name}${noteText}`);
+                else if (st === 'ลา') leaveList.push(`${s.no}. ${s.name}${noteText}`);
+                else if (st === 'ขาด') absentList.push(`${s.no}. ${s.name}${noteText}`);
+                else if (st === 'กิจกรรม') activityList.push(`${s.no}. ${s.name}${noteText}`);
+            });
+
+            let text = `📢 สรุปการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด\n`;
+            text += `📍 เขตพื้นที่: หน้าห้องคอมพิวเตอร์\n`;
+            text += `🏫 ชั้น ม.4/2 โรงเรียนสีชมพูศึกษา\n`;
+            text += `📅 ประจำวัน${thaiDate}\n`;
+            text += `──────────────────────\n`;
+            text += `👥 นักเรียนทั้งหมด: 40 คน\n`;
+            text += `✅ มาปฏิบัติหน้าที่: ${counts['มา']} คน\n`;
+            text += `⏰ มาสาย: ${counts['สาย']} คน\n`;
+            text += `📩 ลา: ${counts['ลา']} คน\n`;
+            text += `❌ ขาด: ${counts['ขาด']} คน\n`;
+            text += `⭐ กิจกรรม รร.: ${counts['กิจกรรม']} คน\n`;
+            text += `──────────────────────\n`;
+
+            if (lateList.length > 0) text += `⏰ รายชื่อมาสาย (${lateList.length} คน):\n` + lateList.join('\n') + `\n\n`;
+            if (leaveList.length > 0) text += `📩 รายชื่อลา (${leaveList.length} คน):\n` + leaveList.join('\n') + `\n\n`;
+            if (absentList.length > 0) text += `❌ รายชื่อขาด (${absentList.length} คน):\n` + absentList.join('\n') + `\n\n`;
+            if (activityList.length > 0) text += `⭐ รายชื่อกิจกรรม (${activityList.length} คน):\n` + activityList.join('\n') + `\n\n`;
+            if (lateList.length === 0 && leaveList.length === 0 && absentList.length === 0 && activityList.length === 0) {
+                text += `✨ นักเรียนทุกคนมาปฏิบัติหน้าที่ครบถ้วน 100%\n\n`;
+            }
+
+            text += `👨‍🏫 ครูที่ปรึกษา: นายนพคุณ สืบเลย, นายคมเพชร โพธิปัสสา\n`;
+            text += `👩‍🏫 หัวหน้าระดับ ม.4: นางวาสนา เหลาธรรม`;
+            return text;
+        }
+
+        function shareDirectLine() {
+            const message = generateLineText();
+            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(message)}`;
+            window.open(lineUrl, '_blank');
+        }
+
+        function copyLineSummary() {
+            const text = generateLineText();
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("คัดลอกข้อความสำหรับส่งไลน์เรียบร้อยแล้ว!");
+            });
+        }
+
+        function getWeekDates(baseDate, offsetDays = 0) {
+            const current = new Date(baseDate);
+            current.setDate(current.getDate() + offsetDays);
+            const dayOfWeek = current.getDay();
+            const distanceToMonday = (dayOfWeek + 6) % 7;
+            const monday = new Date(current);
+            monday.setDate(current.getDate() - distanceToMonday);
+
+            const week = [];
+            for (let i = 0; i < 5; i++) {
+                const d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                week.push(d.toISOString().split('T')[0]);
+            }
+            return week;
+        }
+
+        function navigateWeek(deltaDays) {
+            currentWeekOffset += deltaDays;
+            renderWeekly();
+        }
+
+        function renderWeekly() {
+            const weekDates = getWeekDates(currentDate, currentWeekOffset);
+            const dayNames = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์'];
+
+            const startLabel = new Date(weekDates[0]).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
+            const endLabel = new Date(weekDates[4]).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('currentWeekRangeLabel').textContent = `${startLabel} - ${endLabel}`;
+
+            const thead = document.getElementById('weeklyHead');
+            let headHTML = `
+                <tr>
+                    <th class="py-2.5 sm:py-3 px-2 sm:px-3 text-center w-10 sm:w-12">ที่</th>
+                    <th class="py-2.5 sm:py-3 px-3 sm:px-4">ชื่อ - นามสกุล</th>
+            `;
+            weekDates.forEach((d, idx) => {
+                const isToday = (d === new Date().toISOString().split('T')[0]);
+                headHTML += `<th class="py-2 sm:py-3 px-1.5 sm:px-2 text-center ${isToday ? 'bg-pink-100/80 font-bold text-pink-700' : ''}">${dayNames[idx]}<br><span class="text-[10px] text-slate-400 font-normal">${d.slice(8)}</span></th>`;
+            });
+            headHTML += `<th class="py-2 sm:py-3 px-2 sm:px-3 text-center">อัตราการมา</th></tr>`;
+            thead.innerHTML = headHTML;
+
+            const tbody = document.getElementById('weeklyTableBody');
+            tbody.innerHTML = '';
+
+            students.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-pink-50/30";
+                let daysHTML = '';
+                let presentCount = 0;
+                let activeDaysCount = 0;
+
+                weekDates.forEach(dateStr => {
+                    const dayData = records[dateStr];
+                    if (dayData) {
+                        activeDaysCount++;
+                        const st = (dayData[s.id] && dayData[s.id].status) ? dayData[s.id].status : '-';
+                        if (st === 'มา' || st === 'กิจกรรม') {
+                            presentCount++;
+                            daysHTML += `<td class="py-2 px-1 text-center text-xs"><span class="text-emerald-600 font-bold">✓</span></td>`;
+                        } else if (st === 'สาย') {
+                            presentCount += 0.5;
+                            daysHTML += `<td class="py-2 px-1 text-center text-[11px]"><span class="text-amber-500 font-bold">สาย</span></td>`;
+                        } else if (st === 'ลา') {
+                            daysHTML += `<td class="py-2 px-1 text-center text-[11px]"><span class="text-sky-500 font-bold">ลา</span></td>`;
+                        } else {
+                            daysHTML += `<td class="py-2 px-1 text-center text-[11px]"><span class="text-rose-500 font-bold">ขาด</span></td>`;
+                        }
+                    } else {
+                        daysHTML += `<td class="py-2 px-1 text-center text-xs text-slate-300">-</td>`;
+                    }
+                });
+
+                const rate = activeDaysCount > 0 ? Math.round((presentCount / activeDaysCount) * 100) : 0;
+                tr.innerHTML = `
+                    <td class="py-2 px-2 text-center font-medium text-slate-400 text-xs">${s.no}</td>
+                    <td class="py-2 px-3 sm:px-4 font-medium text-slate-800 text-xs sm:text-sm">${s.name}</td>
+                    ${daysHTML}
+                    <td class="py-2 px-2 sm:px-3 text-center">
+                        <span class="font-bold text-xs sm:text-sm ${rate >= 80 ? 'text-emerald-600' : (activeDaysCount === 0 ? 'text-slate-400' : 'text-rose-500')}">${activeDaysCount > 0 ? rate + '%' : '-'}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderMonthly() {
+            const selectedMonth = document.getElementById('monthlyInput').value;
+            const matchingDates = Object.keys(records).filter(date => date.startsWith(selectedMonth));
+
+            let totalCheckIns = 0;
+            let totalPossible = matchingDates.length * students.length;
+            let p02CheckIns = 0, p02Possible = matchingDates.length * 8;
+            let p11CheckIns = 0, p11Possible = matchingDates.length * 32;
+
+            const studentScores = students.map(s => ({ ...s, dutyCount: 0 }));
+
+            matchingDates.forEach(dateStr => {
+                const dayData = records[dateStr];
+                studentScores.forEach(s => {
+                    const st = (dayData[s.id] && dayData[s.id].status) ? dayData[s.id].status : 'มา';
+                    if (st === 'มา' || st === 'กิจกรรม') {
+                        s.dutyCount += 1;
+                        totalCheckIns += 1;
+                        if (s.program === '02') p02CheckIns += 1; else p11CheckIns += 1;
+                    } else if (st === 'สาย') {
+                        s.dutyCount += 0.5;
+                        totalCheckIns += 0.5;
+                        if (s.program === '02') p02CheckIns += 0.5; else p11CheckIns += 0.5;
+                    }
+                });
+            });
+
+            const overallRate = totalPossible > 0 ? ((totalCheckIns / totalPossible) * 100).toFixed(1) : 0;
+            const p02Rate = p02Possible > 0 ? ((p02CheckIns / p02Possible) * 100).toFixed(1) : 0;
+            const p11Rate = p11Possible > 0 ? ((p11CheckIns / p11Possible) * 100).toFixed(1) : 0;
+
+            document.getElementById('m-stat-overall').textContent = `${overallRate}%`;
+            document.getElementById('m-bar-overall').style.width = `${overallRate}%`;
+            document.getElementById('m-stat-dayscount').textContent = `บันทึกแล้ว ${matchingDates.length} วันในเดือนนี้`;
+
+            document.getElementById('m-stat-p02').textContent = `${p02Rate}%`;
+            document.getElementById('m-bar-p02').style.width = `${p02Rate}%`;
+
+            document.getElementById('m-stat-p11').textContent = `${p11Rate}%`;
+            document.getElementById('m-bar-p11').style.width = `${p11Rate}%`;
+
+            studentScores.sort((a, b) => b.dutyCount - a.dutyCount);
+            const topListContainer = document.getElementById('monthlyTopList');
+            topListContainer.innerHTML = '';
+
+            const top4 = studentScores.slice(0, 4);
+            const medalColors = ['bg-amber-400 text-white', 'bg-slate-300 text-slate-700', 'bg-amber-600 text-white', 'bg-pink-300 text-pink-800'];
+
+            top4.forEach((st, idx) => {
+                const percentage = matchingDates.length > 0 ? Math.round((st.dutyCount / matchingDates.length) * 100) : 0;
+                const card = document.createElement('div');
+                card.className = 'bg-pink-50/60 p-2.5 sm:p-3 rounded-xl border border-pink-200 flex items-center gap-2.5 sm:gap-3';
+                card.innerHTML = `
+                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full ${medalColors[idx]} font-bold flex items-center justify-center text-xs flex-shrink-0">${idx + 1}</span>
+                    <div class="min-w-0">
+                        <div class="text-xs font-bold text-slate-800 truncate">${st.name}</div>
+                        <div class="text-[10px] sm:text-[11px] text-pink-600 truncate">ปฏิบัติหน้าที่ ${st.dutyCount} ครั้ง (${percentage}%)</div>
+                    </div>
+                `;
+                topListContainer.appendChild(card);
+            });
+        }
+
+        function showToast(message, iconClass = "fa-circle-check text-emerald-400") {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            document.getElementById('toastIcon').className = `fa-solid ${iconClass} text-base sm:text-lg`;
+            toast.classList.remove('translate-y-[-150%]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-150%]', 'opacity-0');
+            }, 2500);
+        }
+
+        function triggerConfetti() {
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#ec4899', '#f43f5e', '#34d399', '#fbbf24'] });
+        }
+    </script>
+</body>
+</html>
