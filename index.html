@@ -635,6 +635,7 @@
         }
 
         async function loadDataFromCloud(manualTrigger = false) {
+async function loadDataFromCloud(manualTrigger = false) {
             const refreshIcon = document.getElementById('refreshIcon');
             if (refreshIcon) refreshIcon.classList.add('fa-spin');
 
@@ -643,9 +644,17 @@
                 const result = await response.json();
 
                 if (result.status === "success" && result.data) {
-                    Object.keys(result.data).forEach(dateKey => {
-                        records[dateKey] = result.data[dateKey];
-                    });
+                    // เก็บข้อมูลที่กำลังเช็คชื่อของวันปัจจุบันไว้ชั่วคราว (ถ้ามี)
+                    const currentDayDraft = records[currentDate];
+
+                    // 1. ยึดข้อมูลจาก Google Sheets เป็นหลัก 100% (ล้างประวัติเก่าที่ไม่มีในชีตออก)
+                    records = result.data;
+
+                    // 2. ถ้าในชีตยังไม่มีข้อมูลของวันนี้ ให้นำร่างที่กำลังเช็คอยู่ใส่กลับเข้าไป
+                    if (!records[currentDate] && currentDayDraft) {
+                        records[currentDate] = currentDayDraft;
+                    }
+
                     saveToStorage();
                     renderTable();
                     updateStatistics();
@@ -653,7 +662,7 @@
                     renderMonthly();
 
                     if (manualTrigger) {
-                        showToast(`อัปเดตข้อมูล ${CLASS_CONFIG[currentClass].name} จากชีตแล้ว!`, "fa-cloud-arrow-down text-emerald-400");
+                        showToast(`ซิงค์ข้อมูลห้อง ${CLASS_CONFIG[currentClass].name} ตรงกับชีตแล้ว!`, "fa-cloud-arrow-down text-emerald-400");
                     }
                 }
             } catch (err) {
