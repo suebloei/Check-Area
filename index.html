@@ -74,9 +74,10 @@
                     </div>
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-1.5 leading-none">
-                            <!-- ตัวสลับห้องเรียน -->
+                            <!-- ตัวสลับห้องเรียน: ม.4/2, ม.5/4, ม.5/5, ม.6/8 -->
                             <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
                                 <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
+                                <button type="button" onclick="selectClassRoom('m54')" id="btnClassM54" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/4</button>
                                 <button type="button" onclick="selectClassRoom('m55')" id="btnClassM55" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/5</button>
                                 <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.6/8</button>
                             </div>
@@ -91,7 +92,7 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons: เปลี่ยนปุ่มบันทึกชีตเป็น "บันทึก" พร้อมไอคอนแผ่นดิสก์ -->
+                <!-- Action Buttons -->
                 <div class="grid grid-cols-4 md:flex items-center gap-1.5 w-full md:w-auto">
                     <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i id="refreshIcon" class="fa-solid fa-rotate text-xs"></i> <span>ดึงข้อมูล</span>
@@ -148,7 +149,6 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <!-- Dropdown แผนการเรียน: ค่าเริ่มต้นเป็น all (ทุกแผนการเรียน) เสมอ -->
                     <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto font-medium"></select>
 
                     <div class="relative flex-1 sm:w-60">
@@ -291,7 +291,7 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/5 และ ม.6/8
+        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/4, ม.5/5 และ ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
@@ -346,6 +346,55 @@
                     'all': 'ทุกแผนการเรียน (40 คน)',
                     '02': '02 เตรียมวิศวะ (8 คน)',
                     '11': '11 วิทย์-คณิต (32 คน)'
+                }
+            },
+            m54: {
+                name: "ม.5/4",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/4",
+                area: "เขตพื้นที่ ม.5/4",
+                areaBadge: "เขตพื้นที่ ม.5/4",
+                advisors: ["นายสิทธิศักดิ์ สิงห์โสภา", "นางสาวพิมพ์ณดา รวมลำภา"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18468", name: "นายกวิน จัตุจันทร์", program: "51", gender: "ชาย" },
+                    { no: 2, id: "18469", name: "นายเจริญชัย โพธิ์คานิตย์", program: "51", gender: "ชาย" },
+                    { no: 3, id: "18397", name: "นายณัฐพงษ์ ผ่านสำแดง", program: "51", gender: "ชาย" },
+                    { no: 4, id: "18473", name: "นายณัฐภัทร ลูกเงาะ", program: "51", gender: "ชาย" },
+                    { no: 5, id: "18474", name: "นายแทนคุณ คำดี", program: "51", gender: "ชาย" },
+                    { no: 6, id: "18433", name: "นายธนากร ธรรมวงค์", program: "51", gender: "ชาย" },
+                    { no: 7, id: "19633", name: "นายธเนศ ก้ามสันเทียะ", program: "51", gender: "ชาย" },
+                    { no: 8, id: "18434", name: "นายธีรพงศ์ ชิณจักร์", program: "51", gender: "ชาย" },
+                    { no: 9, id: "18572", name: "นายปกรณ์เกียรติ์ พรมสิทธิ์", program: "51", gender: "ชาย" },
+                    { no: 10, id: "20082", name: "นายปิยะพัทธ์ ดวงคำ", program: "51", gender: "ชาย" },
+                    { no: 11, id: "20067", name: "นายเลสลี่ แมทธิวส์", program: "51", gender: "ชาย" },
+                    { no: 12, id: "18377", name: "นายอภิชิต มูลตรี", program: "51", gender: "ชาย" },
+                    { no: 13, id: "18491", name: "นายอิทธิพงษ์ ไชยมิตร", program: "51", gender: "ชาย" },
+                    { no: 14, id: "18471", name: "นายชนิตพล อ่อนน่วม", program: "51", gender: "ชาย" },
+                    { no: 15, id: "20507", name: "นายนิพัธนา ศรีสมสร้อย", program: "51", gender: "ชาย" },
+                    { no: 16, id: "18500", name: "นายพิมไท พิมลา", program: "52", gender: "ชาย" },
+                    { no: 17, id: "18403", name: "นายวรินทร นวลศรี", program: "52", gender: "ชาย" },
+                    { no: 18, id: "18513", name: "นางสาวธัญญรัตน์ ผุยศรีธา", program: "52", gender: "หญิง" },
+                    { no: 19, id: "18426", name: "นางสาวศศิวิมล กุเวสา", program: "52", gender: "หญิง" },
+                    { no: 20, id: "18526", name: "นางสาวสุพรรษา ไพรอดศรี", program: "52", gender: "หญิง" },
+                    { no: 21, id: "18416", name: "นางสาวปณัฏฎา ประทุมกุล", program: "53", gender: "หญิง" },
+                    { no: 22, id: "18421", name: "นางสาวรินรดา ผุยชัยภูมิ", program: "53", gender: "หญิง" },
+                    { no: 23, id: "18632", name: "นางสาวศศิธร วันดี", program: "53", gender: "หญิง" },
+                    { no: 24, id: "18431", name: "นายกฤษฎา พรหมดาว", program: "54", gender: "ชาย" },
+                    { no: 25, id: "20098", name: "นางสาวธนรัตน์ ประดิษฐ์ทอง", program: "54", gender: "หญิง" },
+                    { no: 26, id: "18414", name: "นางสาวนฤมล พลซา", program: "104", gender: "หญิง" },
+                    { no: 27, id: "18309", name: "นางสาวปาณิศา พิมพ์บึง", program: "104", gender: "หญิง" },
+                    { no: 28, id: "18555", name: "นางสาววรสุดา บัวผาย", program: "104", gender: "หญิง" },
+                    { no: 29, id: "18596", name: "นางสาววริศรา ดวงจันทร์", program: "104", gender: "หญิง" },
+                    { no: 30, id: "18354", name: "นางสาววิชญาดา นาดี", program: "104", gender: "หญิง" },
+                    { no: 31, id: "20076", name: "นางสาวมณีวรรณ ดวงจันทร์", program: "104", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (31 คน)',
+                    '51': '51 ด้านฟุตบอล (15 คน)',
+                    '52': '52 ด้านเทเบิลเทนนิส (5 คน)',
+                    '53': '53 ด้านวอลเลย์บอล (3 คน)',
+                    '54': '54 ด้านตะกร้อ (2 คน)',
+                    '104': '104 บริหารธุรกิจ สาขาบัญชี (6 คน)'
                 }
             },
             m55: {
@@ -449,11 +498,11 @@
         };
 
         const STATUS_CONFIG = {
-            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300 hover:bg-emerald-100', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
-            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300 hover:bg-amber-100', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
-            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300 hover:bg-sky-100', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
-            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300 hover:bg-rose-100', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
-            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300 hover:bg-purple-100', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
+            'มา': { icon: 'fa-check', normalClass: 'bg-emerald-50 text-emerald-600 border border-emerald-300', activeClass: 'bg-emerald-600 text-white font-bold shadow ring-1 ring-emerald-400' },
+            'สาย': { icon: 'fa-clock', normalClass: 'bg-amber-50 text-amber-500 border border-amber-300', activeClass: 'bg-amber-500 text-white font-bold shadow ring-1 ring-amber-400' },
+            'ลา': { icon: 'fa-envelope', normalClass: 'bg-sky-50 text-sky-500 border border-sky-300', activeClass: 'bg-sky-500 text-white font-bold shadow ring-1 ring-sky-400' },
+            'ขาด': { icon: 'fa-xmark', normalClass: 'bg-rose-50 text-rose-500 border border-rose-300', activeClass: 'bg-rose-600 text-white font-bold shadow ring-1 ring-rose-400' },
+            'กิจกรรม': { icon: 'fa-star', normalClass: 'bg-purple-50 text-purple-500 border border-purple-300', activeClass: 'bg-purple-600 text-white font-bold shadow ring-1 ring-purple-400' }
         };
 
         let currentClass = localStorage.getItem('sichompu_active_class') || 'm42';
@@ -491,7 +540,7 @@
             records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
 
             // อัปเดตสถานะปุ่มเลือกห้อง
-            ['m42', 'm55', 'm68'].forEach(cId => {
+            ['m42', 'm54', 'm55', 'm68'].forEach(cId => {
                 const btn = document.getElementById(`btnClass${cId.toUpperCase()}`);
                 if (btn) {
                     if (currentClass === cId) {
@@ -507,7 +556,7 @@
             document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
             document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
 
-            // อัปเดตตัวกรองแผนการเรียน และบังคับตั้งค่าเป็น 'all' (ทุกแผนการเรียน) เป็นค่า Default
+            // อัปเดตตัวกรองแผนการเรียน และตั้งเป็นค่า 'all' เสมอ
             const pFilter = document.getElementById('programFilter');
             pFilter.innerHTML = '';
             for (const [key, label] of Object.entries(cfg.programs)) {
@@ -518,7 +567,6 @@
             }
             pFilter.value = 'all';
 
-            // ล้างช่องค้นหาชื่อ
             document.getElementById('searchInput').value = '';
 
             // อัปเดตหน้าพิมพ์
@@ -651,7 +699,12 @@
                 let programBadge = '';
                 if (s.program === '02') programBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`;
                 else if (s.program === '11') programBadge = `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
-                else programBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200">04 เตรียมครู</span>`;
+                else if (s.program === '04') programBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200">04 เตรียมครู</span>`;
+                else if (s.program === '51') programBadge = `<span class="bg-blue-100 text-blue-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-blue-200">51 ฟุตบอล</span>`;
+                else if (s.program === '52') programBadge = `<span class="bg-orange-100 text-orange-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-orange-200">52 ปิงปอง</span>`;
+                else if (s.program === '53') programBadge = `<span class="bg-yellow-100 text-yellow-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-yellow-200">53 วอลเลย์</span>`;
+                else if (s.program === '54') programBadge = `<span class="bg-teal-100 text-teal-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-teal-200">54 ตะกร้อ</span>`;
+                else if (s.program === '104') programBadge = `<span class="bg-purple-100 text-purple-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-purple-200">104 บัญชี</span>`;
 
                 let tableButtonsHTML = `<div class="flex items-center justify-center gap-1 p-0.5 bg-slate-50 rounded-lg border border-pink-100">`;
                 let cardButtonsHTML = `<div class="grid grid-cols-5 gap-1 pt-1.5 border-t border-pink-50">`;
@@ -774,7 +827,6 @@
             document.getElementById('stat-activity').innerText = counts['กิจกรรม'];
         }
 
-        // บันทึกข้อมูลขึ้น Google Sheets
         async function syncToCloud() {
             const btn = document.getElementById('btnSyncCloud');
             if (btn.disabled) return;
@@ -796,7 +848,7 @@
                     name: s.name,
                     gender: s.gender,
                     program: s.program,
-                    programDisplay: s.program === '02' ? '02 เตรียมวิศวกรรมศาสตร์' : (s.program === '11' ? '11 วิทย์-คณิต' : '04 เตรียมครูและวิชาการศึกษา'),
+                    programDisplay: cfg.programs[s.program] || s.program,
                     status: (dayRecord[s.id] && dayRecord[s.id].status) ? dayRecord[s.id].status : 'มา',
                     note: (dayRecord[s.id] && dayRecord[s.id].note) ? dayRecord[s.id].note : ''
                 }))
@@ -1002,104 +1054,31 @@
 
             // Overview Cards
             const overviewGrid = document.getElementById('monthlyOverviewGrid');
-            if (currentClass === 'm42') {
-                let p02CheckIns = 0, p02Possible = matchingDates.length * 8;
-                let p11CheckIns = 0, p11Possible = matchingDates.length * 32;
-                matchingDates.forEach(d => {
-                    const data = records[d];
-                    cfg.students.forEach(s => {
-                        const st = (data[s.id] && data[s.id].status) ? data[s.id].status : 'มา';
-                        const val = (st === 'มา' || st === 'กิจกรรม') ? 1 : (st === 'สาย' ? 0.5 : 0);
-                        if (s.program === '02') p02CheckIns += val; else p11CheckIns += val;
-                    });
-                });
-                const p02Rate = p02Possible > 0 ? ((p02CheckIns / p02Possible) * 100).toFixed(1) : 0;
-                const p11Rate = p11Possible > 0 ? ((p11CheckIns / p11Possible) * 100).toFixed(1) : 0;
-
-                overviewGrid.innerHTML = `
-                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.4/2)</span>
-                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
-                        </div>
-                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
-                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
-                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
-                        </div>
+            overviewGrid.innerHTML = `
+                <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (${cfg.name})</span>
+                        <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
                     </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
-                        <span class="text-xs text-slate-500 font-medium">แผนกเตรียมวิศวะ (02)</span>
-                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${p02Rate}%</div>
-                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-user-gear"></i> จำนวน 8 คน</p>
-                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${p02Rate}%"></div>
-                        </div>
+                    <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
+                    <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
+                    <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                        <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
                     </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
-                        <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
-                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${p11Rate}%</div>
-                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 32 คน</p>
-                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${p11Rate}%"></div>
-                        </div>
+                </div>
+                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
+                    <span class="text-xs text-slate-500 font-medium">เขตพื้นที่รับผิดชอบ</span>
+                    <div class="text-lg sm:text-xl font-bold text-pink-600 mt-0.5 truncate">${cfg.area}</div>
+                    <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-users"></i> นักเรียนทั้งหมด ${cfg.students.length} คน</p>
+                </div>
+                <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
+                    <span class="text-xs text-slate-500 font-medium">สัดส่วนนักเรียน</span>
+                    <div class="text-sm sm:text-base font-bold text-slate-800 mt-1">
+                        ชาย ${cfg.students.filter(s=>s.gender==='ชาย').length} คน / หญิง ${cfg.students.filter(s=>s.gender==='หญิง').length} คน
                     </div>
-                `;
-            } else if (currentClass === 'm55') {
-                overviewGrid.innerHTML = `
-                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.5/5)</span>
-                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
-                        </div>
-                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
-                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
-                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
-                        <span class="text-xs text-slate-500 font-medium">แผนกวิทย์-คณิต (11)</span>
-                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${overallRate}%</div>
-                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-flask"></i> จำนวน 34 คน</p>
-                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
-                        <span class="text-xs text-slate-500 font-medium">เขตพื้นที่รับผิดชอบ</span>
-                        <div class="text-lg sm:text-xl font-bold text-pink-600 mt-0.5">หน้าห้องฟิตเนส</div>
-                        <p class="text-[10px] text-slate-500">นักเรียนชาย 8 คน / หญิง 26 คน</p>
-                    </div>
-                `;
-            } else {
-                overviewGrid.innerHTML = `
-                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-pink-100 font-medium">อัตราการมาเฉลี่ย (ม.6/8)</span>
-                            <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
-                        </div>
-                        <div class="text-xl sm:text-2xl font-extrabold mt-1">${overallRate}%</div>
-                        <p class="text-[10px] text-pink-100">บันทึกแล้ว ${matchingDates.length} วัน</p>
-                        <div class="w-full bg-white/20 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-white h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm">
-                        <span class="text-xs text-slate-500 font-medium">แผนกเตรียมครูฯ (04)</span>
-                        <div class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">${overallRate}%</div>
-                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-graduation-cap"></i> จำนวน 36 คน</p>
-                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
-                            <div class="bg-pink-500 h-full rounded-full transition-all duration-500" style="width: ${overallRate}%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-3.5 border border-pink-100 shadow-sm sm:col-span-2 lg:col-span-1">
-                        <span class="text-xs text-slate-500 font-medium">เขตพื้นที่รับผิดชอบ</span>
-                        <div class="text-lg sm:text-xl font-bold text-pink-600 mt-0.5">หลังอาคาร 3</div>
-                        <p class="text-[10px] text-slate-500">นักเรียนชาย 5 คน / หญิง 31 คน</p>
-                    </div>
-                `;
-            }
+                    <p class="text-[10px] text-slate-500 mt-0.5 truncate">ครูที่ปรึกษา: ${cfg.advisors.join(', ')}</p>
+                </div>
+            `;
 
             // Hall of Fame
             studentScores.sort((a, b) => b.dutyCount - a.dutyCount);
