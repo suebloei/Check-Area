@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
@@ -55,13 +55,18 @@
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 flex flex-col antialiased">
+<body class="min-h-screen text-slate-800 flex flex-col antialiased relative">
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed top-3 right-3 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 bg-slate-900/95 text-white px-3.5 py-2 rounded-xl shadow-2xl flex items-center gap-2.5 border border-white/10 backdrop-blur-md pointer-events-none text-xs sm:text-sm">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-sm sm:text-base"></i>
         <span id="toastMessage" class="font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
+
+    <!-- ปุ่มลอยเลื่อนกลับขึ้นบนสุด (Back to Top) -->
+    <button type="button" id="btnBackToTop" onclick="scrollToTop()" title="เลื่อนขึ้นบนสุด" class="fixed bottom-5 right-5 z-40 bg-pink-600 hover:bg-pink-700 text-white w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-xl flex items-center justify-center text-sm sm:text-base transition-all duration-300 transform translate-y-16 opacity-0 pointer-events-none active:scale-95 no-print border-2 border-white">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
     <!-- Header Navigation -->
     <header class="bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 text-white shadow-md relative md:sticky md:top-0 z-40 no-print">
@@ -74,7 +79,6 @@
                     </div>
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-1.5 leading-none">
-                            <!-- ตัวเลือกสลับ 4 ห้องเรียน -->
                             <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
                                 <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
                                 <button type="button" onclick="selectClassRoom('m54')" id="btnClassM54" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/4</button>
@@ -92,7 +96,7 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons: ปุ่มบันทึกพร้อมสัญลักษณ์แผ่นดิสก์ -->
+                <!-- Action Buttons -->
                 <div class="grid grid-cols-4 md:flex items-center gap-1.5 w-full md:w-auto">
                     <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i id="refreshIcon" class="fa-solid fa-rotate text-xs"></i> <span>ดึงข้อมูล</span>
@@ -149,7 +153,6 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <!-- แสดงทุกแผนการเรียนเป็น Default เสมอ -->
                     <select id="programFilter" onchange="filterStudents()" class="text-xs bg-pink-50/50 border border-pink-200 text-slate-700 rounded-lg px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-pink-300 w-1/2 sm:w-auto font-medium"></select>
 
                     <div class="relative flex-1 sm:w-60">
@@ -292,7 +295,6 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/4, ม.5/5 และ ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
@@ -525,7 +527,41 @@
 
             window.addEventListener('resize', renderTable);
             window.addEventListener('orientationchange', () => setTimeout(renderTable, 200));
+
+            // ตรวจจับ Scroll สำหรับปุ่มลอย Back to Top
+            window.addEventListener('scroll', () => {
+                const btn = document.getElementById('btnBackToTop');
+                if (window.scrollY > 250) {
+                    btn.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+                    btn.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                } else {
+                    btn.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+                    btn.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                }
+            });
         });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // คำนวณจำนวนวันที่ขาดหน้าที่ติดต่อกันของนักเรียนแต่ละคน
+        function getConsecutiveAbsents(studentId) {
+            const sortedDates = Object.keys(records).sort().reverse();
+            let count = 0;
+            for (const d of sortedDates) {
+                const dayData = records[d];
+                if (dayData && dayData[studentId]) {
+                    const st = dayData[studentId].status;
+                    if (st === 'ขาด') {
+                        count++;
+                    } else if (st === 'มา' || st === 'กิจกรรม') {
+                        break;
+                    }
+                }
+            }
+            return count;
+        }
 
         function selectClassRoom(cls) {
             if (currentClass === cls) return;
@@ -540,7 +576,6 @@
             const cfg = CLASS_CONFIG[currentClass];
             records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
 
-            // อัปเดตสถานะปุ่มเลือกห้อง
             ['m42', 'm54', 'm55', 'm68'].forEach(cId => {
                 const btn = document.getElementById(`btnClass${cId.toUpperCase()}`);
                 if (btn) {
@@ -552,12 +587,10 @@
                 }
             });
 
-            // อัปเดตส่วนหัว
             document.getElementById('headerAreaBadge').innerHTML = `<i class="fa-solid fa-location-dot text-pink-200"></i> ${cfg.areaBadge}`;
             document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
             document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
 
-            // อัปเดตตัวกรองแผนการเรียน และตั้งเป็นค่า 'all' เสมอ
             const pFilter = document.getElementById('programFilter');
             pFilter.innerHTML = '';
             for (const [key, label] of Object.entries(cfg.programs)) {
@@ -570,14 +603,12 @@
 
             document.getElementById('searchInput').value = '';
 
-            // อัปเดตหน้าพิมพ์
             document.getElementById('printSchoolSubtitle').textContent = `${cfg.fullName} โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น`;
             document.getElementById('printAreaLabel').textContent = cfg.area;
             const boys = cfg.students.filter(s => s.gender === 'ชาย').length;
             const girls = cfg.students.filter(s => s.gender === 'หญิง').length;
             document.getElementById('printStudentCountLabel').textContent = `ชาย ${boys} คน หญิง ${girls} คน รวม ${cfg.students.length} คน`;
 
-            // ลายเซ็น
             const sigContainer = document.getElementById('printSignatureContainer');
             const headTitleName = cfg.headLevel.includes('ม.4') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 4' : (cfg.headLevel.includes('ม.5') ? 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 5' : 'หัวหน้าระดับชั้นมัธยมศึกษาปีที่ 6');
             sigContainer.innerHTML = `
@@ -635,7 +666,6 @@
             updateStatistics();
         }
 
-        // ดึงข้อมูลโดยยึด Google Sheets เป็นหลัก 100% ป้องกันนับวันซ้ำ
         async function loadDataFromCloud(manualTrigger = false) {
             const refreshIcon = document.getElementById('refreshIcon');
             if (refreshIcon) refreshIcon.classList.add('fa-spin');
@@ -646,11 +676,8 @@
 
                 if (result.status === "success" && result.data) {
                     const currentDayDraft = records[currentDate];
-
-                    // ยึดข้อมูลจากชีตเป็นหลัก ล้างประวัติแคชค้างเก่าออก
                     records = result.data;
 
-                    // คืนค่าแบบร่างของวันนี้ที่กำลังเช็คอยู่ หากในชีตยังไม่มี
                     if (!records[currentDate] && currentDayDraft) {
                         records[currentDate] = currentDayDraft;
                     }
@@ -715,6 +742,12 @@
                 else if (s.program === '54') programBadge = `<span class="bg-teal-100 text-teal-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-teal-200">54 ตะกร้อ</span>`;
                 else if (s.program === '104') programBadge = `<span class="bg-purple-100 text-purple-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-purple-200">104 บัญชี</span>`;
 
+                // ตรวจสอบการขาดติดต่อกัน 3 ครั้งขึ้นไป
+                const consecAbsents = getConsecutiveAbsents(s.id);
+                const alertBadge = (consecAbsents >= 3) 
+                    ? `<span class="inline-flex items-center gap-1 bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse ml-1.5 flex-shrink-0" title="ขาดติดต่อกัน ${consecAbsents} ครั้ง"><i class="fa-solid fa-triangle-exclamation"></i> ขาด ${consecAbsents} วันติด</span>` 
+                    : '';
+
                 let tableButtonsHTML = `<div class="flex items-center justify-center gap-1 p-0.5 bg-slate-50 rounded-lg border border-pink-100">`;
                 let cardButtonsHTML = `<div class="grid grid-cols-5 gap-1 pt-1.5 border-t border-pink-50">`;
 
@@ -738,13 +771,18 @@
                 tableButtonsHTML += `</div>`;
                 cardButtonsHTML += `</div>`;
 
-                // Table View
+                // Table View (แนวนอน/จอใหญ่)
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-pink-50/40 transition duration-150";
                 tr.innerHTML = `
                     <td class="py-2.5 px-3 text-center font-bold text-slate-500">${s.no}</td>
                     <td class="py-2.5 px-3 text-center text-xs font-mono text-slate-600">${s.id}</td>
-                    <td class="py-2.5 px-4 font-medium text-slate-800">${s.name}</td>
+                    <td class="py-2.5 px-4 font-medium text-slate-800">
+                        <div class="flex items-center">
+                            <span>${s.name}</span>
+                            ${alertBadge}
+                        </div>
+                    </td>
                     <td class="py-2.5 px-3 text-center">${programBadge}</td>
                     <td class="py-1.5 px-4 text-center">
                         <div class="no-print">${tableButtonsHTML}</div>
@@ -757,16 +795,17 @@
                 `;
                 tbody.appendChild(tr);
 
-                // Mobile Card View
+                // Mobile Card View (แนวตั้ง)
                 const card = document.createElement('div');
                 card.className = "bg-white p-2.5 rounded-xl border border-pink-100 shadow-sm space-y-2";
                 card.innerHTML = `
                     <div class="flex items-center justify-between gap-1">
                         <div class="flex items-center gap-1.5 min-w-0">
                             <span class="w-5 h-5 rounded-full bg-pink-100 text-pink-700 font-bold text-[10px] flex items-center justify-center flex-shrink-0">${s.no}</span>
-                            <div class="min-w-0">
+                            <div class="min-w-0 flex items-center flex-wrap gap-1">
                                 <div class="font-bold text-xs text-slate-800 leading-tight truncate">${s.name}</div>
-                                <div class="text-[9px] text-slate-400 font-mono">รหัส: ${s.id}</div>
+                                ${alertBadge}
+                                <div class="w-full text-[9px] text-slate-400 font-mono">รหัส: ${s.id}</div>
                             </div>
                         </div>
                         <div class="flex-shrink-0">${programBadge}</div>
@@ -1061,7 +1100,6 @@
 
             const overallRate = totalPossible > 0 ? ((totalCheckIns / totalPossible) * 100).toFixed(1) : 0;
 
-            // Overview Cards
             const overviewGrid = document.getElementById('monthlyOverviewGrid');
             overviewGrid.innerHTML = `
                 <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-3.5 text-white shadow">
@@ -1089,7 +1127,6 @@
                 </div>
             `;
 
-            // Hall of Fame
             studentScores.sort((a, b) => b.dutyCount - a.dutyCount);
             const topListContainer = document.getElementById('monthlyTopList');
             topListContainer.innerHTML = '';
