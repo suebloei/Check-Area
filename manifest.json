@@ -1,0 +1,24 @@
+{
+  "name": "ระบบเช็คชื่อเขตพื้นที่พัฒนา 5 ส. - รร.สีชมพูศึกษา",
+  "short_name": "เช็คชื่อ 5 ส.",
+  "description": "ระบบบันทึกและติดตามการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด โรงเรียนสีชมพูศึกษา",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#db2777",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
