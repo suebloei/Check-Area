@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด - โรงเรียนสีชมพูศึกษา</title>
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#db2777">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="เช็คชื่อ 5 ส.">
+    <link rel="apple-touch-icon" href="logo.png">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
@@ -61,6 +71,25 @@
     <div id="toast" class="fixed top-3 right-3 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 bg-slate-900/95 text-white px-3.5 py-2 rounded-xl shadow-2xl flex items-center gap-2.5 border border-white/10 backdrop-blur-md pointer-events-none text-xs sm:text-sm">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-sm sm:text-base"></i>
         <span id="toastMessage" class="font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+    </div>
+
+    <!-- PWA Install Prompt Banner (สำหรับกดติดตั้งแอปลงโฮมสกรีน) -->
+    <div id="pwaInstallBanner" class="hidden fixed bottom-18 left-3 right-3 sm:left-auto sm:right-5 sm:bottom-20 z-50 max-w-sm bg-white/95 backdrop-blur-md border border-pink-200 shadow-2xl rounded-2xl p-3 flex items-center justify-between gap-3 text-xs transition duration-300 no-print">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <img src="logo.png" alt="App Logo" class="w-9 h-9 object-contain rounded-lg flex-shrink-0 border border-pink-100 p-0.5">
+            <div class="min-w-0">
+                <div class="font-bold text-slate-800 truncate font-heading">ติดตั้งแอปพลิเคชัน</div>
+                <div class="text-[10px] text-slate-500 leading-tight">เพิ่มลงหน้าจอโฮมเพื่อเข้าใช้สะดวกรวดเร็ว</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button type="button" onclick="installPWA()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-3 py-1.5 rounded-xl shadow-sm text-xs cursor-pointer active:scale-95 transition">
+                ติดตั้ง
+            </button>
+            <button type="button" onclick="dismissPWA()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg text-sm cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
     </div>
 
     <!-- ปุ่มลอยเลื่อนกลับขึ้นบนสุด (Back to Top) -->
@@ -512,6 +541,7 @@
         let records = {};
         let currentDate = new Date().toISOString().split('T')[0];
         let currentWeekOffset = 0;
+        let deferredPrompt = null;
 
         function getStorageKey() {
             return `sichompu_duty_records_${currentClass}`;
@@ -539,13 +569,47 @@
                     btn.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
                 }
             });
+
+            // ลงทะเบียน Service Worker สำหรับ PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(() => console.log('PWA Service Worker Registered'))
+                    .catch((err) => console.log('Service Worker Failed:', err));
+            }
+
+            // ตรวจจับ Event การติดตั้งแอป PWA
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                const banner = document.getElementById('pwaInstallBanner');
+                if (banner && !sessionStorage.getItem('pwa_dismissed')) {
+                    banner.classList.remove('hidden');
+                }
+            });
         });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        showToast("ติดตั้งแอปพลิเคชันเรียบร้อยแล้ว!", "fa-circle-check text-emerald-400");
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('pwaInstallBanner').classList.add('hidden');
+                });
+            }
+        }
+
+        function dismissPWA() {
+            document.getElementById('pwaInstallBanner').classList.add('hidden');
+            sessionStorage.setItem('pwa_dismissed', 'true');
+        }
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // คำนวณจำนวนวันที่ขาดหน้าที่ติดต่อกันของนักเรียนแต่ละคน
         function getConsecutiveAbsents(studentId) {
             const sortedDates = Object.keys(records).sort().reverse();
             let count = 0;
@@ -742,7 +806,6 @@
                 else if (s.program === '54') programBadge = `<span class="bg-teal-100 text-teal-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-teal-200">54 ตะกร้อ</span>`;
                 else if (s.program === '104') programBadge = `<span class="bg-purple-100 text-purple-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-purple-200">104 บัญชี</span>`;
 
-                // ตรวจสอบการขาดติดต่อกัน 3 ครั้งขึ้นไป
                 const consecAbsents = getConsecutiveAbsents(s.id);
                 const alertBadge = (consecAbsents >= 3) 
                     ? `<span class="inline-flex items-center gap-1 bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse ml-1.5 flex-shrink-0" title="ขาดติดต่อกัน ${consecAbsents} ครั้ง"><i class="fa-solid fa-triangle-exclamation"></i> ขาด ${consecAbsents} วันติด</span>` 
@@ -771,7 +834,7 @@
                 tableButtonsHTML += `</div>`;
                 cardButtonsHTML += `</div>`;
 
-                // Table View (แนวนอน/จอใหญ่)
+                // Table View
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-pink-50/40 transition duration-150";
                 tr.innerHTML = `
@@ -795,7 +858,7 @@
                 `;
                 tbody.appendChild(tr);
 
-                // Mobile Card View (แนวตั้ง)
+                // Mobile Card View
                 const card = document.createElement('div');
                 card.className = "bg-white p-2.5 rounded-xl border border-pink-100 shadow-sm space-y-2";
                 card.innerHTML = `
