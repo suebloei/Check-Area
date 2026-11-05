@@ -99,46 +99,50 @@
 
     <!-- Header Navigation -->
     <header class="bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500 text-white shadow-md relative md:sticky md:top-0 z-40 no-print">
-        <div class="w-full px-3 sm:px-6">
+        <div class="w-full px-2 sm:px-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-1.5 py-2 sm:py-2.5">
                 
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2">
                     <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center p-0.5 border border-white/30 shadow-inner flex-shrink-0 overflow-hidden">
                         <img src="logo.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=SP&background=db2777&color=fff&rounded=true';">
                     </div>
                     <div class="min-w-0">
-                        <div class="flex flex-wrap items-center gap-1.5 leading-none">
-                            <!-- ตัวเลือกสลับ 5 ห้องเรียน: ม.4/2, ม.5/3, ม.5/4, ม.5/5, ม.6/8 -->
-                            <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
-                                <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
-                                <button type="button" onclick="selectClassRoom('m53')" id="btnClassM53" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/3</button>
-                                <button type="button" onclick="selectClassRoom('m54')" id="btnClassM54" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/4</button>
-                                <button type="button" onclick="selectClassRoom('m55')" id="btnClassM55" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/5</button>
-                                <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.6/8</button>
+                        <div class="flex flex-wrap items-center gap-1 leading-none">
+                            <!-- ตัวเลือกสลับห้องเรียนทั้งหมด ม.4 ถึง ม.6 -->
+                            <div class="inline-flex flex-wrap rounded-lg bg-pink-900/40 p-0.5 border border-white/20 gap-0.5">
+                                <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
+                                <button type="button" onclick="selectClassRoom('m51')" id="btnClassM51" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/1</button>
+                                <button type="button" onclick="selectClassRoom('m52')" id="btnClassM52" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/2</button>
+                                <button type="button" onclick="selectClassRoom('m53')" id="btnClassM53" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/3</button>
+                                <button type="button" onclick="selectClassRoom('m54')" id="btnClassM54" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/4</button>
+                                <button type="button" onclick="selectClassRoom('m55')" id="btnClassM55" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/5</button>
+                                <button type="button" onclick="selectClassRoom('m56')" id="btnClassM56" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/6</button>
+                                <button type="button" onclick="selectClassRoom('m57')" id="btnClassM57" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/7</button>
+                                <button type="button" onclick="selectClassRoom('m58')" id="btnClassM58" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.5/8</button>
+                                <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition">ม.6/8</button>
                             </div>
-                            <span class="bg-white/20 text-[9px] sm:text-xs px-2 py-0.5 rounded-full font-medium">ปีการศึกษา 2569</span>
                             <span class="bg-pink-700/60 text-[9px] sm:text-[11px] px-2 py-0.5 rounded-full" id="headerAreaBadge">
-                                <i class="fa-solid fa-location-dot text-pink-200"></i> หน้าห้องคอมพิวเตอร์
+                                <i class="fa-solid fa-location-dot text-pink-200"></i> เขตพื้นที่
                             </span>
                         </div>
-                        <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-0.5 truncate" id="headerTitle">
-                            ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (ม.4/2)
+                        <h1 class="text-xs sm:text-base lg:text-lg font-bold tracking-tight text-white leading-tight mt-1 truncate" id="headerTitle">
+                            ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด
                         </h1>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="grid grid-cols-4 md:flex items-center gap-1.5 w-full md:w-auto">
-                    <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
+                    <button type="button" id="btnRefreshCloud" onclick="loadDataFromCloud(true)" title="ดึงข้อมูลจาก Google Sheets" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-2.5 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i id="refreshIcon" class="fa-solid fa-rotate text-xs"></i> <span>ดึงข้อมูล</span>
                     </button>
-                    <button type="button" onclick="shareDirectLine()" class="flex items-center justify-center gap-1 bg-[#06C755] hover:bg-[#05b34c] text-white py-1.5 px-3 rounded-lg text-xs font-semibold shadow transition transform active:scale-95 cursor-pointer">
-                        <i class="fa-brands fa-line text-sm"></i> <span>ส่ง LINE</span>
+                    <button type="button" onclick="shareDirectLine()" class="flex items-center justify-center gap-1 bg-[#06C755] hover:bg-[#05b34c] text-white py-1.5 px-2.5 rounded-lg text-xs font-semibold shadow transition transform active:scale-95 cursor-pointer">
+                        <i class="fa-brands fa-line text-sm"></i> <span id="lineBtnText">ส่ง LINE</span>
                     </button>
-                    <button type="button" onclick="copyLineSummary()" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-3 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
+                    <button type="button" onclick="copyLineSummary()" class="flex items-center justify-center gap-1 bg-white/20 hover:bg-white/30 text-white py-1.5 px-2.5 rounded-lg text-xs font-medium transition active:scale-95 cursor-pointer">
                         <i class="fa-regular fa-copy text-xs"></i> <span>คัดลอก</span>
                     </button>
-                    <button type="button" id="btnSyncCloud" onclick="syncToCloud()" class="flex items-center justify-center gap-1.5 bg-white text-pink-600 hover:bg-pink-50 active:scale-95 py-1.5 px-3.5 rounded-lg text-xs font-bold shadow border border-pink-200 transition select-none cursor-pointer">
+                    <button type="button" id="btnSyncCloud" onclick="syncToCloud()" class="flex items-center justify-center gap-1.5 bg-white text-pink-600 hover:bg-pink-50 active:scale-95 py-1.5 px-3 rounded-lg text-xs font-bold shadow border border-pink-200 transition select-none cursor-pointer">
                         <i class="fa-solid fa-floppy-disk text-pink-600 text-xs"></i> 
                         <span>บันทึก</span>
                     </button>
@@ -230,7 +234,7 @@
                 <h2 class="text-xl font-bold font-heading text-slate-900">แบบบันทึกการปฏิบัติหน้าที่เขตพื้นที่พัฒนาและความสะอาด (5 ส.)</h2>
                 <p class="text-sm text-slate-700 mt-1" id="printSchoolSubtitle">โรงเรียนสีชมพูศึกษา สังกัดองค์การบริหารส่วนจังหวัดขอนแก่น</p>
                 <div class="flex justify-between items-center text-xs mt-3 border-b pb-2">
-                    <span><strong>เขตพื้นที่รับผิดชอบ:</strong> <span id="printAreaLabel">หน้าห้องคอมพิวเตอร์</span></span>
+                    <span><strong>เขตพื้นที่รับผิดชอบ:</strong> <span id="printAreaLabel">เขตพื้นที่</span></span>
                     <span><strong>ประจำวันที่:</strong> <span id="printDateLabel"></span></span>
                     <span><strong>จำนวนนักเรียน:</strong> <span id="printStudentCountLabel"></span></span>
                 </div>
@@ -326,7 +330,7 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/3, ม.5/4, ม.5/5 และ ม.6/8
+        // ฐานข้อมูลห้องเรียนทั้งหมด ม.4/2 ถึง ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
@@ -381,6 +385,102 @@
                     'all': 'ทุกแผนการเรียน (40 คน)',
                     '02': '02 เตรียมวิศวะ (8 คน)',
                     '11': '11 วิทย์-คณิต (32 คน)'
+                }
+            },
+            m51: {
+                name: "ม.5/1",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/1",
+                area: "เขตพื้นที่ ม.5/1",
+                areaBadge: "เขตพื้นที่ ม.5/1",
+                advisors: ["นายสมศักดิ์ มิเถาวัลย์", "นางสาวปรุงฉัตร อินบุดดี"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18530", name: "นายเกียรติศักดิ์ นามธง", program: "101", gender: "ชาย" },
+                    { no: 2, id: "18531", name: "นายไกวิชญ์ ประสมบูรณ์", program: "101", gender: "ชาย" },
+                    { no: 3, id: "18494", name: "นายชัยยุติ จิตการ", program: "101", gender: "ชาย" },
+                    { no: 4, id: "18398", name: "นายธนกร ราชรินทร์", program: "101", gender: "ชาย" },
+                    { no: 5, id: "18496", name: "นายธนพงษ์ ราชรินทร์", program: "101", gender: "ชาย" },
+                    { no: 6, id: "18534", name: "นายธนากร หลงน้อย", program: "101", gender: "ชาย" },
+                    { no: 7, id: "18323", name: "นายธีรเทพ แคนหมั้น", program: "101", gender: "ชาย" },
+                    { no: 8, id: "18482", name: "นายภัทรพงษ์ ชูขันธ์", program: "101", gender: "ชาย" },
+                    { no: 9, id: "18501", name: "นายภาสกร พุ่มเจริญ", program: "101", gender: "ชาย" },
+                    { no: 10, id: "20045", name: "นายมณัฐศวิน โฉมรักษ์", program: "101", gender: "ชาย" },
+                    { no: 11, id: "20046", name: "นายรัชชานนท์ แลบัว", program: "101", gender: "ชาย" },
+                    { no: 12, id: "18333", name: "นายศักรภพ หอมสูง", program: "101", gender: "ชาย" },
+                    { no: 13, id: "18507", name: "นางสาวกมลวรรณ ทับกลาง", program: "101", gender: "หญิง" },
+                    { no: 14, id: "18510", name: "นางสาวจิตรกัญญา วงษ์ตาแสง", program: "101", gender: "หญิง" },
+                    { no: 15, id: "18440", name: "นางสาวจีรนันท์ พันธุระ", program: "101", gender: "หญิง" },
+                    { no: 16, id: "20047", name: "นางสาวดลยา นาสมวาส", program: "101", gender: "หญิง" },
+                    { no: 17, id: "18345", name: "นางสาวดวงฤดี บุญธรรม", program: "101", gender: "หญิง" },
+                    { no: 18, id: "18349", name: "นางสาวนิติยา หันตุลา", program: "101", gender: "หญิง" },
+                    { no: 19, id: "18351", name: "นางสาวรัชนีกร พรมโท", program: "101", gender: "หญิง" },
+                    { no: 20, id: "18355", name: "นางสาวศศิวิมล ผมพันธ์", program: "101", gender: "หญิง" },
+                    { no: 21, id: "18525", name: "นางสาวสิรภัทร กลมวงค์", program: "101", gender: "หญิง" },
+                    { no: 22, id: "18528", name: "นางสาวอุษามณี แนวถาวร", program: "101", gender: "หญิง" },
+                    { no: 23, id: "18394", name: "นายกวีวัธน์ วงค์สุ่ย", program: "101", gender: "ชาย" },
+                    { no: 24, id: "18467", name: "นายกฤษณพงศ์ แจ่มแสง", program: "103", gender: "ชาย" },
+                    { no: 25, id: "18357", name: "นายกีรติ น้อยเชียง", program: "103", gender: "ชาย" },
+                    { no: 26, id: "18470", name: "นายเจษฎา เจริญสูงเนิน", program: "103", gender: "ชาย" },
+                    { no: 27, id: "18365", name: "นายธนภัทร สุดชุมแพ", program: "103", gender: "ชาย" },
+                    { no: 28, id: "18288", name: "นายธนวัฒน์ ศรีสว่าง", program: "103", gender: "ชาย" },
+                    { no: 29, id: "20049", name: "นายพีรวัฒน์ โภคาพานิชย์", program: "103", gender: "ชาย" },
+                    { no: 30, id: "18293", name: "นายภาณุพงษ์ จิตถาวร", program: "103", gender: "ชาย" },
+                    { no: 31, id: "18294", name: "นายภูมิภัทร เดชอ่อนพันธ์", program: "103", gender: "ชาย" },
+                    { no: 32, id: "18372", name: "นายวงษ์ศกร สาครขันธ์", program: "103", gender: "ชาย" },
+                    { no: 33, id: "18484", name: "นายวราเมฆ คำสถิตย์", program: "103", gender: "ชาย" },
+                    { no: 34, id: "18332", name: "นายศรายุธ สีดาอุบล", program: "103", gender: "ชาย" },
+                    { no: 35, id: "18490", name: "นายอำพล อุ่นแก้ว", program: "103", gender: "ชาย" },
+                    { no: 36, id: "18334", name: "นายศุธวัตร พานมั่ง", program: "103", gender: "ชาย" },
+                    { no: 37, id: "18574", name: "นายวชิรวิทย์ ปริปุณะ", program: "103", gender: "ชาย" },
+                    { no: 38, id: "18401", name: "นายพงศ์พิสุทธิ์ ปัชชาชัย", program: "103", gender: "ชาย" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (38 คน)',
+                    '101': '101 ช่างไฟฟ้า (23 คน)',
+                    '103': '103 ช่างยนต์ (15 คน)'
+                }
+            },
+            m52: {
+                name: "ม.5/2",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/2",
+                area: "เขตพื้นที่ ม.5/2",
+                areaBadge: "เขตพื้นที่ ม.5/2",
+                advisors: ["นางสุชาดา สุวรรณศรี", "นางสาวปัทมา รื่นกลิ่น"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "20050", name: "นายกิตติเสน งาม", program: "12", gender: "ชาย" },
+                    { no: 2, id: "18283", name: "นายขวัญพนา มังตา", program: "12", gender: "ชาย" },
+                    { no: 3, id: "18533", name: "นายชินภัทร กงชัยภูมิ", program: "12", gender: "ชาย" },
+                    { no: 4, id: "20051", name: "นายณัฐพล ทัศสามี", program: "12", gender: "ชาย" },
+                    { no: 5, id: "18399", name: "นายธนกฤต ศรีเมืองแก้ว", program: "12", gender: "ชาย" },
+                    { no: 6, id: "18497", name: "นายธีระพล แซ่เยี่ยง", program: "12", gender: "ชาย" },
+                    { no: 7, id: "20052", name: "นายมนพัทธ์ สมาทอง", program: "12", gender: "ชาย" },
+                    { no: 8, id: "18296", name: "นายมาณพ ช่างบาง", program: "12", gender: "ชาย" },
+                    { no: 9, id: "20054", name: "นายสิทธิพล กรุนอก", program: "12", gender: "ชาย" },
+                    { no: 10, id: "20055", name: "นายสุชานันท์ มั่งคล้าย", program: "12", gender: "ชาย" },
+                    { no: 11, id: "18436", name: "นางสาวกชพรรณ ลิ่มเกษม", program: "12", gender: "หญิง" },
+                    { no: 12, id: "18339", name: "นางสาวกัญญาภัค ไชยวรรณ", program: "12", gender: "หญิง" },
+                    { no: 13, id: "18409", name: "นางสาวจิดาภา พรหนุน", program: "12", gender: "หญิง" },
+                    { no: 14, id: "18410", name: "นางสาวจิรพรรณ ทุมมา", program: "12", gender: "หญิง" },
+                    { no: 15, id: "18441", name: "นางสาวจุฑามาศ เรืองไกล", program: "12", gender: "หญิง" },
+                    { no: 16, id: "19159", name: "นางสาวฐิติกานต์ ศรีสุพัฒน์", program: "12", gender: "หญิง" },
+                    { no: 17, id: "18442", name: "นางสาวณัชนิชา มุ่งหมาย", program: "12", gender: "หญิง" },
+                    { no: 18, id: "18447", name: "นางสาวธนัญชนก พลดงนอก", program: "12", gender: "หญิง" },
+                    { no: 19, id: "20056", name: "นางสาวพัชรีภรณ์ แทนชะกิจ", program: "12", gender: "หญิง" },
+                    { no: 20, id: "18456", name: "นางสาวมินฑิตา เหมืองหม้อ", program: "12", gender: "หญิง" },
+                    { no: 21, id: "19147", name: "นางสาววรลักษณ์ ผจญจิตต์", program: "12", gender: "หญิง" },
+                    { no: 22, id: "18352", name: "นางสาววราลักษณ์ มลัยทิพย์", program: "12", gender: "หญิง" },
+                    { no: 23, id: "18353", name: "นางสาววัชราพันธ์ จันทร์เพ็ง", program: "12", gender: "หญิง" },
+                    { no: 24, id: "20058", name: "นางสาววิกานดา นันบุญมา", program: "12", gender: "หญิง" },
+                    { no: 25, id: "18425", name: "นางสาววิภาวี เจ๊กท้าว", program: "12", gender: "หญิง" },
+                    { no: 26, id: "20059", name: "นางสาวสาวิตรี วิเชียร", program: "12", gender: "หญิง" },
+                    { no: 27, id: "18565", name: "นางสาวอาทิตย์ติยา ขินาวัง", program: "12", gender: "หญิง" },
+                    { no: 28, id: "18529", name: "นางสาวเอมอร นาทองบ่อ", program: "12", gender: "หญิง" },
+                    { no: 29, id: "20066", name: "นายภัทรพร ลุนจันทา", program: "12", gender: "ชาย" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (29 คน)',
+                    '12': '12 ศิลป์-ภาษา (29 คน)'
                 }
             },
             m53: {
@@ -521,6 +621,156 @@
                 programs: {
                     'all': 'ทุกแผนการเรียน (34 คน)',
                     '11': '11 วิทย์-คณิต (34 คน)'
+                }
+            },
+            m56: {
+                name: "ม.5/6",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/6",
+                area: "เขตพื้นที่ ม.5/6",
+                areaBadge: "เขตพื้นที่ ม.5/6",
+                advisors: ["นางสาวปิยธิดา ผลานิสงค์", "นางสาวสไบแพร จันทร์ต้น"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18492", name: "นายกิตติพงษ์ วงค์ศิริรักษ์", program: "11", gender: "ชาย" },
+                    { no: 2, id: "18495", name: "นายณัฐพงษ์ สอนบุญ", program: "11", gender: "ชาย" },
+                    { no: 3, id: "18607", name: "นายณัฐวัฒน์ รัปภา", program: "11", gender: "ชาย" },
+                    { no: 4, id: "18368", name: "นายธนภูมิ สีภูทอง", program: "11", gender: "ชาย" },
+                    { no: 5, id: "18367", name: "นายนันทวัฒน์ หล้าคำภา", program: "11", gender: "ชาย" },
+                    { no: 6, id: "18536", name: "นายปฏิพัทธ์ สมฤทธิ์", program: "11", gender: "ชาย" },
+                    { no: 7, id: "18291", name: "นายปริญญา สีบุญ", program: "11", gender: "ชาย" },
+                    { no: 8, id: "18292", name: "นายปัญญากร ศรีสอาด", program: "11", gender: "ชาย" },
+                    { no: 9, id: "18502", name: "นายภูบดินทร์ แทนชาลี", program: "11", gender: "ชาย" },
+                    { no: 10, id: "18504", name: "นายวันฉัตร จวบลาภ", program: "11", gender: "ชาย" },
+                    { no: 11, id: "18375", name: "นายธนศรัณย์ กรณ์นะธี", program: "11", gender: "ชาย" },
+                    { no: 12, id: "18505", name: "นายอดิรุจ ศุภภูตานนท์", program: "11", gender: "ชาย" },
+                    { no: 13, id: "18613", name: "นางสาวกนกฤทัย ยางไธสงค์", program: "11", gender: "หญิง" },
+                    { no: 14, id: "18340", name: "นางสาวกุลจิรา ภาษี", program: "11", gender: "หญิง" },
+                    { no: 15, id: "18380", name: "นางสาวคุณาพร คงเชียงชา", program: "11", gender: "หญิง" },
+                    { no: 16, id: "18411", name: "นางสาวชนิกา ภูยืด", program: "11", gender: "หญิง" },
+                    { no: 17, id: "18581", name: "นางสาวชลธิดา วงษาศิลชัย", program: "11", gender: "หญิง" },
+                    { no: 18, id: "18545", name: "นางสาวชุติกาญจน์ ชารินทร์", program: "11", gender: "หญิง" },
+                    { no: 19, id: "18583", name: "นางสาวณัฐชา แสนศิล", program: "11", gender: "หญิง" },
+                    { no: 20, id: "18445", name: "นางสาวณัฐธีรา หนาซุย", program: "11", gender: "หญิง" },
+                    { no: 21, id: "18585", name: "นางสาวทิพภาพร นาลา", program: "11", gender: "หญิง" },
+                    { no: 22, id: "18587", name: "นางสาวบัวชมพู ทัดชวด", program: "11", gender: "หญิง" },
+                    { no: 23, id: "18516", name: "นางสาวปิยฉัตร โพผาวงษ์", program: "11", gender: "หญิง" },
+                    { no: 24, id: "18588", name: "นางสาวพัชชาวดี เกสร", program: "11", gender: "หญิง" },
+                    { no: 25, id: "18629", name: "นางสาวเพียงพอ บุญรักษา", program: "11", gender: "หญิง" },
+                    { no: 26, id: "18419", name: "นางสาวแพรวลดา ออกแมน", program: "11", gender: "หญิง" },
+                    { no: 27, id: "18455", name: "นางสาวภัทรวดี มีภูเขียว", program: "11", gender: "หญิง" },
+                    { no: 28, id: "18592", name: "นางสาวภัทราภรณ์ ปุนตุง", program: "11", gender: "หญิง" },
+                    { no: 29, id: "18520", name: "นางสาววราภรณ์ พลเวียงจันทร์", program: "11", gender: "หญิง" },
+                    { no: 30, id: "18521", name: "นางสาววริญศรา ฝั่งซ้าย", program: "11", gender: "หญิง" },
+                    { no: 31, id: "18597", name: "นางสาววิมลรัตน์ ไชยพิมพ์", program: "11", gender: "หญิง" },
+                    { no: 32, id: "18598", name: "นางสาวศรัญญา แท่นสูงเนิน", program: "11", gender: "หญิง" },
+                    { no: 33, id: "18559", name: "นางสาวศิรภัส พลมั่น", program: "11", gender: "หญิง" },
+                    { no: 34, id: "18560", name: "นางสาวสุธิฎา คำประทุม", program: "11", gender: "หญิง" },
+                    { no: 35, id: "18634", name: "นางสาวสุพิชชา ศรีพรมมา", program: "11", gender: "หญิง" },
+                    { no: 36, id: "18428", name: "นางสาวสุภัทรตรา บุญประคม", program: "11", gender: "หญิง" },
+                    { no: 37, id: "18317", name: "นางสาวอรัญญา แนวสุข", program: "11", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (37 คน)',
+                    '11': '11 วิทย์-คณิต (37 คน)'
+                }
+            },
+            m57: {
+                name: "ม.5/7",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/7",
+                area: "เขตพื้นที่ ม.5/7",
+                areaBadge: "เขตพื้นที่ ม.5/7",
+                advisors: ["นายทองจันทร์ โจมเสนาะ"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18360", name: "นายจีรศักดิ์ เค้าดี", program: "04", gender: "ชาย" },
+                    { no: 2, id: "18371", name: "นายภูวดล สถาพร", program: "04", gender: "ชาย" },
+                    { no: 3, id: "18508", name: "นางสาวกุลฑีรา ปราบไพรี", program: "04", gender: "หญิง" },
+                    { no: 4, id: "18511", name: "นางสาวชลธิชา ศิริแสง", program: "04", gender: "หญิง" },
+                    { no: 5, id: "18616", name: "นางสาวชลรดา แว่นระเว", program: "04", gender: "หญิง" },
+                    { no: 6, id: "18582", name: "นางสาวณัชชาดา จันดี", program: "04", gender: "หญิง" },
+                    { no: 7, id: "20078", name: "นางสาวนนพร นาถสีทา", program: "04", gender: "หญิง" },
+                    { no: 8, id: "18624", name: "นางสาวปาลิษา มงคลชัยพร", program: "04", gender: "หญิง" },
+                    { no: 9, id: "18549", name: "นางสาวพรปวีณ์ ฉลองบุญ", program: "04", gender: "หญิง" },
+                    { no: 10, id: "18551", name: "นางสาวพฤศจิ นางสูงเนิน", program: "04", gender: "หญิง" },
+                    { no: 11, id: "18556", name: "นางสาววรัชยา แสงดาว", program: "04", gender: "หญิง" },
+                    { no: 12, id: "18524", name: "นางสาวศุภกานต์ แซงราชา", program: "04", gender: "หญิง" },
+                    { no: 13, id: "18461", name: "นางสาวศุภนุช แซงราชา", program: "04", gender: "หญิง" },
+                    { no: 14, id: "18690", name: "นางสาวสิราพรรณ รักษาศรี", program: "04", gender: "หญิง" },
+                    { no: 15, id: "18635", name: "นางสาวอมรรัตน์ ใจเอื้อ", program: "04", gender: "หญิง" },
+                    { no: 16, id: "18639", name: "นางสาวอารียฉัตร สมวงษ์", program: "04", gender: "หญิง" },
+                    { no: 17, id: "18566", name: "นางสาวอารีรัตน์ แซงบุญนาง", program: "04", gender: "หญิง" },
+                    { no: 18, id: "18568", name: "นายจักรินทร์ ศรีเชียงสา", program: "11", gender: "ชาย" },
+                    { no: 19, id: "18610", name: "นายประยูร นามโสม", program: "11", gender: "ชาย" },
+                    { no: 20, id: "18567", name: "นางสาวกนกพิชญ์ ขวัญโพก", program: "11", gender: "หญิง" },
+                    { no: 21, id: "18544", name: "นางสาวชไมพร มุ่งงาม", program: "11", gender: "หญิง" },
+                    { no: 22, id: "18620", name: "นางสาวทักษพร แถมสมดี", program: "11", gender: "หญิง" },
+                    { no: 23, id: "18622", name: "นางสาวนิรนันท์ พันลา", program: "11", gender: "หญิง" },
+                    { no: 24, id: "18593", name: "นางสาวเมษา สีดาอุบล", program: "11", gender: "หญิง" },
+                    { no: 25, id: "18594", name: "นางสาววนิดา ชัยดี", program: "11", gender: "หญิง" },
+                    { no: 26, id: "18595", name: "นางสาววรัทยา กัณหาเขียว", program: "11", gender: "หญิง" },
+                    { no: 27, id: "19148", name: "นางสาววราภรณ์ ผ่องสนาม", program: "11", gender: "หญิง" },
+                    { no: 28, id: "18599", name: "นางสาวศศินิภา กรรณแก้ว", program: "11", gender: "หญิง" },
+                    { no: 29, id: "18600", name: "นางสาวศิรินภา สุวรรณา", program: "11", gender: "หญิง" },
+                    { no: 30, id: "18602", name: "นางสาวสุจาริณี รัตใน", program: "11", gender: "หญิง" },
+                    { no: 31, id: "18603", name: "นางสาวสุนิตา ผาพันธ์", program: "11", gender: "หญิง" },
+                    { no: 32, id: "18562", name: "นางสาวสุมนมาลย์ เบ็ญขุนทด", program: "11", gender: "หญิง" },
+                    { no: 33, id: "20080", name: "นางสาวสุฐิตรา คำเลิศ", program: "11", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (33 คน)',
+                    '04': '04 เตรียมครูและวิชาการศึกษา (17 คน)',
+                    '11': '11 วิทย์-คณิต (16 คน)'
+                }
+            },
+            m58: {
+                name: "ม.5/8",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/8",
+                area: "เขตพื้นที่ ม.5/8",
+                areaBadge: "เขตพื้นที่ ม.5/8",
+                advisors: ["นายนิรุตต์ ไชยธนากิจไพศาล", "นายธีร์สิทธิ์ โพธิปัสสา"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18606", name: "นายณัฏฐภัทร ราชาคำ", program: "01", gender: "ชาย" },
+                    { no: 2, id: "18608", name: "นายธนธร อ้วนวงษ์", program: "01", gender: "ชาย" },
+                    { no: 3, id: "18609", name: "นายธนพล หารคำแพง", program: "01", gender: "ชาย" },
+                    { no: 4, id: "18611", name: "นายเศรษฐวิชญ์ คำชมภู", program: "01", gender: "ชาย" },
+                    { no: 5, id: "18407", name: "นายสุทธิชัย ศรีม่วง", program: "01", gender: "ชาย" },
+                    { no: 6, id: "18575", name: "นายอิทธิเดช สว่างใจ", program: "01", gender: "ชาย" },
+                    { no: 7, id: "19146", name: "นางสาวกนกวรรณ ไชยมงคล", program: "01", gender: "หญิง" },
+                    { no: 8, id: "18542", name: "นางสาวจตุพร ฉิมเพ็ง", program: "01", gender: "หญิง" },
+                    { no: 9, id: "18615", name: "นางสาวจอมขวัญ ขุนภักดี", program: "01", gender: "หญิง" },
+                    { no: 10, id: "18580", name: "นางสาวชมพูนุช นามวงษ์", program: "01", gender: "หญิง" },
+                    { no: 11, id: "18546", name: "นางสาวชุติมา ดอนเหลื่อม", program: "01", gender: "หญิง" },
+                    { no: 12, id: "18617", name: "นางสาวฑิฆัมพร ผาสุโพธิ์", program: "01", gender: "หญิง" },
+                    { no: 13, id: "18621", name: "นางสาวทิฆัมพร เรืองศรี", program: "01", gender: "หญิง" },
+                    { no: 14, id: "18548", name: "นางสาวธนพิพัฒน์ แสนกุฎเรือง", program: "01", gender: "หญิง" },
+                    { no: 15, id: "19157", name: "นางสาวนันทิชา บุตสา", program: "01", gender: "หญิง" },
+                    { no: 16, id: "18625", name: "นางสาวปิยธิดา วังคีรี", program: "01", gender: "หญิง" },
+                    { no: 17, id: "18626", name: "นางสาวพรนภา เอกวารีย์", program: "01", gender: "หญิง" },
+                    { no: 18, id: "19158", name: "นางสาวพรพิชชา วงชาลี", program: "01", gender: "หญิง" },
+                    { no: 19, id: "18552", name: "นางสาวพัทธ์ธิรา จันดี", program: "01", gender: "หญิง" },
+                    { no: 20, id: "18590", name: "นางสาวพิชญาพร บุพพิ", program: "01", gender: "หญิง" },
+                    { no: 21, id: "18630", name: "นางสาวรุจิรา แก้วจันวงษ์", program: "01", gender: "หญิง" },
+                    { no: 22, id: "18601", name: "นางสาวศุภลักษณ์ กางขุนทด", program: "01", gender: "หญิง" },
+                    { no: 23, id: "18636", name: "นางสาวอรญา สนิทชน", program: "01", gender: "หญิง" },
+                    { no: 24, id: "18637", name: "นางสาวอรอุมา รักโคตร์", program: "01", gender: "หญิง" },
+                    { no: 25, id: "18604", name: "นางสาวอารยา สินธุ์ชัย", program: "01", gender: "หญิง" },
+                    { no: 26, id: "18569", name: "นายชนะชัย นามวงษ์", program: "02", gender: "ชาย" },
+                    { no: 27, id: "18570", name: "นายทัศนัย วงค์กระโซ่", program: "02", gender: "ชาย" },
+                    { no: 28, id: "19629", name: "นายธนพงศ์ ศรีวิชา", program: "02", gender: "ชาย" },
+                    { no: 29, id: "18571", name: "นายธีรภัทร คุ้มเงิน", program: "02", gender: "ชาย" },
+                    { no: 30, id: "18402", name: "นายพฤกษพล บัวธนะ", program: "02", gender: "ชาย" },
+                    { no: 31, id: "18573", name: "นายภาณุวัฒน์ นันทะปัติ", program: "02", gender: "ชาย" },
+                    { no: 32, id: "18404", name: "นายวุฒิภัทร เพียวิเศษ", program: "02", gender: "ชาย" },
+                    { no: 33, id: "18405", name: "นายศุภชัย ชูทอง", program: "02", gender: "ชาย" },
+                    { no: 34, id: "18612", name: "นายอภิเชษฐ์ คำภิบาล", program: "02", gender: "ชาย" },
+                    { no: 35, id: "18383", name: "นางสาวธิดารัตน์ ยศมีบุญ", program: "02", gender: "หญิง" },
+                    { no: 36, id: "18387", name: "นางสาวภาวินี นามเมือง", program: "02", gender: "หญิง" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (36 คน)',
+                    '01': '01 วิทยาศาสตร์สุขภาพ (25 คน)',
+                    '02': '02 เตรียมวิศวกรรมศาสตร์ (11 คน)'
                 }
             },
             m68: {
@@ -683,13 +933,13 @@
             const cfg = CLASS_CONFIG[currentClass];
             records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
 
-            ['m42', 'm53', 'm54', 'm55', 'm68'].forEach(cId => {
+            ['m42', 'm51', 'm52', 'm53', 'm54', 'm55', 'm56', 'm57', 'm58', 'm68'].forEach(cId => {
                 const btn = document.getElementById(`btnClass${cId.toUpperCase()}`);
                 if (btn) {
                     if (currentClass === cId) {
-                        btn.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition";
+                        btn.className = "px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded bg-white text-pink-700 shadow-sm transition";
                     } else {
-                        btn.className = "px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition";
+                        btn.className = "px-1.5 py-0.5 text-[9px] sm:text-xs font-bold rounded text-white hover:text-pink-100 transition";
                     }
                 }
             });
@@ -697,6 +947,14 @@
             document.getElementById('headerAreaBadge').innerHTML = `<i class="fa-solid fa-location-dot text-pink-200"></i> ${cfg.areaBadge}`;
             document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
             document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
+
+            // ปรับแต่งปุ่มส่ง LINE หากอยู่ห้อง ม.5/2 ให้เป็นปุ่มแชร์ภาพรวมระดับ ม.5
+            const lineBtnText = document.getElementById('lineBtnText');
+            if (currentClass === 'm52') {
+                lineBtnText.textContent = "แชร์ภาพรวม ม.5";
+            } else {
+                lineBtnText.textContent = "ส่ง LINE";
+            }
 
             const pFilter = document.getElementById('programFilter');
             pFilter.innerHTML = '';
@@ -727,8 +985,8 @@
                     </div>
                     <div>
                         <p class="mb-14">ลงชื่อ........................................................</p>
-                        <p class="font-bold">(${cfg.advisors[1]})</p>
-                        <p class="text-slate-600">ครูที่ปรึกษา ${cfg.name}</p>
+                        <p class="font-bold">(${cfg.advisors[1] || '-'})</p>
+                        <p class="text-slate-600">${cfg.advisors[1] ? 'ครูที่ปรึกษา ' + cfg.name : ''}</p>
                     </div>
                     <div>
                         <p class="mb-14">ลงชื่อ........................................................</p>
@@ -839,16 +1097,19 @@
                 const studentData = dayRecord[s.id] || { status: 'มา', note: '' };
                 const currentStatus = studentData.status;
 
-                let programBadge = '';
-                if (s.program === '02') programBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`;
-                else if (s.program === '11') programBadge = `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
+                let programBadge = `<span class="bg-slate-100 text-slate-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-slate-200">${s.program}</span>`;
+                if (s.program === '01') programBadge = `<span class="bg-pink-100 text-pink-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-pink-200">01 วิทย์สุขภาพ</span>`;
+                else if (s.program === '02') programBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 เตรียมวิศวะ</span>`;
                 else if (s.program === '04') programBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200">04 เตรียมครู</span>`;
                 else if (s.program === '08') programBadge = `<span class="bg-cyan-100 text-cyan-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-cyan-200">08 ธุรกิจค้าสมัยใหม่</span>`;
+                else if (s.program === '11') programBadge = `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์-คณิต</span>`;
                 else if (s.program === '12') programBadge = `<span class="bg-lime-100 text-lime-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-lime-200">12 ศิลป์-ภาษา</span>`;
                 else if (s.program === '51') programBadge = `<span class="bg-blue-100 text-blue-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-blue-200">51 ฟุตบอล</span>`;
                 else if (s.program === '52') programBadge = `<span class="bg-orange-100 text-orange-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-orange-200">52 ปิงปอง</span>`;
                 else if (s.program === '53') programBadge = `<span class="bg-yellow-100 text-yellow-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-yellow-200">53 วอลเลย์</span>`;
                 else if (s.program === '54') programBadge = `<span class="bg-teal-100 text-teal-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-teal-200">54 ตะกร้อ</span>`;
+                else if (s.program === '101') programBadge = `<span class="bg-red-100 text-red-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-red-200">101 ช่างไฟฟ้า</span>`;
+                else if (s.program === '103') programBadge = `<span class="bg-violet-100 text-violet-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-violet-200">103 ช่างยนต์</span>`;
                 else if (s.program === '104') programBadge = `<span class="bg-purple-100 text-purple-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-purple-200">104 บัญชี</span>`;
 
                 const consecAbsents = getConsecutiveAbsents(s.id);
@@ -1038,6 +1299,45 @@
             const dateObj = new Date(currentDate);
             const thaiDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+            // หากอยู่หน้าห้อง ม.5/2 ให้สร้างข้อความภาพรวมระดับชั้น ม.5 ทั้งหมด
+            if (currentClass === 'm52') {
+                let text = `📢 สรุปภาพรวมการปฏิบัติหน้าที่เขตพื้นที่พัฒนา 5 ส. (ระดับชั้น มัธยมศึกษาปีที่ 5)\n`;
+                text += `👑 หัวหน้าระดับ ม.5: นางชารีณัฏฐ์ ไชยสุรินทร์\n`;
+                text += `📅 ประจำวัน${thaiDate}\n`;
+                text += `──────────────────────\n`;
+
+                const m5Classes = ['m51', 'm52', 'm53', 'm54', 'm55', 'm56', 'm57', 'm58'];
+                let totalM5Students = 0;
+                let totalM5Present = 0;
+                let totalM5Late = 0;
+                let totalM5Absent = 0;
+
+                m5Classes.forEach(cKey => {
+                    const cCfg = CLASS_CONFIG[cKey];
+                    const cRec = JSON.parse(localStorage.getItem(`sichompu_duty_records_${cKey}`)) || records;
+                    let cPresent = 0, cLate = 0, cAbsent = 0;
+
+                    cCfg.students.forEach(s => {
+                        totalM5Students++;
+                        const st = (cRec[currentDate] && cRec[currentDate][s.id] && cRec[currentDate][s.id].status) ? cRec[currentDate][s.id].status : 'มา';
+                        if (st === 'มา' || st === 'กิจกรรม') { cPresent++; totalM5Present++; }
+                        else if (st === 'สาย') { cLate++; totalM5Late++; }
+                        else if (st === 'ขาด') { cAbsent++; totalM5Absent++; }
+                    });
+
+                    text += `🏫 ห้อง ${cCfg.name} (${cCfg.students.length} คน): มา ${cPresent} | สาย ${cLate} | ขาด ${cAbsent}\n`;
+                });
+
+                text += `──────────────────────\n`;
+                text += `👥 รวมนักเรียน ม.5 ทั้งหมด: ${totalM5Students} คน\n`;
+                text += `✅ มาปฏิบัติหน้าที่: ${totalM5Present} คน\n`;
+                text += `⏰ มาสาย: ${totalM5Late} คน\n`;
+                text += `❌ ขาดหน้าที่: ${totalM5Absent} คน\n`;
+                text += `✨ ภาพรวมความรับผิดชอบระดับชั้น ม.5 เรียบร้อยดีเยี่ยม`;
+                return text;
+            }
+
+            // ข้อความสรุปปกติรายห้อง
             let counts = { 'มา': 0, 'สาย': 0, 'ลา': 0, 'ขาด': 0, 'กิจกรรม': 0 };
             let lateList = [], leaveList = [], absentList = [], activityList = [];
 
