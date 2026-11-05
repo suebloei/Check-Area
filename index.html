@@ -108,9 +108,10 @@
                     </div>
                     <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-1.5 leading-none">
-                            <!-- ตัวเลือกสลับ 4 ห้องเรียน -->
+                            <!-- ตัวเลือกสลับ 5 ห้องเรียน: ม.4/2, ม.5/3, ม.5/4, ม.5/5, ม.6/8 -->
                             <div class="inline-flex rounded-lg bg-pink-900/40 p-0.5 border border-white/20">
                                 <button type="button" onclick="selectClassRoom('m42')" id="btnClassM42" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md bg-white text-pink-700 shadow-sm transition">ม.4/2</button>
+                                <button type="button" onclick="selectClassRoom('m53')" id="btnClassM53" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/3</button>
                                 <button type="button" onclick="selectClassRoom('m54')" id="btnClassM54" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/4</button>
                                 <button type="button" onclick="selectClassRoom('m55')" id="btnClassM55" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.5/5</button>
                                 <button type="button" onclick="selectClassRoom('m68')" id="btnClassM68" class="px-2 py-0.5 text-[10px] sm:text-xs font-bold rounded-md text-white hover:text-pink-100 transition">ม.6/8</button>
@@ -325,7 +326,7 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/4, ม.5/5 และ ม.6/8
+        // ฐานข้อมูลห้องเรียน ม.4/2, ม.5/3, ม.5/4, ม.5/5 และ ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
@@ -382,11 +383,54 @@
                     '11': '11 วิทย์-คณิต (32 คน)'
                 }
             },
+            m53: {
+                name: "ม.5/3",
+                fullName: "ชั้นมัธยมศึกษาปีที่ 5/3",
+                area: "เขตพื้นที่ ม.5/3",
+                areaBadge: "เขตพื้นที่ ม.5/3",
+                advisors: ["นางชารีณัฏฐ์ ไชยสุรินทร์", "นางสาวสุภณิดา ทองอ่าง"],
+                headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
+                students: [
+                    { no: 1, id: "18320", name: "นายกิตติวัฒน์ ผุยนวล", program: "08", gender: "ชาย" },
+                    { no: 2, id: "18532", name: "นายชัยวัฒน์ รัปภา", program: "08", gender: "ชาย" },
+                    { no: 3, id: "18324", name: "นายปฏิพัทธิ์ อ้วนวงษ์", program: "08", gender: "ชาย" },
+                    { no: 4, id: "18329", name: "นายวชิรวิทย์ กองอาสา", program: "08", gender: "ชาย" },
+                    { no: 5, id: "18537", name: "นายวชิระพล แสนโคตร", program: "08", gender: "ชาย" },
+                    { no: 6, id: "18506", name: "นายอภิธาร วระนาม", program: "08", gender: "ชาย" },
+                    { no: 7, id: "18540", name: "นายอรรถวุฒิ จัตุจันทร์", program: "08", gender: "ชาย" },
+                    { no: 8, id: "20060", name: "นางสาวเชลซี บรู๊ค", program: "08", gender: "หญิง" },
+                    { no: 9, id: "20061", name: "นางสาวบัณฑิตา นามมันต์", program: "08", gender: "หญิง" },
+                    { no: 10, id: "18623", name: "นางสาวปาริฉัตร ศิริมะณะโส", program: "08", gender: "หญิง" },
+                    { no: 11, id: "18627", name: "นางสาวพอเพียง บุญรักษา", program: "08", gender: "หญิง" },
+                    { no: 12, id: "18427", name: "นางสาวศิวพร ทองสน", program: "08", gender: "หญิง" },
+                    { no: 13, id: "18463", name: "นางสาวสิริยากร ลาโยธี", program: "08", gender: "หญิง" },
+                    { no: 14, id: "18430", name: "นางสาวไอวลิญ อินทะสร้อย", program: "08", gender: "หญิง" },
+                    { no: 15, id: "18313", name: "นางสาววิมวิภา ม่วงแก้ว", program: "08", gender: "หญิง" },
+                    { no: 16, id: "18688", name: "นางสาวชลลดา บุบพิ", program: "08", gender: "หญิง" },
+                    { no: 17, id: "18493", name: "นายจักรีราช บัวผาย", program: "12", gender: "ชาย" },
+                    { no: 18, id: "20062", name: "นายบารมี พรมชาตรี", program: "12", gender: "ชาย" },
+                    { no: 19, id: "18327", name: "นายภูมิพัฒน์ กรไชยา", program: "12", gender: "ชาย" },
+                    { no: 20, id: "20063", name: "นางสาวกชกร สุดสาย", program: "12", gender: "หญิง" },
+                    { no: 21, id: "18676", name: "นางสาวเกศรา ไชยัน", program: "12", gender: "หญิง" },
+                    { no: 22, id: "18543", name: "นางสาวจีรนันท์ ประชุมชัย", program: "12", gender: "หญิง" },
+                    { no: 23, id: "20065", name: "นางสาวณัฐจิราภา ศิลาวงค์", program: "12", gender: "หญิง" },
+                    { no: 24, id: "18517", name: "นางสาวผ่องนภา สามาตอน", program: "12", gender: "หญิง" },
+                    { no: 25, id: "18518", name: "นางสาวแพรวรรณ ห้าวหาร", program: "12", gender: "หญิง" },
+                    { no: 26, id: "18557", name: "นางสาววรัญญา บุญโสพล", program: "12", gender: "หญิง" },
+                    { no: 27, id: "18393", name: "นางสาวสุภัคจิรา ไชยเพชร", program: "12", gender: "หญิง" },
+                    { no: 28, id: "20081", name: "นายลัญจกร พาหา", program: "12", gender: "ชาย" }
+                ],
+                programs: {
+                    'all': 'ทุกแผนการเรียน (28 คน)',
+                    '08': '08 ศิลป์-ธุรกิจค้าสมัยใหม่ (16 คน)',
+                    '12': '12 ศิลป์-ภาษา (12 คน)'
+                }
+            },
             m54: {
                 name: "ม.5/4",
                 fullName: "ชั้นมัธยมศึกษาปีที่ 5/4",
                 area: "ริมรั้วสนามฟุตบอล(ฝั่งอำเภอ)",
-                areaBadge: "ริมรั้วสนามฟุตบอล(ฝั่งอำเภอ)", // ปรับตามคำขอ
+                areaBadge: "ริมรั้วสนามฟุตบอล(ฝั่งอำเภอ)",
                 advisors: ["นายสิทธิศักดิ์ สิงห์โสภา", "นางสาวพิมพ์ณดา รวมลำภา"],
                 headLevel: "นางชารีณัฏฐ์ ไชยสุรินทร์ (หัวหน้าระดับ ม.5)",
                 students: [
@@ -639,7 +683,7 @@
             const cfg = CLASS_CONFIG[currentClass];
             records = JSON.parse(localStorage.getItem(getStorageKey())) || {};
 
-            ['m42', 'm54', 'm55', 'm68'].forEach(cId => {
+            ['m42', 'm53', 'm54', 'm55', 'm68'].forEach(cId => {
                 const btn = document.getElementById(`btnClass${cId.toUpperCase()}`);
                 if (btn) {
                     if (currentClass === cId) {
@@ -799,6 +843,8 @@
                 if (s.program === '02') programBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-amber-200">02 วิศวะ</span>`;
                 else if (s.program === '11') programBadge = `<span class="bg-indigo-100 text-indigo-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-indigo-200">11 วิทย์</span>`;
                 else if (s.program === '04') programBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-emerald-200">04 เตรียมครู</span>`;
+                else if (s.program === '08') programBadge = `<span class="bg-cyan-100 text-cyan-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-cyan-200">08 ธุรกิจค้าสมัยใหม่</span>`;
+                else if (s.program === '12') programBadge = `<span class="bg-lime-100 text-lime-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-lime-200">12 ศิลป์-ภาษา</span>`;
                 else if (s.program === '51') programBadge = `<span class="bg-blue-100 text-blue-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-blue-200">51 ฟุตบอล</span>`;
                 else if (s.program === '52') programBadge = `<span class="bg-orange-100 text-orange-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-orange-200">52 ปิงปอง</span>`;
                 else if (s.program === '53') programBadge = `<span class="bg-yellow-100 text-yellow-800 text-[11px] font-semibold px-2 py-0.5 rounded border border-yellow-200">53 วอลเลย์</span>`;
