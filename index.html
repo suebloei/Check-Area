@@ -329,7 +329,6 @@
     <script>
         const GAS_ENDPOINT_URL = "https://script.google.com/a/macros/sichompu.org/s/AKfycby7pQ2wcqhzBuwQ0G3mhhh7iNATWJ9MdT8w1DZ5uWYNyGQUyjPtHzBcU4g6qV67bSS_/exec";
 
-        // ฐานข้อมูลห้องเรียนทั้งหมด ม.4/2 ถึง ม.6/8
         const CLASS_CONFIG = {
             m42: {
                 name: "ม.4/2",
@@ -947,7 +946,7 @@
             document.getElementById('headerTitle').textContent = `ระบบเช็คชื่อเขตพื้นที่พัฒนาและความสะอาด (${cfg.name})`;
             document.getElementById('footerClassLabel').textContent = `ระบบบริหารจัดการและเช็คชื่อเขตพื้นที่พัฒนา ${cfg.fullName}`;
 
-            // ย้ายปุ่มแชร์ภาพรวม ม.5 มาไว้ที่ห้อง ม.5/3 ตามที่ปรึกษาระดับ
+            // ย้ายปุ่มแชร์ภาพรวม ม.5 มาไว้ที่ห้อง ม.5/3
             const lineBtnText = document.getElementById('lineBtnText');
             if (currentClass === 'm53') {
                 lineBtnText.textContent = "แชร์ภาพรวม ม.5";
@@ -1298,7 +1297,7 @@
             const dateObj = new Date(currentDate);
             const thaiDate = dateObj.toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            // หากอยู่หน้าห้อง ม.5/3 ให้สร้างข้อความภาพรวมระดับชั้น ม.5 ทั้งหมด
+            // หากอยู่หน้าห้อง ม.5/3 ให้สร้างข้อความภาพรวมระดับชั้น ม.5 (นับเฉพาะห้องที่มีการบันทึกข้อมูลในวันนั้น ๆ)
             if (currentClass === 'm53') {
                 let text = `📢 สรุปภาพรวมการปฏิบัติหน้าที่เขตพื้นที่พัฒนา 5 ส. (ระดับชั้น มัธยมศึกษาปีที่ 5)\n`;
                 text += `👑 หัวหน้าระดับ ม.5: นางชารีณัฏฐ์ ไชยสุรินทร์\n`;
@@ -1306,6 +1305,7 @@
                 text += `──────────────────────\n`;
 
                 const m5Classes = ['m51', 'm52', 'm53', 'm54', 'm55', 'm56', 'm57', 'm58'];
+                let activeClassesCount = 0;
                 let totalM5Students = 0;
                 let totalM5Present = 0;
                 let totalM5Late = 0;
@@ -1313,26 +1313,36 @@
 
                 m5Classes.forEach(cKey => {
                     const cCfg = CLASS_CONFIG[cKey];
-                    const cRec = JSON.parse(localStorage.getItem(`sichompu_duty_records_${cKey}`)) || records;
-                    let cPresent = 0, cLate = 0, cAbsent = 0;
+                    // ดึงข้อมูลจาก localStorage ของแต่ละห้อง ม.5
+                    const cRec = JSON.parse(localStorage.getItem(`sichompu_duty_records_${cKey}`)) || {};
+                    
+                    // ตรวจสอบว่าห้องนี้มีการบันทึกข้อมูลของวันปัจจุบันหรือยัง
+                    if (cRec[currentDate] && Object.keys(cRec[currentDate]).length > 0) {
+                        activeClassesCount++;
+                        let cPresent = 0, cLate = 0, cAbsent = 0;
 
-                    cCfg.students.forEach(s => {
-                        totalM5Students++;
-                        const st = (cRec[currentDate] && cRec[currentDate][s.id] && cRec[currentDate][s.id].status) ? cRec[currentDate][s.id].status : 'มา';
-                        if (st === 'มา' || st === 'กิจกรรม') { cPresent++; totalM5Present++; }
-                        else if (st === 'สาย') { cLate++; totalM5Late++; }
-                        else if (st === 'ขาด') { cAbsent++; totalM5Absent++; }
-                    });
+                        cCfg.students.forEach(s => {
+                            totalM5Students++;
+                            const st = cRec[currentDate][s.id] ? cRec[currentDate][s.id].status : 'มา';
+                            if (st === 'มา' || st === 'กิจกรรม') { cPresent++; totalM5Present++; }
+                            else if (st === 'สาย') { cLate++; totalM5Late++; }
+                            else if (st === 'ขาด') { cAbsent++; totalM5Absent++; }
+                        });
 
-                    text += `🏫 ห้อง ${cCfg.name} (${cCfg.students.length} คน): มา ${cPresent} | สาย ${cLate} | ขาด ${cAbsent}\n`;
+                        text += `🏫 ห้อง ${cCfg.name} (${cCfg.students.length} คน): มา ${cPresent} | สาย ${cLate} | ขาด ${cAbsent}\n`;
+                    } else {
+                        // แจ้งเตือนห้องที่ยังไม่ได้เช็คชื่อในภาพรวมระดับชั้น
+                        text += `🏫 ห้อง ${cCfg.name}: ⚠️ ยังไม่ได้เช็คชื่อ\n`;
+                    }
                 });
 
                 text += `──────────────────────\n`;
-                text += `👥 รวมนักเรียน ม.5 ทั้งหมด: ${totalM5Students} คน\n`;
+                text += `📊 เช็คชื่อแล้ว ${activeClassesCount}/8 ห้อง\n`;
+                text += `👥 รวมนักเรียน (ห้องที่เช็ค): ${totalM5Students} คน\n`;
                 text += `✅ มาปฏิบัติหน้าที่: ${totalM5Present} คน\n`;
                 text += `⏰ มาสาย: ${totalM5Late} คน\n`;
                 text += `❌ ขาดหน้าที่: ${totalM5Absent} คน\n`;
-                text += `✨ ภาพรวมความรับผิดชอบระดับชั้น ม.5 เรียบร้อยดีเยี่ยม`;
+                text += `✨ ภาพรวมความรับผิดชอบระดับชั้น ม.5`;
                 return text;
             }
 
